@@ -37,4 +37,4 @@ rsconnect/
 .Rproj.user
 
 # Password files
-*/secret.R
+*secret.R
