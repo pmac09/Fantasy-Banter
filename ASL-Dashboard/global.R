@@ -1,13 +1,20 @@
+library(shiny)
 library(reticulate)
 
-virtualenv_create(envname = "pyEnv",python = "python3")
-virtualenv_install(envname = "pyEnv", packages = c('oauthlib', 'requests_oauthlib'))
-use_virtualenv("pyEnv", required = TRUE)
+#setwd('./ASL-Dashboard')
+#devtools::install_github("rstudio/rsconnect", ref='737cd48')
 
-source_python('./ASL-Dashboard/functions/getToken.py')
 
-getToken(
-  cid= Sys.getenv("SC_CID"),
-  usr= Sys.getenv("SC_USR"),
-  pwd= Sys.getenv("SC_PWD")
-)
+## Source Python Functions
+#virtualenv_create(envname = "pyEnv", python = "python3")
+#virtualenv_install(envname = "pyEnv", packages = c('oauthlib', 'requests_oauthlib'))
+#use_virtualenv("pyEnv", required = TRUE)
+
+py_install(packages= c('oauthlib', 'requests_oauthlib'))
+source_python('./functions/getToken.py')
+
+## Source R Functions
+listFiles <- list.files('./functions')
+listFunctions <- unlist(lapply(listFiles[grepl('.R$', listFiles)], function(x) paste0('./functions/',x)))
+sapply(listFunctions, source)
+
