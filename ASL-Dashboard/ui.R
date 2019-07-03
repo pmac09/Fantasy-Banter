@@ -1,17 +1,24 @@
-shinyUI(fluidPage(
+dashboardPagePlus(
   
-  # Application title
-  titlePanel("Old Faithful Geyser Data"),
+  title = "ASL - Addicts Supercoach League",
   
-  # Sidebar with a slider input for number of bins 
-  sidebarLayout(
-    sidebarPanel(
-      
-    ),
+  ## HEADER ----
+  header = dashboardHeaderPlus(
+    title = tagList(
+      span(class = "logo-lg", "ASL"), 
+      img(src = "https://image.flaticon.com/icons/svg/204/204074.svg"))
+  ),
+
+  ## SIDEBAR ----
+  sidebar = dashboardSidebar(
     
-    # Show a plot of the generated distribution
-    mainPanel(
-       textOutput('txtToken')
-    )
+  ),
+  
+  ## BODY ----
+  body = dashboardBody(
+    
+    tableOutput("test")
+    
   )
-))
+
+)
