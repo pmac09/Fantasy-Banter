@@ -1,4 +1,3 @@
-library(tidyverse)
 library(fireData)
 
 addPlayers <- function(gameNo){
@@ -47,5 +46,4 @@ addPlayers <- function(gameNo){
   
 }
 
-addPlayers(7028)
 
