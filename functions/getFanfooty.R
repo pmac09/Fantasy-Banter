@@ -34,7 +34,10 @@ for(i in 5:length(data)){
 
 
 
+delete(x=mtcars, DATABASE_URL, directory = "ASL_DASHBOARD/PLAYER")
 patch(players, DATABASE_URL, directory = "ASL_DASHBOARD/GAME_STATS")
+
+download(DATABASE_URL, fileName = "ASL_DASHBOARD/GAME_STATS/2019-16-10009811")
 
 
 
