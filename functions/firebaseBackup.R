@@ -2,7 +2,7 @@ data <- list()
 
 data <- download(projectURL= DATABASE_URL, fileName= "ASL_DASHBOARD")
 patch(data, DATABASE_URL, directory = "ASL_DASHBOARD")
-delete(x=mtcars, DATABASE_URL, directory = "ASL_DASHBOARD/SC_COACHES")
+delete(x=mtcars, DATABASE_URL, directory = "ASL_DASHBOARD/SUPERCOACH/TEMP")
 
 data <- list()
 
