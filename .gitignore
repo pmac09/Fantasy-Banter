@@ -38,3 +38,4 @@ rsconnect/
 
 # Password files
 *secret.R
+*secrets.R
