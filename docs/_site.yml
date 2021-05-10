@@ -1,9 +1,11 @@
-name: "my-website"
+name: "fantasy-banter"
 navbar:
-  title: "My Website"
+  title: "Fantasy Banter"
   left:
   - text: "Home"
     href: index.html
   - text: "About"
     href: about.html
+  - text: 'Weekly Summary'
+    href: Weekly-Summary-Master.html
 output_dir: "."
