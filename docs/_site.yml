@@ -7,5 +7,5 @@ navbar:
   - text: "About"
     href: about.html
   - text: "Weekly Summary"
-    href: Weekly-Summary-Master.html
+    href: weekly-summary.html
 output_dir: "."
