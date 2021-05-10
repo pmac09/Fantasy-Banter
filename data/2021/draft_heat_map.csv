@@ -1,0 +1,784 @@
+"feed_id","player_id","first_name","last_name","team_abbrev","pos_1","pos_2","round.x","projected_points","points","user_team_id","team.x","coach.x","picked","type","position.x","median_score","round.y","pick","order_id","coach.y","player_name","team.y","position.y","position_drafted","time_drafted","DEF","MID","RUC","FWD","score"
+290528,448,"Max","Gawn","MEL","RUC",,7,,63,6510,"The Big Short","Luke",TRUE,"scoring","RUC",137,1,1,1,"Kappaz","M.Gawn","MEL","RUC","RUC","2021-04-11 17:13:20",,,1.426,,1.426
+293957,144,"Brodie","Grundy","COL","RUC",,7,,144,22859,"Ariana Grundy","Lester",TRUE,"scoring","RUC",135,1,2,2,"Lester","B.Grundy","COL","RUC","RUC","2021-04-11 17:14:10",,,1.306,,1.306
+293535,74,"Lachie","Neale","BRL","MID",,7,,,23413,"The West Wingard","Simon",FALSE,"non-scoring","MID",87,1,3,3,"Chief","L.Neale","BRL","MID","MID","2021-04-11 17:14:40",,-1.403,,,-1.403
+295342,666,"Jake","Lloyd","SYD","DEF",,7,,109,23345,"Pink Lloyd","Jordan",TRUE,"scoring","DEF",106,1,4,4,"Jmerc","J.Lloyd","SYD","DEF","DEF","2021-04-11 17:20:01",1.084,,,,1.084
+295467,711,"Jack","Macrae","WBD","MID",,7,,107,20323,"La MacRaena","Anthony",TRUE,"scoring","MID",137,1,5,5,"Melons","J.Macrae","WBD","MID","MID","2021-04-11 17:22:08",,2.746,,,2.746
+270917,317,"Patrick","Dangerfield","GEE","FWD","MID",7,,,2016,"At Witts End","Paul",FALSE,"non-scoring","FWD",83.5,1,6,6,"Pmac","P.Dangerfield","GEE","FWD MID","FWD","2021-04-11 17:27:00",,-1.694,,-0.487,-0.487
+996701,466,"Clayton","Oliver","MEL","MID",,7,,116,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","MID",116,1,7,7,"Richo","C.Oliver","MEL","MID","MID","2021-04-11 17:31:10",,1.003,,,1.003
+297373,689,"Marcus","Bontempelli","WBD","MID",,7,,107,20240,"MakingTheirMarcus","James",TRUE,"scoring","MID",116,1,8,8,"Garter","M.Bontempelli","WBD","MID","MID","2021-04-11 17:32:29",,1.003,,,1.003
+290847,586,"Dustin","Martin","RIC","FWD","MID",7,,,6510,"The Big Short","Luke",FALSE,"non-scoring","FWD",90,2,9,1,"Kappaz","D.Martin","RIC","FWD MID","FWD","2021-04-11 17:46:58",,-1.154,,0.103,0.103
+296205,642,"Jack","Steele","STK","MID",,7,,91,22859,"Ariana Grundy","Lester",TRUE,"scoring","MID",105,2,10,2,"Lester","J.Steele","STK","MID","MID","2021-04-11 17:47:04",,0.09,,,0.09
+298210,467,"Christian","Petracca","MEL","MID",,7,,78,23413,"The West Wingard","Simon",TRUE,"scoring","MID",98,2,11,3,"Chief","C.Petracca","MEL","MID","MID","2021-04-11 17:47:17",,-0.491,,,-0.491
+293222,20,"Rory","Laird","ADE","DEF","MID",7,,75,23345,"Pink Lloyd","Jordan",TRUE,"scoring","DEF",102,2,12,4,"Jmerc","R.Laird","ADE","DEF MID","DEF","2021-04-11 17:55:54",0.652,-0.159,,,0.652
+993834,697,"Josh","Dunkley","WBD","FWD","MID",7,,,,,,,,,132,2,13,5,"Melons","J.Dunkley","WBD","FWD MID","FWD","2021-04-11 17:56:03",,2.331,,3.915,3.915
+992016,200,"Zach","Merrett","ESS","MID",,7,,107,2016,"At Witts End","Paul",TRUE,"scoring","MID",107,2,14,6,"Pmac","Z.Merrett","ESS","MID","MID","2021-04-11 17:56:08",,0.256,,,0.256
+296347,377,"Josh","Kelly","GWS","MID",,7,,129,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","MID",98,2,15,7,"Richo","J.Kelly","GWS","MID","MID","2021-04-11 17:56:13",,-0.491,,,-0.491
+291856,421,"Tom","Mitchell","HAW","MID",,7,,105,20240,"MakingTheirMarcus","James",TRUE,"scoring","MID",105,2,16,8,"Garter","T.Mitchell","HAW","MID","MID","2021-04-11 17:56:19",,0.09,,,0.09
+291570,231,"Nat","Fyfe","FRE","MID",,7,,100,20240,"MakingTheirMarcus","James",TRUE,"scoring","MID",117,3,17,8,"Garter","N.Fyfe","FRE","MID","MID","2021-04-11 17:56:25",,1.086,,,1.086
+990704,93,"Patrick","Cripps","CAR","MID",,7,,65,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","MID",83,3,18,7,"Richo","P.Cripps","CAR","MID","MID","2021-04-11 17:56:33",,-1.735,,,-1.735
+291800,348,"Tom","Stewart","GEE","DEF",,7,,114,2016,"At Witts End","Paul",TRUE,"scoring","DEF",109,3,19,6,"Pmac","T.Stewart","GEE","DEF","DEF","2021-04-11 17:56:41",1.408,,,,1.408
+998659,243,"Luke","Ryan","FRE","DEF",,7,,,20323,"La MacRaena","Anthony",FALSE,"non-scoring","DEF",95.5,3,20,5,"Melons","L.Ryan","FRE","DEF","DEF","2021-04-11 17:56:48",-0.05,,,,-0.05
+294557,704,"Lachie","Hunter","WBD","MID",,7,,77,23345,"Pink Lloyd","Jordan",TRUE,"scoring","MID",88,3,21,4,"Jmerc","L.Hunter","WBD","MID","MID","2021-04-11 17:56:53",,-1.32,,,-1.32
+992468,632,"Rowan","Marshall","STK","RUC","FWD",7,,86,23413,"The West Wingard","Simon",TRUE,"scoring","FWD",86,3,22,3,"Chief","R.Marshall","STK","RUC FWD","FWD","2021-04-11 17:57:06",,,-1.636,-0.26,-0.26
+297401,6,"Matt","Crouch","ADE","MID",,7,,,22859,"Ariana Grundy","Lester",FALSE,"non-scoring","MID",0,3,23,2,"Lester","M.Crouch","ADE","MID","MID","2021-04-11 17:57:11",,-8.623,,,-8.623
+280965,168,"Steele","Sidebottom","COL","FWD","MID",7,,85,6510,"The Big Short","Luke",TRUE,"scoring","FWD",86,3,24,1,"Kappaz","S.Sidebottom","COL","FWD MID","FWD","2021-04-11 17:57:16",,-1.486,,-0.26,-0.26
+290801,743,"Andrew","Gaff","WCE","MID",,7,,123,6510,"The Big Short","Luke",TRUE,"scoring","MID",88,4,25,1,"Kappaz","A.Gaff","WCE","MID","MID","2021-04-11 17:57:22",,-1.32,,,-1.32
+295136,696,"Caleb","Daniel","WBD","DEF",,7,,117,22859,"Ariana Grundy","Lester",TRUE,"scoring","DEF",87,4,26,2,"Lester","C.Daniel","WBD","DEF","DEF","2021-04-11 17:57:27",-0.968,,,,-0.968
+1001026,207,"Jordan","Ridley","ESS","DEF",,7,,87,23413,"The West Wingard","Simon",TRUE,"scoring","DEF",124.5,4,27,3,"Chief","J.Ridley","ESS","DEF","DEF","2021-04-11 17:57:32",3.082,,,,3.082
+261224,88,"Dayne","Zorko","BRL","FWD","MID",7,,92,23345,"Pink Lloyd","Jordan",TRUE,"scoring","FWD",101,4,28,4,"Jmerc","D.Zorko","BRL","FWD MID","FWD","2021-04-11 17:57:39",,-0.242,,1.102,1.102
+293871,138,"Jack","Crisp","COL","DEF",,7,,81,20323,"La MacRaena","Anthony",TRUE,"scoring","DEF",86,4,29,5,"Melons","J.Crisp","COL","DEF","DEF","2021-04-11 17:57:49",-1.076,,,,-1.076
+291776,131,"Taylor","Adams","COL","MID",,7,,,2016,"At Witts End","Paul",FALSE,"non-scoring","MID",64,4,30,6,"Pmac","T.Adams","COL","MID","MID","2021-04-11 17:58:11",,-3.312,,,-3.312
+993905,672,"Callum","Mills","SYD","DEF",,7,,101,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","DEF",101,4,31,7,"Richo","C.Mills","SYD","DEF","DEF","2021-04-11 17:58:16",0.544,,,,0.544
+992010,153,"Brayden","Maynard","COL","DEF",,7,,72,20240,"MakingTheirMarcus","James",FALSE,"non-scoring","DEF",72,4,32,8,"Garter","B.Maynard","COL","DEF","DEF","2021-04-11 17:58:21",-2.588,,,,-2.588
+1009208,298,"Matt","Rowell","GCS","MID",,7,,,20240,"MakingTheirMarcus","James",FALSE,"non-scoring","MID",6,5,33,8,"Garter","M.Rowell","GCS","MID","MID","2021-04-11 17:59:51",,-8.125,,,-8.125
+295344,368,"Toby","Greene","GWS","FWD",,7,,83,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","FWD",93,5,34,7,"Richo","T.Greene","GWS","FWD","FWD","2021-04-11 18:00:08",,,,0.376,0.376
+298539,661,"Isaac","Heeney","SYD","FWD",,7,,19,2016,"At Witts End","Paul",TRUE,"scoring","FWD",68,5,35,6,"Pmac","I.Heeney","SYD","FWD","FWD","2021-04-11 18:00:15",,,,-1.894,-1.894
+261510,324,"Tom","Hawkins","GEE","FWD",,7,,65,20323,"La MacRaena","Anthony",TRUE,"scoring","FWD",79,5,36,5,"Melons","T.Hawkins","GEE","FWD","FWD","2021-04-11 18:00:21",,,,-0.895,-0.895
+297523,30,"Reilly","O'Brien","ADE","RUC",,7,,60,23345,"Pink Lloyd","Jordan",TRUE,"scoring","RUC",101,5,37,4,"Jmerc","R.O'Brien","ADE","RUC","RUC","2021-04-11 18:00:30",,,-0.736,,-0.736
+271045,753,"Nic","Naitanui","WCE","RUC",,7,,102,23413,"The West Wingard","Simon",TRUE,"scoring","RUC",100,5,38,3,"Chief","N.Naitanui","WCE","RUC","RUC","2021-04-11 18:00:34",,,-0.796,,-0.796
+1006121,529,"Zak","Butters","PTA","FWD",,7,,,22859,"Ariana Grundy","Lester",FALSE,"non-scoring","FWD",97,5,39,2,"Lester","Z.Butters","PTA","FWD","FWD","2021-04-11 18:00:40",,,,0.739,0.739
+992049,601,"Jayden","Short","RIC","DEF",,7,,116,6510,"The Big Short","Luke",TRUE,"scoring","DEF",100,5,40,1,"Kappaz","J.Short","RIC","DEF","DEF","2021-04-11 18:00:45",0.436,,,,0.436
+291969,359,"Stephen","Coniglio","GWS","MID",,7,,,6510,"The Big Short","Luke",FALSE,"non-scoring","MID",80,6,41,1,"Kappaz","S.Coniglio","GWS","MID","MID","2021-04-11 18:00:50",,-1.984,,,-1.984
+295518,98,"Sam","Docherty","CAR","DEF",,7,,87,22859,"Ariana Grundy","Lester",TRUE,"scoring","DEF",98,6,42,2,"Lester","S.Docherty","CAR","DEF","DEF","2021-04-11 18:00:57",0.22,,,,0.22
+295265,369,"Nick","Haynes","GWS","DEF",,7,,,,,,,,,60.5,6,43,3,"Chief","N.Haynes","GWS","DEF","DEF","2021-04-11 18:01:02",-3.83,,,,-3.83
+291790,721,"Adam","Treloar","WBD","MID",,7,,97,23345,"Pink Lloyd","Jordan",TRUE,"scoring","MID",108,6,44,4,"Jmerc","A.Treloar","WBD","MID","MID","2021-04-11 18:01:07",,0.339,,,0.339
+291313,147,"Jeremy","Howe","COL","DEF",,7,,,20323,"La MacRaena","Anthony",FALSE,"non-scoring","DEF",83,6,45,5,"Melons","J.Howe","COL","DEF","DEF","2021-04-11 18:01:13",-1.4,,,,-1.4
+998172,391,"Tim","Taranto","GWS","MID",,7,,139,2016,"At Witts End","Paul",TRUE,"scoring","MID",102,6,46,6,"Pmac","T.Taranto","GWS","MID","MID","2021-04-11 18:01:18",,-0.159,,,-0.159
+250365,525,"Travis","Boak","PTA","MID",,7,,,2018,"Surviving J.Kelly","Mark",FALSE,"non-scoring","MID",113,6,47,7,"Richo","T.Boak","PTA","MID","MID","2021-04-11 18:01:22",,0.754,,,0.754
+260257,162,"Scott","Pendlebury","COL","MID",,7,,96,20240,"MakingTheirMarcus","James",TRUE,"scoring","MID",102,6,48,8,"Garter","S.Pendlebury","COL","MID","MID","2021-04-11 18:01:28",,-0.159,,,-0.159
+270919,558,"Tom","Rockliff","PTA","MID",,7,,,,,,,,,25,7,49,8,"Garter","T.Rockliff","PTA","MID","MID","2021-04-11 18:01:52",,-6.549,,,-6.549
+996487,430,"Tom","Phillips","HAW","FWD","MID",7,,65,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","FWD",82,7,50,7,"Richo","T.Phillips","HAW","FWD MID","FWD","2021-04-11 18:01:58",,-1.818,,-0.623,-0.623
+294685,129,"Zac","Williams","CAR","DEF",,7,,,2016,"At Witts End","Paul",FALSE,"non-scoring","DEF",87,7,51,6,"Pmac","Z.Williams","CAR","DEF","DEF","2021-04-11 18:02:05",-0.968,,,,-0.968
+295461,123,"Adam","Saad","CAR","DEF",,7,,106,20323,"La MacRaena","Anthony",TRUE,"scoring","DEF",99,7,52,5,"Melons","A.Saad","CAR","DEF","DEF","2021-04-11 18:02:12",0.328,,,,0.328
+993993,568,"Shai","Bolton","RIC","FWD","MID",7,,121,23345,"Pink Lloyd","Jordan",TRUE,"scoring","FWD",99,7,53,4,"Jmerc","S.Bolton","RIC","FWD MID","FWD","2021-04-11 18:02:22",,-0.408,,0.92,0.92
+296355,498,"Luke","McDonald","NTH","DEF",,7,,,,,,,,,3,7,54,3,"Chief","L.McDonald","NTH","DEF","DEF","2021-04-11 18:02:29",-10.04,,,,-10.04
+994185,140,"Jordan","De Goey","COL","FWD",,7,,52,22859,"Ariana Grundy","Lester",TRUE,"scoring","FWD",51.5,7,55,2,"Lester","J.De Goey","COL","FWD","FWD","2021-04-11 18:02:36",,,,-3.391,-3.391
+1006094,127,"Sam","Walsh","CAR","MID",,7,,130,6510,"The Big Short","Luke",TRUE,"scoring","MID",124,7,56,1,"Kappaz","S.Walsh","CAR","MID","MID","2021-04-11 18:02:41",,1.667,,,1.667
+1000978,69,"Hugh","McCluggage","BRL","MID",,7,,117,6510,"The Big Short","Luke",TRUE,"scoring","MID",103,8,57,1,"Kappaz","H.McCluggage","BRL","MID","MID","2021-04-11 18:02:48",,-0.076,,,-0.076
+293716,65,"Jarryd","Lyons","BRL","MID",,7,,122,22859,"Ariana Grundy","Lester",TRUE,"scoring","MID",113,8,58,2,"Lester","J.Lyons","BRL","MID","MID","2021-04-11 18:02:53",,0.754,,,0.754
+290778,677,"Luke","Parker","SYD","MID",,7,,85,23413,"The West Wingard","Simon",TRUE,"scoring","MID",94,8,59,3,"Chief","L.Parker","SYD","MID","MID","2021-04-11 18:02:58",,-0.822,,,-0.822
+294199,333,"Sam","Menegola","GEE","MID",,7,,99,23345,"Pink Lloyd","Jordan",TRUE,"scoring","MID",75,8,60,4,"Jmerc","S.Menegola","GEE","MID","MID","2021-04-11 18:03:03",,-2.399,,,-2.399
+281065,319,"Mitch","Duncan","GEE","MID",,7,,98,20323,"La MacRaena","Anthony",TRUE,"scoring","MID",117,8,61,5,"Melons","M.Duncan","GEE","MID","MID","2021-04-11 18:03:09",,1.086,,,1.086
+294318,562,"Ollie","Wines","PTA","MID",,7,,91,2016,"At Witts End","Paul",TRUE,"scoring","MID",98,8,62,6,"Pmac","O.Wines","PTA","MID","MID","2021-04-11 18:03:14",,-0.491,,,-0.491
+994295,544,"Dan","Houston","PTA","DEF",,7,,54,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","DEF",95,8,63,7,"Richo","D.Houston","PTA","DEF","DEF","2021-04-11 18:03:19",-0.104,,,,-0.104
+291748,38,"Brodie","Smith","ADE","DEF","MID",7,,74,6510,"The Big Short","Luke",TRUE,"scoring","DEF",77,8,64,8,"Garter","B.Smith","ADE","DEF MID","DEF","2021-04-11 18:03:30",-2.048,-2.233,,,-2.048
+261396,541,"Robbie","Gray","PTA","FWD",,7,,52,20240,"MakingTheirMarcus","James",TRUE,"scoring","FWD",82,9,65,8,"Garter","R.Gray","PTA","FWD","FWD","2021-04-11 18:04:14",,,,-0.623,-0.623
+296190,109,"Jack","Martin","CAR","FWD",,7,,,2018,"Surviving J.Kelly","Mark",FALSE,"non-scoring","FWD",83,9,66,7,"Richo","J.Martin","CAR","FWD","FWD","2021-04-11 18:04:19",,,,-0.532,-0.532
+298272,290,"Touk","Miller","GCS","MID",,7,,115,2016,"At Witts End","Paul",TRUE,"scoring","MID",115,9,67,6,"Pmac","T.Miller","GCS","MID","MID","2021-04-11 18:04:28",,0.92,,,0.92
+290032,584,"Kane","Lambert","RIC","FWD",,7,,,20323,"La MacRaena","Anthony",TRUE,"non-scoring","FWD",86.5,9,68,5,"Melons","K.Lambert","RIC","FWD","FWD","2021-04-11 18:04:33",,,,-0.214,-0.214
+1002232,221,"Andrew","Brayshaw","FRE","MID",,7,,121,23345,"Pink Lloyd","Jordan",TRUE,"scoring","MID",117,9,69,4,"Jmerc","A.Brayshaw","FRE","MID","MID","2021-04-11 18:04:38",,1.086,,,1.086
+280711,532,"Charlie","Dixon","PTA","FWD",,7,,64,23413,"The West Wingard","Simon",TRUE,"scoring","FWD",69,9,70,3,"Chief","C.Dixon","PTA","FWD","FWD","2021-04-11 18:04:43",,,,-1.803,-1.803
+290550,322,"Cameron","Guthrie","GEE","MID",,7,,132,22859,"Ariana Grundy","Lester",TRUE,"scoring","MID",124,9,71,2,"Lester","C.Guthrie","GEE","MID","MID","2021-04-11 18:04:50",,1.667,,,1.667
+294305,395,"Lachie","Whitfield","GWS","DEF",,7,,83,6510,"The Big Short","Luke",TRUE,"scoring","DEF",83,9,72,1,"Kappaz","L.Whitfield","GWS","DEF","DEF","2021-04-11 18:04:55",-1.4,,,,-1.4
+290799,709,"Tom","Liberatore","WBD","MID",,7,,83,6510,"The Big Short","Luke",TRUE,"scoring","MID",83,10,73,1,"Kappaz","T.Liberatore","WBD","MID","MID","2021-04-11 18:05:00",,-1.735,,,-1.735
+281085,461,"Steven","May","MEL","DEF",,7,,145,22859,"Ariana Grundy","Lester",TRUE,"scoring","DEF",88,10,74,2,"Lester","S.May","MEL","DEF","DEF","2021-04-11 18:05:05",-0.86,,,,-0.86
+291861,480,"Jed","Anderson","NTH","MID",,7,,,,,,,,,93.5,10,75,3,"Chief","J.Anderson","NTH","MID","MID","2021-04-11 18:05:10",,-0.864,,,-0.864
+998128,770,"Alex","Witherden","WCE","DEF",,7,,74,23345,"Pink Lloyd","Jordan",TRUE,"scoring","DEF",74,10,76,4,"Jmerc","A.Witherden","WCE","DEF","DEF","2021-04-11 18:05:15",-2.372,,,,-2.372
+291783,208,"Dylan","Shiel","ESS","MID",,7,,,,,,,,,89.5,10,77,5,"Melons","D.Shiel","ESS","MID","MID","2021-04-11 18:05:21",,-1.196,,,-1.196
+298268,739,"Liam","Duggan","WCE","DEF",,7,,86,20323,"La MacRaena","Anthony",TRUE,"scoring","DEF",74,10,78,6,"Pmac","L.Duggan","WCE","DEF","DEF","2021-04-11 18:05:27",-2.372,,,,-2.372
+998102,198,"Andrew","McGrath","ESS","MID",,7,,93,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","MID",89,10,79,7,"Richo","A.McGrath","ESS","MID","MID","2021-04-11 18:05:32",,-1.237,,,-1.237
+271072,78,"Daniel","Rich","BRL","DEF",,7,,91,20240,"MakingTheirMarcus","James",TRUE,"scoring","DEF",103,10,80,8,"Garter","D.Rich","BRL","DEF","DEF","2021-04-11 18:05:44",0.76,,,,0.76
+992351,727,"Bailey","Williams","WBD","DEF",,7,,,,,,,,,77,11,81,8,"Garter","B.Williams","WBD","DEF","DEF","2021-04-11 18:05:54",-2.048,,,,-2.048
+294674,604,"Nick","Vlastuin","RIC","DEF",,7,,,2018,"Surviving J.Kelly","Mark",FALSE,"non-scoring","DEF",39,11,82,7,"Richo","N.Vlastuin","RIC","DEF","DEF","2021-04-11 18:06:02",-6.152,,,,-6.152
+291975,307,"Jarrod","Witts","GCS","RUC",,7,,,,,,,,,75,11,83,6,"Pmac","J.Witts","GCS","RUC","RUC","2021-04-11 18:06:07",,,-2.297,,-2.297
+271129,492,"Todd","Goldstein","NTH","RUC",,7,,80,20323,"La MacRaena","Anthony",TRUE,"scoring","RUC",82,11,84,5,"Melons","T.Goldstein","NTH","RUC","RUC","2021-04-11 18:06:14",,,-1.876,,-1.876
+290307,678,"Dane","Rampe","SYD","DEF",,7,,,,,,,,,76,11,85,4,"Jmerc","D.Rampe","SYD","DEF","DEF","2021-04-11 18:06:19",-2.156,,,,-2.156
+296733,310,"Mark","Blicavs","GEE","DEF","MID",7,,57,,,,,,,77,11,86,3,"Chief","M.Blicavs","GEE","DEF MID","DEF","2021-04-11 18:06:24",-2.048,-2.233,,,-2.048
+295898,749,"Tim","Kelly","WCE","MID",,7,,131,22859,"Ariana Grundy","Lester",TRUE,"scoring","MID",88,11,87,2,"Lester","T.Kelly","WCE","MID","MID","2021-04-11 18:06:28",,-1.32,,,-1.32
+1002312,49,"Zac","Bailey","BRL","FWD","MID",7,,102,6510,"The Big Short","Luke",TRUE,"scoring","FWD",88,11,88,1,"Kappaz","Z.Bailey","BRL","FWD MID","FWD","2021-04-11 18:06:33",,-1.32,,-0.078,-0.078
+993998,507,"Jy","Simpkin","NTH","MID",,7,,103,6510,"The Big Short","Luke",TRUE,"scoring","MID",87,12,89,1,"Kappaz","J.Simpkin","NTH","MID","MID","2021-04-11 18:06:48",,-1.403,,,-1.403
+280944,520,"Jack","Ziebell","NTH","FWD",,7,,102,22859,"Ariana Grundy","Lester",TRUE,"scoring","FWD",113,12,90,2,"Lester","J.Ziebell","NTH","FWD","FWD","2021-04-11 18:06:52",,,,2.191,2.191
+291962,437,"Chad","Wingard","HAW","FWD",,7,,,23413,"The West Wingard","Simon",TRUE,"non-scoring","FWD",83.5,12,91,3,"Chief","C.Wingard","HAW","FWD","FWD","2021-04-11 18:06:57",,,,-0.487,-0.487
+1001398,107,"Matthew","Kennedy","CAR","FWD","MID",7,,,,,,,,,21,12,92,4,"Jmerc","M.Kennedy","CAR","FWD MID","FWD","2021-04-11 18:07:04",,-6.881,,-6.16,-6.16
+1006103,177,"Jye","Caldwell","ESS","FWD","MID",7,,,22859,"Ariana Grundy","Lester",TRUE,"non-scoring","FWD",70,12,93,5,"Melons","J.Caldwell","ESS","FWD MID","FWD","2021-04-11 18:07:09",,-2.814,,-1.712,-1.712
+997142,547,"Peter","Ladhams","PTA","RUC","FWD",7,,,,,,,,,44.5,12,94,6,"Pmac","P.Ladhams","PTA","RUC FWD","FWD","2021-04-11 18:07:15",,,-4.128,-4.027,-4.027
+281080,762,"Brad","Sheppard","WCE","DEF",,7,,57,20323,"La MacRaena","Anthony",TRUE,"scoring","DEF",64,12,95,7,"Richo","B.Sheppard","WCE","DEF","DEF","2021-04-11 18:07:20",-3.452,,,,-3.452
+296359,472,"Christian","Salem","MEL","DEF",,7,,104,20240,"MakingTheirMarcus","James",TRUE,"scoring","DEF",104,12,96,8,"Garter","C.Salem","MEL","DEF","DEF","2021-04-11 18:07:25",0.868,,,,0.868
+999827,101,"Zac","Fisher","CAR","FWD",,7,,,,,,,,,70,13,97,8,"Garter","Z.Fisher","CAR","FWD","FWD","2021-04-11 18:07:32",,,,-1.712,-1.712
+293845,312,"Jeremy","Cameron","GEE","FWD",,7,,49,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","FWD",66,13,98,7,"Richo","J.Cameron","GEE","FWD","FWD","2021-04-11 18:07:39",,,,-2.075,-2.075
+1002264,612,"Hunter","Clark","STK","DEF",,7,,106,2016,"At Witts End","Paul",TRUE,"scoring","DEF",106,13,99,6,"Pmac","H.Clark","STK","DEF","DEF","2021-04-11 18:07:44",1.084,,,,1.084
+998133,51,"Jarrod","Berry","BRL","MID",,7,,,,,,,,,51,13,100,5,"Melons","J.Berry","BRL","MID","MID","2021-04-11 18:07:49",,-4.391,,,-4.391
+296351,607,"Jack","Billings","STK","MID",,7,,96,23345,"Pink Lloyd","Jordan",TRUE,"scoring","MID",96,13,101,4,"Jmerc","J.Billings","STK","MID","MID","2021-04-11 18:07:54",,-0.656,,,-0.656
+281007,254,"Michael","Walters","FRE","FWD","MID",7,,83,23413,"The West Wingard","Simon",TRUE,"scoring","FWD",61,13,102,3,"Chief","M.Walters","FRE","FWD MID","FWD","2021-04-11 18:08:00",,-3.561,,-2.529,-2.529
+1004364,760,"Liam","Ryan","WCE","FWD",,7,,,,,,,,,61.5,13,103,2,"Lester","L.Ryan","WCE","FWD","FWD","2021-04-11 18:08:06",,,,-2.484,-2.484
+1002222,438,"James","Worpel","HAW","MID",,7,,110,,,,,,,54,13,104,1,"Kappaz","J.Worpel","HAW","MID","MID","2021-04-11 18:08:10",,-4.142,,,-4.142
+996059,47,"Harris","Andrews","BRL","DEF",,7,,123,6510,"The Big Short","Luke",TRUE,"scoring","DEF",92,14,105,1,"Kappaz","H.Andrews","BRL","DEF","DEF","2021-04-11 18:08:16",-0.428,,,,-0.428
+261323,419,"Ben","McEvoy","HAW","DEF","RUC",7,,106,,,,,,,89,14,106,2,"Lester","B.McEvoy","HAW","DEF RUC","DEF","2021-04-11 18:08:22",-0.752,,-1.456,,-0.752
+993903,373,"Jacob","Hopper","GWS","MID",,7,,104,23413,"The West Wingard","Simon",TRUE,"scoring","MID",104,14,107,3,"Chief","J.Hopper","GWS","MID","MID","2021-04-11 18:08:27",,0.007,,,0.007
+298630,194,"Kyle","Langford","ESS","FWD","MID",7,,68,23345,"Pink Lloyd","Jordan",TRUE,"scoring","FWD",71,14,108,4,"Jmerc","K.Langford","ESS","FWD MID","FWD","2021-04-11 18:08:32",,-2.731,,-1.621,-1.621
+1006130,718,"Bailey","Smith","WBD","MID",,7,,97,20323,"La MacRaena","Anthony",TRUE,"scoring","MID",87,14,109,5,"Melons","B.Smith","WBD","MID","MID","2021-04-11 18:08:36",,-1.403,,,-1.403
+260382,664,"Josh P.","Kennedy","SYD","MID",,7,,80,2016,"At Witts End","Paul",TRUE,"scoring","MID",92,14,110,6,"Pmac","J.P.Kennedy","SYD","MID","MID","2021-04-11 18:08:41",,-0.988,,,-0.988
+297899,449,"James","Harmes","MEL","DEF",,7,,,6510,"The Big Short","Luke",FALSE,"non-scoring","DEF",64,14,111,7,"Richo","J.Harmes","MEL","DEF","DEF","2021-04-11 18:08:47",-3.452,,,,-3.452
+993817,202,"Darcy","Parish","ESS","MID",,7,,107,20240,"MakingTheirMarcus","James",TRUE,"scoring","MID",99,14,112,8,"Garter","D.Parish","ESS","MID","MID","2021-04-11 18:08:51",,-0.408,,,-0.408
+291545,724,"Mitch","Wallis","WBD","FWD",,7,,,,,,,,,45.5,15,113,8,"Garter","M.Wallis","WBD","FWD","FWD","2021-04-11 18:08:59",,,,-3.936,-3.936
+1001299,559,"Connor","Rozee","PTA","FWD",,7,,85,,,,,,,54,15,114,7,"Richo","C.Rozee","PTA","FWD","FWD","2021-04-11 18:09:04",,,,-3.164,-3.164
+280078,763,"Luke","Shuey","WCE","MID",,7,,,,,,,,,122,15,115,6,"Pmac","L.Shuey","WCE","MID","MID","2021-04-11 18:09:09",,1.501,,,1.501
+281091,278,"Hugh","Greenwood","GCS","MID",,7,,142,20323,"La MacRaena","Anthony",TRUE,"scoring","MID",79,15,116,5,"Melons","H.Greenwood","GCS","MID","MID","2021-04-11 18:09:14",,-2.067,,,-2.067
+294828,330,"Josh","Jenkins","GEE","RUC","FWD",7,,,,,,,,,43,15,117,4,"Jmerc","J.Jenkins","GEE","RUC FWD","FWD","2021-04-11 18:09:19",,,-4.218,-4.163,-4.163
+993979,557,"Sam","Powell-Pepper","PTA","FWD","MID",7,,75,6510,"The Big Short","Luke",FALSE,"non-scoring","FWD",75,15,118,3,"Chief","S.Powell-Pepper","PTA","FWD MID","FWD","2021-04-11 18:09:24",,-2.399,,-1.258,-1.258
+280921,487,"Ben","Cunnington","NTH","MID",,7,,145,20323,"La MacRaena","Anthony",TRUE,"scoring","MID",86,15,119,2,"Lester","B.Cunnington","NTH","MID","MID","2021-04-11 18:09:30",,-1.486,,,-1.486
+1005717,614,"Nick","Coffield","STK","DEF",,7,,84,,,,,,,66,15,120,1,"Kappaz","N.Coffield","STK","DEF","DEF","2021-04-11 18:09:37",-3.236,,,,-3.236
+991930,530,"Darcy","Byrne-Jones","PTA","DEF",,7,,57,2016,"At Witts End","Paul",TRUE,"scoring","DEF",69,16,121,1,"Kappaz","D.Byrne-Jones","PTA","DEF","DEF","2021-04-11 18:09:45",-2.912,,,,-2.912
+1004095,286,"Jack","Lukosius","GCS","DEF",,7,,55,20323,"La MacRaena","Anthony",TRUE,"scoring","DEF",79,16,122,2,"Lester","J.Lukosius","GCS","DEF","DEF","2021-04-11 18:10:08",-1.832,,,,-1.832
+294859,752,"Jeremy","McGovern","WCE","DEF",,7,,,23413,"The West Wingard","Simon",FALSE,"non-scoring","DEF",87,16,123,3,"Chief","J.McGovern","WCE","DEF","DEF","2021-04-11 18:10:14",-0.968,,,,-0.968
+996765,676,"Tom","Papley","SYD","FWD",,7,,59,,,,,,,62,16,124,4,"Jmerc","T.Papley","SYD","FWD","FWD","2021-04-11 18:10:19",,,,-2.438,-2.438
+240283,744,"Shannon","Hurn","WCE","DEF",,7,,,,,,,,,112.5,16,125,5,"Melons","S.Hurn","WCE","DEF","DEF","2021-04-11 18:10:23",1.786,,,,1.786
+296254,413,"Jarman","Impey","HAW","FWD",,7,,74,2016,"At Witts End","Paul",TRUE,"scoring","FWD",105,16,126,6,"Pmac","J.Impey","HAW","FWD","FWD","2021-04-11 18:10:28",,,,1.465,1.465
+1004592,699,"Tim","English","WBD","RUC",,7,,,,,,,,,80.5,16,127,7,"Richo","T.English","WBD","RUC","RUC","2021-04-11 18:11:05",,,-1.966,,-1.966
+1002227,622,"Jack","Higgins","STK","FWD",,7,,88,,,,,,,68,16,128,8,"Garter","J.Higgins","STK","FWD","FWD","2021-04-11 18:11:12",,,,-1.894,-1.894
+1002240,509,"Jaidyn","Stephenson","NTH","FWD",,7,,84,20240,"MakingTheirMarcus","James",TRUE,"scoring","FWD",80,17,129,8,"Garter","J.Stephenson","NTH","FWD","FWD","2021-04-11 18:11:20",,,,-0.804,-0.804
+294613,427,"Jaeger","O'Meara","HAW","MID",,7,,,2018,"Surviving J.Kelly","Mark",FALSE,"non-scoring","MID",114,17,130,7,"Richo","J.O'Meara","HAW","MID","MID","2021-04-11 18:11:27",,0.837,,,0.837
+290627,594,"Dion","Prestia","RIC","MID",,7,,,,,,,,,82,17,131,6,"Pmac","D.Prestia","RIC","MID","MID","2021-04-11 18:11:40",,-1.818,,,-1.818
+270963,37,"Rory","Sloane","ADE","MID",,7,,,20323,"La MacRaena","Anthony",FALSE,"non-scoring","MID",119,17,132,5,"Melons","R.Sloane","ADE","MID","MID","2021-04-11 18:11:45",,1.252,,,1.252
+1002239,222,"Adam","Cerra","FRE","MID",,7,,,23345,"Pink Lloyd","Jordan",FALSE,"non-scoring","MID",120,17,133,4,"Jmerc","A.Cerra","FRE","MID","MID","2021-04-11 18:11:50",,1.335,,,1.335
+296035,489,"Trent","Dumont","NTH","MID",,7,,,23413,"The West Wingard","Simon",FALSE,"non-scoring","MID",0,17,134,3,"Chief","T.Dumont","NTH","MID","MID","2021-04-11 18:11:55",,-8.623,,,-8.623
+1009420,245,"Caleb","Serong","FRE","MID",,7,,53,22859,"Ariana Grundy","Lester",TRUE,"scoring","MID",64,17,135,2,"Lester","C.Serong","FRE","MID","MID","2021-04-11 18:12:00",,-3.312,,,-3.312
+1006152,313,"Jordan","Clark","GEE","DEF","MID",7,,72,,,,,,,69,17,136,1,"Kappaz","J.Clark","GEE","DEF MID","DEF","2021-04-11 18:12:06",-2.912,-2.897,,,-2.897
+294877,344,"Isaac","Smith","GEE","FWD","MID",7,,75,6510,"The Big Short","Luke",TRUE,"scoring","FWD",77,18,137,1,"Kappaz","I.Smith","GEE","FWD MID","FWD","2021-04-11 18:12:11",,-2.233,,-1.077,-1.077
+998129,264,"Will","Brodie","GCS","MID","FWD",7,,,,,,,,,54,18,138,2,"Lester","W.Brodie","GCS","MID FWD","FWD","2021-04-11 18:12:16",,-4.142,,-3.164,-3.164
+1005054,139,"Josh","Daicos","COL","MID",,7,,105,,,,,,,72,18,139,3,"Chief","J.Daicos","COL","MID","MID","2021-04-11 18:12:21",,-2.648,,,-2.648
+294101,705,"Jason","Johannisen","WBD","DEF",,7,,19,,,,,,,61,18,140,4,"Jmerc","J.Johannisen","WBD","DEF","DEF","2021-04-11 18:12:27",-3.776,,,,-3.776
+292128,771,"Elliot","Yeo","WCE","MID",,7,,,,,,,,,0,18,141,5,"Melons","E.Yeo","WCE","MID","MID","2021-04-11 18:12:32",,-8.623,,,-8.623
+992242,653,"Jordan","Dawson","SYD","DEF",,7,,85,2016,"At Witts End","Paul",TRUE,"scoring","DEF",85,18,142,6,"Pmac","J.Dawson","SYD","DEF","DEF","2021-04-11 18:12:38",-1.184,,,,-1.184
+260227,327,"Shaun","Higgins","GEE","MID",,7,,,,,,,,,73,18,143,7,"Richo","S.Higgins","GEE","MID","MID","2021-04-11 18:12:43",,-2.565,,,-2.565
+291902,478,"Jack","Viney","MEL","MID",,7,,,23345,"Pink Lloyd","Jordan",TRUE,"non-scoring","MID",99,18,144,8,"Garter","J.Viney","MEL","MID","MID","2021-04-11 18:12:47",,-0.408,,,-0.408
+294518,58,"Joe","Daniher","BRL","FWD",,7,,109,,,,,,,82,19,145,8,"Garter","J.Daniher","BRL","FWD","FWD","2021-04-11 18:12:54",,,,-0.623,-0.623
+998215,124,"Will","Setterfield","CAR","MID",,7,,,,,,,,,45,19,146,7,"Richo","W.Setterfield","CAR","MID","MID","2021-04-11 18:13:01",,-4.889,,,-4.889
+290838,738,"Jack","Darling","WCE","FWD",,7,,123,2016,"At Witts End","Paul",TRUE,"scoring","FWD",88,19,147,6,"Pmac","J.Darling","WCE","FWD","FWD","2021-04-11 18:13:06",,,,-0.078,-0.078
+991988,626,"Zak","Jones","STK","MID",,7,,159,,,,,,,63,19,148,5,"Melons","Z.Jones","STK","MID","MID","2021-04-11 18:13:13",,-3.395,,,-3.395
+1002267,488,"Luke","Davies-Uniacke","NTH","MID",,7,,,23345,"Pink Lloyd","Jordan",FALSE,"non-scoring","MID",68,19,149,4,"Jmerc","L.Davies-Uniacke","NTH","MID","MID","2021-04-11 18:13:18",,-2.98,,,-2.98
+290629,187,"Dyson","Heppell","ESS","MID",,7,,87,2016,"At Witts End","Paul",TRUE,"scoring","MID",89,19,150,3,"Chief","D.Heppell","ESS","MID","MID","2021-04-11 18:13:24",,-1.237,,,-1.237
+295584,624,"Bradley","Hill","STK","MID",,7,,124,,,,,,,59,19,151,2,"Lester","B.Hill","STK","MID","MID","2021-04-11 18:13:30",,-3.727,,,-3.727
+293813,585,"Tom J.","Lynch","RIC","FWD",,7,,102,,,,,,,66,19,152,1,"Kappaz","T.J.Lynch","RIC","FWD","FWD","2021-04-11 18:13:35",,,,-2.075,-2.075
+998260,263,"Jack","Bowes","GCS","DEF",,7,,110,20240,"MakingTheirMarcus","James",TRUE,"scoring","DEF",107,20,153,1,"Kappaz","J.Bowes","GCS","DEF","DEF","2021-04-11 18:13:42",1.192,,,,1.192
+1009528,367,"Tom","Green","GWS","MID",,7,,111,,,,,,,67,20,154,2,"Lester","T.Green","GWS","MID","MID","2021-04-11 18:13:47",,-3.063,,,-3.063
+998130,259,"Ben","Ainsworth","GCS","FWD",,7,,40,,,,,,,46.5,20,155,3,"Chief","B.Ainsworth","GCS","FWD","FWD","2021-04-11 18:13:55",,,,-3.845,-3.845
+998114,433,"Jack","Scrimshaw","HAW","DEF",,7,,103,,,,,,,74.5,20,156,4,"Jmerc","J.Scrimshaw","HAW","DEF","DEF","2021-04-11 18:14:00",-2.318,,,,-2.318
+270938,21,"Tom","Lynch","ADE","FWD",,7,,,,,,,,,64.5,20,157,5,"Melons","T.Lynch","ADE","FWD","FWD","2021-04-11 18:14:04",,,,-2.211,-2.211
+996464,287,"Darcy","MacPherson","GCS","FWD",,7,,,,,,,,,67,20,158,6,"Pmac","D.MacPherson","GCS","FWD","FWD","2021-04-11 18:14:10",,,,-1.984,-1.984
+298281,459,"Jake","Lever","MEL","DEF",,7,,70,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","DEF",106,20,159,7,"Richo","J.Lever","MEL","DEF","DEF","2021-04-11 18:14:15",1.084,,,,1.084
+270146,96,"Ed","Curnow","CAR","MID",,7,,108,20240,"MakingTheirMarcus","James",TRUE,"scoring","MID",99,20,160,8,"Garter","E.Curnow","CAR","MID","MID","2021-04-11 18:14:19",,-0.408,,,-0.408
+994386,308,"Tom","Atkins","GEE","FWD",,7,,90,20240,"MakingTheirMarcus","James",TRUE,"scoring","FWD",90,21,161,8,"Garter","T.Atkins","GEE","FWD","FWD","2021-04-11 18:14:27",,,,0.103,0.103
+1004385,732,"Oscar","Allen","WCE","FWD",,7,,60,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","FWD",77,21,162,7,"Richo","O.Allen","WCE","FWD","FWD","2021-04-11 18:14:36",,,,-1.077,-1.077
+250312,583,"Bachar","Houli","RIC","DEF",,7,,143,2016,"At Witts End","Paul",TRUE,"scoring","DEF",90.5,21,163,6,"Pmac","B.Houli","RIC","DEF","DEF","2021-04-11 18:14:40",-0.59,,,,-0.59
+1000932,8,"Tom","Doedee","ADE","DEF",,7,,102,6510,"The Big Short","Luke",TRUE,"scoring","DEF",97,21,164,5,"Melons","T.Doedee","ADE","DEF","DEF","2021-04-11 18:14:45",0.112,,,,0.112
+291773,114,"Jack","Newnes","CAR","MID","FWD",7,,67,,,,,,,66,21,165,4,"Jmerc","J.Newnes","CAR","MID FWD","FWD","2021-04-11 18:14:50",,-3.146,,-2.075,-2.075
+296371,219,"Brett","Bewley","FRE","FWD","MID",7,,,,,,,,,0,21,166,3,"Chief","B.Bewley","FRE","FWD MID","FWD","2021-04-11 18:14:57",,-8.623,,-8.066,-8.066
+1000223,566,"Liam","Baker","RIC","DEF",,7,,96,,,,,,,76,21,167,2,"Lester","L.Baker","RIC","DEF","DEF","2021-04-11 18:15:01",-2.156,,,,-2.156
+296296,761,"Dom","Sheed","WCE","MID",,7,,106,6510,"The Big Short","Luke",TRUE,"scoring","MID",98,21,168,1,"Kappaz","D.Sheed","WCE","MID","MID","2021-04-11 18:15:06",,-0.491,,,-0.491
+1008089,164,"Isaac","Quaynor","COL","DEF",,7,,50,,,,,,,62,22,169,1,"Kappaz","I.Quaynor","COL","DEF","DEF","2021-04-11 18:15:11",-3.668,,,,-3.668
+1002256,99,"Paddy","Dow","CAR","FWD","MID",7,,16,,,,,,,41,22,170,2,"Lester","P.Dow","CAR","FWD MID","FWD","2021-04-11 18:15:19",,-5.221,,-4.344,-4.344
+998205,382,"Harry","Perryman","GWS","MID",,7,,111,23413,"The West Wingard","Simon",TRUE,"scoring","MID",98,22,171,3,"Chief","H.Perryman","GWS","MID","MID","2021-04-11 18:15:24",,-0.491,,,-0.491
+1009199,260,"Noah","Anderson","GCS","MID",,7,,73,22859,"Ariana Grundy","Lester",TRUE,"scoring","MID",93,22,172,4,"Jmerc","N.Anderson","GCS","MID","MID","2021-04-11 18:15:32",,-0.905,,,-0.905
+294307,616,"Brad","Crouch","STK","MID",,7,,99,20323,"La MacRaena","Anthony",TRUE,"scoring","MID",83,22,173,5,"Melons","B.Crouch","STK","MID","MID","2021-04-11 18:15:37",,-1.735,,,-1.735
+296334,535,"Orazio","Fantasia","PTA","DEF","FWD",7,,35,,,,,,,61,22,174,6,"Pmac","O.Fantasia","PTA","DEF FWD","FWD","2021-04-11 18:15:42",-3.776,,,-2.529,-2.529
+298419,339,"Brandan","Parfitt","GEE","MID",,7,,80,2016,"At Witts End","Paul",TRUE,"scoring","MID",75,22,175,7,"Richo","B.Parfitt","GEE","MID","MID","2021-04-11 18:15:48",,-2.399,,,-2.399
+290746,550,"Scott","Lycett","PTA","RUC",,7,,54,20240,"MakingTheirMarcus","James",TRUE,"scoring","RUC",94,22,176,8,"Garter","S.Lycett","PTA","RUC","RUC","2021-04-11 18:16:12",,,-1.156,,-1.156
+297566,436,"James","Sicily","HAW","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+280317,345,"Rhys","Stanley","GEE","RUC",,7,,47,23413,"The West Wingard","Simon",FALSE,"scoring","RUC",75,,,,,,,,,,,,-2.297,,-2.297
+250267,640,"Paddy","Ryder","STK","RUC",,7,,82,2016,"At Witts End","Paul",TRUE,"scoring","RUC",82,,,,,,,,,,,,-1.876,,-1.876
+240052,240,"David","Mundy","FRE","MID",,7,,115,20240,"MakingTheirMarcus","James",TRUE,"scoring","MID",115,,,,,,,,,,,0.92,,,0.92
+298264,457,"Ed","Langdon","MEL","MID",,7,,120,20240,"MakingTheirMarcus","James",FALSE,"non-scoring","MID",104,,,,,,,,,,,0.007,,,0.007
+290738,504,"Jared","Polec","NTH","MID",,7,,,,,,,,,68,,,,,,,,,,,-2.98,,,-2.98
+270325,510,"Robbie","Tarrant","NTH","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+291771,209,"Devon","Smith","ESS","MID",,7,,88,,,,,,,68,,,,,,,,,,,-2.98,,,-2.98
+296294,216,"Blake","Acres","FRE","MID",,7,,81,,,,,,,75,,,,,,,,,,,-2.399,,,-2.399
+293713,272,"Brandon","Ellis","GCS","MID",,7,,143,6510,"The Big Short","Luke",TRUE,"scoring","MID",103,,,,,,,,,,,-0.076,,,-0.076
+990290,733,"Tom","Barrass","WCE","DEF",,7,,,,,,,,,84.5,,,,,,,,,,-1.238,,,,-1.238
+990827,581,"Jack","Graham","RIC","MID",,7,,73,,,,,,,60,,,,,,,,,,,-3.644,,,-3.644
+250321,342,"Joel","Selwood","GEE","MID",,7,,133,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","MID",104,,,,,,,,,,,0.007,,,0.007
+250105,112,"Marc","Murphy","CAR","MID",,7,,,22859,"Ariana Grundy","Lester",FALSE,"non-scoring","MID",63.5,,,,,,,,,,,-3.354,,,-3.354
+270896,576,"Trent","Cotchin","RIC","MID",,7,,95,,,,,,,83,,,,,,,,,,,-1.735,,,-1.735
+1005521,71,"Oscar","McInerney","BRL","RUC",,7,,84,,,,,,,96.5,,,,,,,,,,,,-1.006,,-1.006
+298174,591,"Toby","Nankervis","RIC","RUC",,7,,77,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","RUC",89,,,,,,,,,,,,-1.456,,-1.456
+290832,302,"David","Swallow","GCS","MID",,7,,98,,,,,,,96,,,,,,,,,,,-0.656,,,-0.656
+291351,407,"Jack","Gunston","HAW","FWD",,7,,22,20323,"La MacRaena","Anthony",TRUE,"scoring","FWD",22,,,,,,,,,,,,,-6.069,-6.069
+280744,396,"Luke","Breust","HAW","FWD",,7,,66,,,,,,,66,,,,,,,,,,,,,-2.075,-2.075
+298421,620,"Jade","Gresham","STK","MID",,7,,,,,,,,,82,,,,,,,,,,,-1.818,,,-1.818
+298524,306,"Lachie","Weller","GCS","MID",,7,,70,,,,,,,74,,,,,,,,,,,-2.482,,,-2.482
+993946,18,"Ben","Keays","ADE","MID",,7,,86,20323,"La MacRaena","Anthony",TRUE,"scoring","MID",89,,,,,,,,,,,-1.237,,,-1.237
+298279,443,"Angus","Brayshaw","MEL","MID",,7,,81,,,,,,,75,,,,,,,,,,,-2.399,,,-2.399
+997033,226,"Brennan","Cox","FRE","DEF",,7,,85,,,,,,,70,,,,,,,,,,-2.804,,,,-2.804
+270935,191,"Michael","Hurley","ESS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+297354,523,"Karl","Amon","PTA","MID",,7,,76,22859,"Ariana Grundy","Lester",TRUE,"scoring","MID",95,,,,,,,,,,,-0.739,,,-0.739
+298288,159,"Darcy","Moore","COL","DEF",,7,,24,,,,,,,73,,,,,,,,,,-2.48,,,,-2.48
+294733,35,"Paul","Seedsman","ADE","MID",,7,,82,23413,"The West Wingard","Simon",TRUE,"scoring","MID",83,,,,,,,,,,,-1.735,,,-1.735
+1003130,710,"Patrick","Lipinski","WBD","MID",,7,,84,,,,,,,69,,,,,,,,,,,-2.897,,,-2.897
+994389,641,"Jack","Sinclair","STK","MID",,7,,108,,,,,,,75,,,,,,,,,,,-2.399,,,-2.399
+295446,267,"Sam","Collins","GCS","DEF",,7,,101,,,,,,,86,,,,,,,,,,-1.076,,,,-1.076
+261892,542,"Hamish","Hartlett","PTA","DEF",,7,,36,,,,,,,71.5,,,,,,,,,,-2.642,,,,-2.642
+298290,120,"Marc","Pittonet","CAR","RUC",,7,,87,,,,,,,85,,,,,,,,,,,,-1.696,,-1.696
+280762,380,"Shane","Mumford","GWS","RUC",,7,,104,,,,,,,125,,,,,,,,,,,,0.706,,0.706
+998145,228,"Sean","Darcy","FRE","RUC",,7,,74,20323,"La MacRaena","Anthony",FALSE,"scoring","RUC",98,,,,,,,,,,,,-0.916,,-0.916
+280737,435,"Liam","Shiels","HAW","MID",,7,,80,,,,,,,80,,,,,,,,,,,-1.984,,,-1.984
+290311,80,"Mitch","Robinson","BRL","MID",,7,,64,,,,,,,64,,,,,,,,,,,-3.312,,,-3.312
+293846,639,"Sebastian","Ross","STK","MID",,7,,88,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","MID",87,,,,,,,,,,,-1.403,,,-1.403
+992374,608,"Dan","Butler","STK","FWD",,7,,81,,,,,,,48,,,,,,,,,,,,,-3.709,-3.709
+260930,579,"Shane","Edwards","RIC","MID",,7,,53,23413,"The West Wingard","Simon",TRUE,"scoring","MID",87,,,,,,,,,,,-1.403,,,-1.403
+297907,113,"Nic","Newman","CAR","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+990740,237,"Rory","Lobb","FRE","RUC","FWD",7,,75,,,,,,,68,,,,,,,,,,,,-2.717,-1.894,-1.894
+294737,683,"Callum","Sinclair","SYD","RUC",,7,,67,,,,,,,88,,,,,,,,,,,,-1.516,,-1.516
+1000959,401,"James","Cousins","HAW","MID",,7,,83,,,,,,,75,,,,,,,,,,,-2.399,,,-2.399
+280109,393,"Callan","Ward","GWS","MID",,7,,92,23345,"Pink Lloyd","Jordan",TRUE,"scoring","MID",89,,,,,,,,,,,-1.237,,,-1.237
+293651,694,"Hayden","Crozier","WBD","DEF",,7,,66,,,,,,,66,,,,,,,,,,-3.236,,,,-3.236
+296422,644,"Callum","Wilkie","STK","DEF",,7,,90,,,,,,,66,,,,,,,,,,-3.236,,,,-3.236
+998103,654,"Oliver","Florent","SYD","MID",,7,,117,,,,,,,87,,,,,,,,,,,-1.403,,,-1.403
+996442,651,"Ryan","Clarke","SYD","MID",,7,,-5,,,,,,,-5,,,,,,,,,,,-9.038,,,-9.038
+1006126,681,"James","Rowbottom","SYD","MID",,7,,62,23413,"The West Wingard","Simon",TRUE,"scoring","MID",65,,,,,,,,,,,-3.229,,,-3.229
+292511,351,"Zach","Tuohy","GEE","MID",,7,,68,,,,,,,62.5,,,,,,,,,,,-3.437,,,-3.437
+295067,217,"James","Aish","FRE","MID",,7,,71,,,,,,,64,,,,,,,,,,,-3.312,,,-3.312
+290787,481,"Shaun","Atley","NTH","DEF",,7,,64,23413,"The West Wingard","Simon",TRUE,"scoring","DEF",84,,,,,,,,,,-1.292,,,,-1.292
+293854,248,"Matt","Taberner","FRE","FWD",,7,,72,,,,,,,79,,,,,,,,,,,,,-0.895,-0.895
+998529,602,"Ivan","Soldo","RIC","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+296200,103,"Michael","Gibbons","CAR","FWD",,7,,80,,,,,,,77,,,,,,,,,,,,,-1.077,-1.077
+993832,128,"Jacob","Weitering","CAR","DEF",,7,,99,23345,"Pink Lloyd","Jordan",TRUE,"scoring","DEF",97,,,,,,,,,,0.112,,,,0.112
+291978,652,"Harry","Cunningham","SYD","DEF",,7,,54,,,,,,,54,,,,,,,,,,-4.532,,,,-4.532
+994539,118,"Sam","Petrevski-Seton","CAR","DEF",,7,,59,,,,,,,59,,,,,,,,,,-3.992,,,,-3.992
+290198,565,"David","Astbury","RIC","DEF",,7,,87,,,,,,,65,,,,,,,,,,-3.344,,,,-3.344
+1006096,534,"Xavier","Duursma","PTA","MID",,7,,,,,,,,,74,,,,,,,,,,,-2.482,,,-2.482
+298298,754,"Jackson","Nelson","WCE","DEF",,7,,46,,,,,,,52,,,,,,,,,,-4.748,,,,-4.748
+990609,54,"Charlie","Cameron","BRL","FWD",,7,,112,,,,,,,51,,,,,,,,,,,,,-3.437,-3.437
+294429,617,"Luke","Dunstan","STK","MID",,7,,,,,,,,,44,,,,,,,,,,,-4.972,,,-4.972
+294125,257,"Nathan","Wilson","FRE","DEF",,7,,73,,,,,,,70.5,,,,,,,,,,-2.75,,,,-2.75
+250362,22,"David","Mackay","ADE","DEF",,7,,91,,,,,,,70,,,,,,,,,,-2.804,,,,-2.804
+1000072,161,"John","Noble","COL","DEF",,7,,79,,,,,,,78,,,,,,,,,,-1.94,,,,-1.94
+1002235,77,"Cam","Rayner","BRL","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+291357,341,"Gary","Rohan","GEE","FWD",,7,,77,,,,,,,77,,,,,,,,,,,,,-1.077,-1.077
+296735,493,"Aaron","Hall","NTH","FWD",,7,,106,2016,"At Witts End","Paul",TRUE,"scoring","FWD",81,,,,,,,,,,,,,-0.714,-0.714
+993953,62,"Eric","Hipwood","BRL","FWD",,7,,45,,,,,,,53,,,,,,,,,,,,,-3.255,-3.255
+298211,321,"Darcy","Fort","GEE","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+1006159,406,"Damon","Greaves","HAW","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+290527,553,"Trent","McKenzie","PTA","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+291327,400,"Jonathon","Ceglar","HAW","RUC",,7,,,,,,,,,76,,,,,,,,,,,,-2.237,,-2.237
+281078,105,"Liam","Jones","CAR","DEF",,7,,65,,,,,,,65,,,,,,,,,,-3.344,,,,-3.344
+1004938,334,"Gryan","Miers","GEE","FWD",,7,,33,,,,,,,62,,,,,,,,,,,,,-2.438,-2.438
+993771,593,"Marlion","Pickett","RIC","MID",,7,,88,,,,,,,73,,,,,,,,,,,-2.565,,,-2.565
+291848,655,"Robbie","Fox","SYD","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1008550,402,"Will","Day","HAW","DEF",,7,,,,,,,,,88.5,,,,,,,,,,-0.806,,,,-0.806
+1011936,669,"Justin","McInerney","SYD","MID",,7,,60,,,,,,,60.5,,,,,,,,,,,-3.603,,,-3.603
+993917,630,"Ben","Long","STK","DEF",,7,,,,,,,,,38,,,,,,,,,,-6.26,,,,-6.26
+280819,582,"Dylan","Grimes","RIC","DEF",,7,,52,,,,,,,68,,,,,,,,,,-3.02,,,,-3.02
+996580,236,"Ethan","Hughes","FRE","DEF",,7,,20,,,,,,,65,,,,,,,,,,-3.344,,,,-3.344
+294592,588,"Kamdyn","McIntosh","RIC","MID",,7,,66,,,,,,,56.5,,,,,,,,,,,-3.935,,,-3.935
+294508,486,"Aidan","Corr","NTH","DEF",,7,,,,,,,,,80.5,,,,,,,,,,-1.67,,,,-1.67
+1007102,337,"Mark","O'Connor","GEE","DEF",,7,,,,,,,,,84,,,,,,,,,,-1.292,,,,-1.292
+1010841,152,"Jack","Madgen","COL","DEF",,7,,,,,,,,,49,,,,,,,,,,-5.072,,,,-5.072
+291548,64,"Ryan","Lester","BRL","DEF",,7,,43,,,,,,,62,,,,,,,,,,-3.668,,,,-3.668
+210012,399,"Shaun","Burgoyne","HAW","FWD",,7,,,,,,,,,59,,,,,,,,,,,,,-2.71,-2.71
+1005577,181,"Sam","Draper","ESS","RUC",,7,,,,,,,,,49.5,,,,,,,,,,,,-3.828,,-3.828
+290160,450,"Michael","Hibberd","MEL","DEF",,7,,80,,,,,,,80,,,,,,,,,,-1.724,,,,-1.724
+281373,757,"Jack","Redden","WCE","MID",,7,,96,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","MID",93,,,,,,,,,,,-0.905,,,-0.905
+270326,325,"Lachie","Henderson","GEE","DEF",,7,,80,,,,,,,74,,,,,,,,,,-2.372,,,,-2.372
+1004998,551,"Todd","Marshall","PTA","FWD",,7,,45,,,,,,,58,,,,,,,,,,,,,-2.801,-2.801
+298144,673,"Sam","Naismith","SYD","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+240302,53,"Grant","Birchall","BRL","DEF",,7,,94,,,,,,,67,,,,,,,,,,-3.128,,,,-3.128
+291526,316,"Luke","Dahlhaus","GEE","FWD",,7,,99,,,,,,,66,,,,,,,,,,,,,-2.075,-2.075
+294036,662,"George","Hewett","SYD","MID",,7,,,,,,,,,49,,,,,,,,,,,-4.557,,,-4.557
+292145,545,"Tom","Jonas","PTA","DEF",,7,,105,,,,,,,73,,,,,,,,,,-2.48,,,,-2.48
+1002245,567,"Noah","Balta","RIC","DEF",,7,,78,,,,,,,72,,,,,,,,,,-2.588,,,,-2.588
+290826,737,"Jamie","Cripps","WCE","FWD",,7,,103,,,,,,,84,,,,,,,,,,,,,-0.441,-0.441
+280416,154,"Chris","Mayne","COL","MID",,7,,84,,,,,,,77,,,,,,,,,,,-2.233,,,-2.233
+993794,409,"Blake","Hardwick","HAW","DEF",,7,,93,22859,"Ariana Grundy","Lester",TRUE,"scoring","DEF",93,,,,,,,,,,-0.32,,,,-0.32
+290314,376,"Lachlan","Keeffe","GWS","DEF",,7,,68,,,,,,,65,,,,,,,,,,-3.344,,,,-3.344
+270588,190,"Cale","Hooker","ESS","DEF",,7,,99,,,,,,,82,,,,,,,,,,-1.508,,,,-1.508
+290641,611,"Jake","Carlisle","STK","DEF",,7,,,,,,,,,61,,,,,,,,,,-3.776,,,,-3.776
+1001195,296,"Izak","Rankine","GCS","FWD",,7,,55,,,,,,,57,,,,,,,,,,,,,-2.892,-2.892
+294092,197,"Anthony","McDonald-Tipungwuti","ESS","FWD",,7,,84,,,,,,,80,,,,,,,,,,,,,-0.804,-0.804
+290823,225,"Reece","Conca","FRE","DEF",,7,,63,,,,,,,63,,,,,,,,,,-3.56,,,,-3.56
+1002220,340,"Esava","Ratugolea","GEE","RUC","FWD",7,,,,,,,,,0,,,,,,,,,,,,-6.8,-8.066,-6.8
+990606,210,"Will","Snelling","ESS","FWD",,7,,69,,,,,,,69,,,,,,,,,,,,,-1.803,-1.803
+997206,26,"Andrew","McPherson","ADE","DEF",,7,,49,,,,,,,44,,,,,,,,,,-5.612,,,,-5.612
+996483,713,"Toby","McLean","WBD","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+291849,158,"Brody","Mihocek","COL","FWD",,7,,109,,,,,,,67,,,,,,,,,,,,,-1.984,-1.984
+993828,67,"Rhys","Mathieson","BRL","FWD","MID",7,,76,,,,,,,76,,,,,,,,,,,-2.316,,-1.167,-1.167
+297406,180,"Tom","Cutler","ESS","MID",,7,,,,,,,,,29.5,,,,,,,,,,,-6.175,,,-6.175
+993820,736,"Tom","Cole","WCE","DEF",,7,,39,,,,,,,55,,,,,,,,,,-4.424,,,,-4.424
+294596,636,"Tim","Membrey","STK","FWD",,7,,71,,,,,,,70,,,,,,,,,,,,,-1.712,-1.712
+293193,3,"Luke","Brown","ADE","DEF",,7,,,,,,,,,59,,,,,,,,,,-3.992,,,,-3.992
+998134,606,"Josh","Battle","STK","FWD","MID",7,,40,,,,,,,58,,,,,,,,,,,-3.81,,-2.801,-2.801
+296269,61,"Darcy","Gardiner","BRL","DEF",,7,,,,,,,,,45,,,,,,,,,,-5.504,,,,-5.504
+293801,141,"Jamie","Elliott","COL","FWD","MID",7,,,,,,,,,52,,,,,,,,,,,-4.308,,-3.346,-3.346
+1001438,447,"Bayley","Fritsch","MEL","FWD",,7,,99,,,,,,,71.5,,,,,,,,,,,,,-1.576,-1.576
+1007881,295,"Wil","Powell","GCS","DEF",,7,,87,,,,,,,85,,,,,,,,,,-1.184,,,,-1.184
+1000963,424,"Harry","Morrison","HAW","DEF","MID",7,,45,,,,,,,73,,,,,,,,,,-2.48,-2.565,,,-2.48
+1005199,15,"Elliott","Himmelberg","ADE","FWD",,7,,38,,,,,,,39.5,,,,,,,,,,,,,-4.48,-4.48
+1002251,361,"Brent","Daniels","GWS","FWD",,7,,22,,,,,,,49.5,,,,,,,,,,,,,-3.573,-3.573
+993107,371,"Harry","Himmelberg","GWS","FWD",,7,,79,,,,,,,72,,,,,,,,,,,,,-1.531,-1.531
+993480,625,"Dougal","Howard","STK","DEF",,7,,82,23413,"The West Wingard","Simon",TRUE,"scoring","DEF",82,,,,,,,,,,-1.508,,,,-1.508
+294624,121,"Lachie","Plowman","CAR","DEF",,7,,29,,,,,,,64,,,,,,,,,,-3.452,,,,-3.452
+298470,23,"Shane","McAdam","ADE","FWD",,7,,26,,,,,,,44,,,,,,,,,,,,,-4.072,-4.072
+280934,41,"Daniel","Talia","ADE","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+293581,68,"Lincoln","McCarthy","BRL","FWD",,7,,99,,,,,,,75,,,,,,,,,,,,,-1.258,-1.258
+998115,229,"Taylin","Duman","FRE","DEF",,7,,43,,,,,,,43,,,,,,,,,,-5.72,,,,-5.72
+298437,46,"Callum","Ah Chee","BRL","DEF",,7,,79,,,,,,,52.5,,,,,,,,,,-4.694,,,,-4.694
+294068,204,"Andrew","Phillips","ESS","RUC",,7,,,,,,,,,99,,,,,,,,,,,,-0.856,,-0.856
+270951,214,"David","Zaharakis","ESS","FWD",,7,,,,,,,,,33,,,,,,,,,,,,,-5.07,-5.07
+992000,631,"Jack","Lonie","STK","FWD",,7,,,,,,,,,56,,,,,,,,,,,,,-2.983,-2.983
+1004940,343,"Sam","Simpson","GEE","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1009378,470,"Trent","Rivers","MEL","DEF",,7,,58,,,,,,,58,,,,,,,,,,-4.1,,,,-4.1
+281124,91,"Levi","Casboult","CAR","FWD",,7,,37,,,,,,,43,,,,,,,,,,,,,-4.163,-4.163
+1002770,133,"Callum L.","Brown","COL","FWD",,7,,51,,,,,,,54.5,,,,,,,,,,,,,-3.119,-3.119
+295203,569,"Nathan","Broad","RIC","DEF",,7,,122,,,,,,,65,,,,,,,,,,-3.344,,,,-3.344
+998109,178,"Dylan","Clarke","ESS","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+993816,251,"Darcy","Tucker","FRE","MID",,7,,66,,,,,,,66,,,,,,,,,,,-3.146,,,-3.146
+298111,364,"Jeremy","Finlayson","GWS","FWD",,7,,56,20240,"MakingTheirMarcus","James",FALSE,"non-scoring","FWD",71,,,,,,,,,,,,,-1.621,-1.621
+240406,750,"Josh J.","Kennedy","WCE","FWD",,7,,87,,,,,,,70.5,,,,,,,,,,,,,-1.667,-1.667
+250395,596,"Jack","Riewoldt","RIC","FWD",,7,,39,,,,,,,71,,,,,,,,,,,,,-1.621,-1.621
+1004985,637,"Ben","Paton","STK","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1006136,36,"Lachlan","Sholl","ADE","DEF","MID",7,,62,23345,"Pink Lloyd","Jordan",TRUE,"scoring","DEF",78,,,,,,,,,,-1.94,-2.15,,,-1.94
+293603,552,"Sam","Mayes","PTA","DEF",,7,,14,,,,,,,14,,,,,,,,,,-8.852,,,,-8.852
+290085,698,"Taylor","Duryea","WBD","DEF","FWD",7,,32,2016,"At Witts End","Paul",TRUE,"scoring","FWD",80,,,,,,,,,,-1.724,,,-0.804,-0.804
+293883,309,"Jed","Bews","GEE","DEF",,7,,32,,,,,,,42,,,,,,,,,,-5.828,,,,-5.828
+1000981,597,"Daniel","Rioli","RIC","FWD",,7,,48,,,,,,,56,,,,,,,,,,,,,-2.983,-2.983
+991933,571,"Jason","Castagna","RIC","FWD",,7,,41,,,,,,,54,,,,,,,,,,,,,-3.164,-3.164
+993795,94,"David","Cuningham","CAR","FWD",,7,,78,,,,,,,72.5,,,,,,,,,,,,,-1.485,-1.485
+997933,238,"Griffin","Logue","FRE","DEF",,7,,21,,,,,,,38,,,,,,,,,,-6.26,,,,-6.26
+290117,621,"Dan","Hannebery","STK","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+280336,235,"Stephen","Hill","FRE","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+293479,59,"Cameron","Ellis-Yolmen","BRL","FWD","MID",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+998484,521,"Cameron","Zurhaar","NTH","FWD",,7,,41,,,,,,,32.5,,,,,,,,,,,,,-5.116,-5.116
+1004848,684,"Dylan","Stephens","SYD","MID",,7,,61,,,,,,,35.5,,,,,,,,,,,-5.677,,,-5.677
+291720,146,"Will","Hoskin-Elliott","COL","FWD",,7,,70,,,,,,,70,,,,,,,,,,,,,-1.712,-1.712
+271015,363,"Matt","de Boer","GWS","MID",,7,,,,,,,,,60,,,,,,,,,,,-3.644,,,-3.644
+1008123,385,"Jake","Riccardi","GWS","FWD",,7,,,,,,,,,45,,,,,,,,,,,,,-3.981,-3.981
+294504,531,"Tom","Clurey","PTA","DEF",,7,,75,,,,,,,81,,,,,,,,,,-1.616,,,,-1.616
+294570,628,"Dean","Kent","STK","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+290623,570,"Josh","Caddy","RIC","MID",,7,,,,,,,,,76,,,,,,,,,,,-2.316,,,-2.316
+297504,72,"Daniel","McStay","BRL","FWD",,7,,67,,,,,,,63,,,,,,,,,,,,,-2.347,-2.347
+1002143,500,"Ben","McKay","NTH","DEF",,7,,35,,,,,,,48,,,,,,,,,,-5.18,,,,-5.18
+1006133,599,"Jack","Ross","RIC","MID",,7,,49,,,,,,,43,,,,,,,,,,,-5.055,,,-5.055
+1006058,506,"Bailey","Scott","NTH","FWD","MID",7,,,,,,,,,49,,,,,,,,,,,-4.557,,-3.618,-3.618
+997823,759,"Josh","Rotham","WCE","DEF",,7,,74,,,,,,,71,,,,,,,,,,-2.696,,,,-2.696
+297452,188,"Nick","Hind","ESS","FWD",,7,,89,6510,"The Big Short","Luke",TRUE,"scoring","FWD",89,,,,,,,,,,,,,0.012,0.012
+290675,379,"Daniel","Lloyd","GWS","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+997078,205,"Mason","Redman","ESS","DEF",,7,,33,,,,,,,65,,,,,,,,,,-3.344,,,,-3.344
+296291,331,"Jake","Kolodjashnij","GEE","DEF",,7,,,,,,,,,70.5,,,,,,,,,,-2.75,,,,-2.75
+294643,299,"Alex","Sexton","GCS","FWD",,7,,,,,,,,,49,,,,,,,,,,,,,-3.618,-3.618
+1002404,715,"Aaron","Naughton","WBD","FWD",,7,,71,23413,"The West Wingard","Simon",TRUE,"scoring","FWD",76,,,,,,,,,,,,,-1.167,-1.167
+291550,515,"Josh","Walker","NTH","DEF",,7,,73,,,,,,,50,,,,,,,,,,-4.964,,,,-4.964
+992786,564,"Jake","Aarts","RIC","FWD",,7,,66,,,,,,,61,,,,,,,,,,,,,-2.529,-2.529
+1004863,16,"Mitchell","Hinge","ADE","MID",,7,,,,,,,,,31,,,,,,,,,,,-6.051,,,-6.051
+1000998,28,"Lachlan","Murphy","ADE","FWD",,7,,69,,,,,,,68,,,,,,,,,,,,,-1.894,-1.894
+297456,281,"Nick","Holman","GCS","FWD",,7,,52,,,,,,,52,,,,,,,,,,,,,-3.346,-3.346
+290188,679,"Sam","Reid","SYD","FWD",,7,,,23345,"Pink Lloyd","Jordan",FALSE,"non-scoring","FWD",75,,,,,,,,,,,,,-1.258,-1.258
+1006143,629,"Max","King","STK","FWD",,7,,67,,,,,,,63.5,,,,,,,,,,,,,-2.302,-2.302
+994077,572,"Mabior","Chol","RIC","RUC","FWD",7,,,,,,,,,0,,,,,,,,,,,,-6.8,-8.066,-6.8
+997100,660,"Will","Hayward","SYD","FWD",,7,,62,,,,,,,62,,,,,,,,,,,,,-2.438,-2.438
+1000937,326,"Jack","Henry","GEE","DEF",,7,,108,,,,,,,78.5,,,,,,,,,,-1.886,,,,-1.886
+996743,671,"Lewis","Melican","SYD","DEF",,7,,48,,,,,,,49,,,,,,,,,,-5.072,,,,-5.072
+996232,185,"Matt","Guelfi","ESS","DEF",,7,,67,,,,,,,57,,,,,,,,,,-4.208,,,,-4.208
+291819,476,"Adam","Tomlinson","MEL","DEF","MID",7,,0,,,,,,,65,,,,,,,,,,-3.344,-3.229,,,-3.229
+290797,707,"Alex","Keath","WBD","DEF",,7,,126,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","DEF",85,,,,,,,,,,-1.184,,,,-1.184
+996554,767,"Jake","Waterman","WCE","FWD",,7,,81,,,,,,,44.5,,,,,,,,,,,,,-4.027,-4.027
+1005247,392,"Sam","Taylor","GWS","DEF",,7,,104,,,,,,,93,,,,,,,,,,-0.32,,,,-0.32
+291533,462,"Tom","McDonald","MEL","FWD",,7,,63,20323,"La MacRaena","Anthony",TRUE,"scoring","FWD",89,,,,,,,,,,,,,0.012,0.012
+294469,522,"Aliir","Aliir","PTA","DEF",,7,,106,22859,"Ariana Grundy","Lester",FALSE,"scoring","DEF",103,,,,,,,,,,0.76,,,,0.76
+1009253,353,"Lachie","Ash","GWS","DEF",,7,,75,22859,"Ariana Grundy","Lester",TRUE,"scoring","DEF",82,,,,,,,,,,-1.508,,,,-1.508
+260113,619,"Jarryn","Geary","STK","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+990816,183,"Aaron","Francis","ESS","DEF",,7,,,,,,,,,56,,,,,,,,,,-4.316,,,,-4.316
+1000953,111,"Harry","McKay","CAR","FWD",,7,,99,23345,"Pink Lloyd","Jordan",TRUE,"scoring","FWD",98,,,,,,,,,,,,,0.829,0.829
+1002228,102,"Lachie","Fogarty","CAR","FWD",,7,,61,20323,"La MacRaena","Anthony",TRUE,"scoring","FWD",62,,,,,,,,,,,,,-2.438,-2.438
+992128,528,"Ryan","Burton","PTA","DEF",,7,,41,23413,"The West Wingard","Simon",TRUE,"scoring","DEF",83,,,,,,,,,,-1.4,,,,-1.4
+1006028,647,"Nick","Blakey","SYD","FWD","MID",7,,,,,,,,,47,,,,,,,,,,,-4.723,,-3.8,-3.8
+994599,526,"Riley","Bonner","PTA","DEF",,7,,,,,,,,,72,,,,,,,,,,-2.588,,,,-2.588
+295313,706,"Lin","Jong","WBD","MID","FWD",7,,,,,,,,,15,,,,,,,,,,,-7.379,,-6.704,-6.704
+294077,411,"Michael","Hartley","HAW","DEF",,7,,,,,,,,,102,,,,,,,,,,0.652,,,,0.652
+1010174,539,"Mitch","Georgiades","PTA","FWD",,7,,38,,,,,,,57.5,,,,,,,,,,,,,-2.847,-2.847
+1003203,670,"Hayden","McLean","SYD","FWD",,7,,82,,,,,,,53,,,,,,,,,,,,,-3.255,-3.255
+1006232,687,"Sam","Wicks","SYD","FWD",,7,,23,,,,,,,70,,,,,,,,,,,,,-1.712,-1.712
+1006137,511,"Curtis","Taylor","NTH","FWD",,7,,17,,,,,,,49,,,,,,,,,,,,,-3.618,-3.618
+1008543,34,"Harry","Schoenberg","ADE","FWD",,7,,75,,,,,,,67,,,,,,,,,,,,,-1.984,-1.984
+298358,288,"Oleg","Markov","GCS","DEF",,7,,74,23413,"The West Wingard","Simon",TRUE,"scoring","DEF",74,,,,,,,,,,-2.372,,,,-2.372
+290228,410,"Kyle","Hartigan","HAW","DEF",,7,,45,,,,,,,48,,,,,,,,,,-5.18,,,,-5.18
+1003029,169,"Brayden","Sier","COL","MID",,7,,,,,,,,,37,,,,,,,,,,,-5.553,,,-5.553
+991939,693,"Zaine","Cordy","WBD","DEF",,7,,50,,,,,,,49,,,,,,,,,,-5.072,,,,-5.072
+998167,130,"Tom","Williamson","CAR","DEF",,7,,,,,,,,,35,,,,,,,,,,-6.584,,,,-6.584
+1008198,667,"Tom","McCartin","SYD","FWD",,7,,61,,,,,,,65,,,,,,,,,,,,,-2.166,-2.166
+1009399,453,"Luke","Jackson","MEL","FWD",,7,,104,,,,,,,78,,,,,,,,,,,,,-0.986,-0.986
+990882,27,"Wayne","Milera","ADE","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+998647,137,"Mason","Cox","COL","FWD",,7,,,,,,,,,58.5,,,,,,,,,,,,,-2.756,-2.756
+240399,656,"Lance","Franklin","SYD","FWD",,7,,,,,,,,,78,,,,,,,,,,,,,-0.986,-0.986
+280012,166,"Jordan","Roughead","COL","DEF",,7,,71,,,,,,,63,,,,,,,,,,-3.56,,,,-3.56
+1008171,134,"Tyler","Brown","COL","MID",,7,,,,,,,,,51,,,,,,,,,,,-4.391,,,-4.391
+296324,372,"Jesse","Hogan","GWS","FWD",,7,,92,,,,,,,92,,,,,,,,,,,,,0.285,0.285
+1000972,533,"Willem","Drew","PTA","MID",,7,,129,,,,,,,82,,,,,,,,,,,-1.818,,,-1.818
+999824,335,"Quinton","Narkle","GEE","MID",,7,,61,,,,,,,56.5,,,,,,,,,,,-3.935,,,-3.935
+999309,14,"Jackson","Hately","ADE","MID",,7,,55,,,,,,,57.5,,,,,,,,,,,-3.852,,,-3.852
+291947,730,"Brendon","Ah Chee","WCE","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+296420,464,"Alex","Neal-Bullen","MEL","FWD",,7,,22,,,,,,,71,,,,,,,,,,,,,-1.621,-1.621
+297473,19,"Jake","Kelly","ADE","DEF",,7,,75,20240,"MakingTheirMarcus","James",TRUE,"scoring","DEF",89,,,,,,,,,,-0.752,,,,-0.752
+1008280,716,"Ed","Richards","WBD","FWD","MID",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1002253,536,"Kane","Farrell","PTA","FWD","MID",7,,,,,,,,,28,,,,,,,,,,,-6.3,,-5.524,-5.524
+240254,279,"Jarrod","Harbrow","GCS","DEF",,7,,,,,,,,,70,,,,,,,,,,-2.804,,,,-2.804
+240060,89,"Eddie","Betts","CAR","FWD",,7,,85,,,,,,,73,,,,,,,,,,,,,-1.44,-1.44
+280990,555,"Steven","Motlop","PTA","FWD",,7,,69,,,,,,,69,,,,,,,,,,,,,-1.803,-1.803
+298280,195,"Jayden","Laverde","ESS","FWD",,7,,57,,,,,,,59,,,,,,,,,,,,,-2.71,-2.71
+1008882,262,"Charlie","Ballard","GCS","DEF",,7,,98,,,,,,,84.5,,,,,,,,,,-1.238,,,,-1.238
+1002401,86,"Brandon","Starcevich","BRL","DEF",,7,,46,,,,,,,58,,,,,,,,,,-4.1,,,,-4.1
+290289,170,"Josh","Thomas","COL","FWD",,7,,47,,,,,,,52,,,,,,,,,,,,,-3.346,-3.346
+1004912,97,"Tom","De Koning","CAR","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+997230,39,"Tyson","Stengle","ADE","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+293738,404,"Sam","Frost","HAW","DEF",,7,,49,,,,,,,76,,,,,,,,,,-2.156,,,,-2.156
+1005053,48,"Noah","Answerth","BRL","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+993806,479,"Sam","Weideman","MEL","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1004437,255,"Tobe","Watson","FRE","DEF",,7,,74,,,,,,,71,,,,,,,,,,-2.696,,,,-2.696
+999391,475,"Tom","Sparrow","MEL","MID",,7,,,,,,,,,51,,,,,,,,,,,-4.391,,,-4.391
+996692,451,"Marty","Hore","MEL","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+992644,383,"Braydon","Preuss","GWS","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+990291,135,"Darcy","Cameron","COL","FWD",,7,,76,,,,,,,76,,,,,,,,,,,,,-1.167,-1.167
+1006314,422,"Dylan","Moore","HAW","FWD",,7,,63,,,,,,,63,,,,,,,,,,,,,-2.347,-2.347
+993799,274,"Brayden","Fiorini","GCS","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+297990,477,"Aaron","vandenBerg","MEL","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+291509,378,"Adam","Kennedy","GWS","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1006059,57,"Keidean","Coleman","BRL","FWD",,7,,,,,,,,,40.5,,,,,,,,,,,,,-4.39,-4.39
+1006144,284,"Ben","King","GCS","FWD",,7,,70,,,,,,,65,,,,,,,,,,,,,-2.166,-2.166
+996708,695,"Bailey","Dale","WBD","FWD",,7,,112,6510,"The Big Short","Luke",TRUE,"scoring","FWD",89,,,,,,,,,,,,,0.012,0.012
+291753,271,"Sam","Day","GCS","FWD",,7,,,,,,,,,44,,,,,,,,,,,,,-4.072,-4.072
+280506,43,"Taylor","Walker","ADE","FWD",,7,,42,20240,"MakingTheirMarcus","James",TRUE,"scoring","FWD",106,,,,,,,,,,,,,1.555,1.555
+1002282,474,"Charlie","Spargo","MEL","FWD",,7,,65,,,,,,,64,,,,,,,,,,,,,-2.257,-2.257
+1000860,244,"Lachie","Schultz","FRE","FWD",,7,,42,,,,,,,74,,,,,,,,,,,,,-1.349,-1.349
+281139,728,"Easton","Wood","WBD","DEF",,7,,71,,,,,,,66,,,,,,,,,,-3.236,,,,-3.236
+296041,426,"Tim","O'Brien","HAW","FWD",,7,,53,,,,,,,59,,,,,,,,,,,,,-2.71,-2.71
+261374,384,"Sam J.","Reid","GWS","DEF",,7,,52,,,,,,,25,,,,,,,,,,-7.664,,,,-7.664
+280824,463,"Jake","Melksham","MEL","FWD",,7,,52,,,,,,,52,,,,,,,,,,,,,-3.346,-3.346
+296225,758,"Willie","Rioli","WCE","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+260288,618,"James","Frawley","STK","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1002353,227,"Mitch","Crowden","FRE","FWD",,7,,36,,,,,,,35,,,,,,,,,,,,,-4.889,-4.889
+1002300,734,"Jarrod","Brander","WCE","FWD","MID",7,,58,,,,,,,65,,,,,,,,,,,-3.229,,-2.166,-2.166
+294654,211,"James","Stewart","ESS","FWD",,7,,51,,,,,,,51,,,,,,,,,,,,,-3.437,-3.437
+298450,220,"Connor","Blakely","FRE","MID",,7,,,,,,,,,23,,,,,,,,,,,-6.715,,,-6.715
+996731,95,"Charlie","Curnow","CAR","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+297438,184,"Martin","Gleeson","ESS","DEF",,7,,,,,,,,,64,,,,,,,,,,-3.452,,,,-3.452
+1006276,783,"Derek","Eggmolesse-Smith","RIC","DEF",,7,,,,,,,,,30,,,,,,,,,,-7.124,,,,-7.124
+298289,213,"Peter","Wright","ESS","FWD",,7,,66,23345,"Pink Lloyd","Jordan",TRUE,"scoring","FWD",69,,,,,,,,,,,,,-1.803,-1.803
+250222,455,"Nathan","Jones","MEL","FWD","MID",7,,48,,,,,,,48,,,,,,,,,,,-4.64,,-3.709,-3.709
+280804,362,"Phil","Davis","GWS","DEF",,7,,,,,,,,,55,,,,,,,,,,-4.424,,,,-4.424
+1008855,439,"Oskar","Baker","MEL","MID",,7,,67,,,,,,,67,,,,,,,,,,,-3.063,,,-3.063
+1005729,512,"Tarryn","Thomas","NTH","FWD",,7,,69,,,,,,,69,,,,,,,,,,,,,-1.803,-1.803
+298390,460,"Jay","Lockhart","MEL","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+293987,548,"Jarrod","Lienert","PTA","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+998180,218,"Bailey","Banfield","FRE","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1001396,360,"Isaac","Cumming","GWS","DEF",,7,,92,20240,"MakingTheirMarcus","James",TRUE,"scoring","DEF",92,,,,,,,,,,-0.428,,,,-0.428
+1006148,370,"Bobby","Hill","GWS","FWD",,7,,51,,,,,,,51,,,,,,,,,,,,,-3.437,-3.437
+999331,9,"Darcy","Fogarty","ADE","FWD",,7,,,,,,,,,44,,,,,,,,,,,,,-4.072,-4.072
+999326,314,"Brad","Close","GEE","FWD",,7,,87,,,,,,,64.5,,,,,,,,,,,,,-2.211,-2.211
+1006087,277,"Caleb","Graham","GCS","DEF",,7,,66,,,,,,,38.5,,,,,,,,,,-6.206,,,,-6.206
+297255,110,"Mitch","McGovern","CAR","FWD",,7,,49,,,,,,,60,,,,,,,,,,,,,-2.62,-2.62
+1001449,702,"Mitch","Hannan","WBD","FWD",,7,,44,,,,,,,44,,,,,,,,,,,,,-4.072,-4.072
+293884,212,"Jake","Stringer","ESS","FWD",,7,,92,2016,"At Witts End","Paul",FALSE,"non-scoring","FWD",86,,,,,,,,,,,,,-0.26,-0.26
+998327,494,"Kyron","Hayden","NTH","DEF",,7,,,,,,,,,23,,,,,,,,,,-7.88,,,,-7.88
+992054,719,"Roarke","Smith","WBD","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+992462,412,"Daniel","Howe","HAW","DEF","MID",7,,,,,,,,,60,,,,,,,,,,-3.884,-3.644,,,-3.644
+290622,445,"Mitch","Brown","MEL","FWD",,7,,,,,,,,,77,,,,,,,,,,,,,-1.077,-1.077
+1002922,610,"Jack","Bytel","STK","MID",,7,,91,,,,,,,62,,,,,,,,,,,-3.478,,,-3.478
+992059,247,"Sam","Switkowski","FRE","FWD",,7,,,,,,,,,95,,,,,,,,,,,,,0.557,0.557
+1009256,258,"Hayden","Young","FRE","DEF",,7,,,,,,,,,61,,,,,,,,,,-3.776,,,,-3.776
+1005000,723,"Laitham","Vandermeer","WBD","FWD","MID",7,,,,,,,,,41,,,,,,,,,,,-5.221,,-4.344,-4.344
+1006127,726,"Rhylee","West","WBD","FWD",,7,,1,,,,,,,1,,,,,,,,,,,,,-7.975,-7.975
+1008190,186,"Brayden","Ham","ESS","MID",,7,,40,,,,,,,56,,,,,,,,,,,-3.976,,,-3.976
+1002583,603,"Sydney","Stack","RIC","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+270861,143,"Levi","Greenwood","COL","MID",,7,,,,,,,,,42,,,,,,,,,,,-5.138,,,-5.138
+290722,658,"Sam","Gray","SYD","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+280988,224,"Travis","Colyer","FRE","FWD",,7,,69,,,,,,,66,,,,,,,,,,,,,-2.075,-2.075
+1004880,680,"Ben","Ronke","SYD","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+298302,108,"Caleb","Marchbank","CAR","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+291492,690,"Josh","Bruce","WBD","FWD",,7,,35,,,,,,,66,,,,,,,,,,,,,-2.075,-2.075
+290757,643,"Jimmy","Webster","STK","DEF",,7,,52,,,,,,,51,,,,,,,,,,-4.856,,,,-4.856
+1005547,269,"Josh","Corbett","GCS","FWD",,7,,105,,,,,,,77,,,,,,,,,,,,,-1.077,-1.077
+280763,712,"Stefan","Martin","WBD","RUC",,7,,57,,,,,,,58,,,,,,,,,,,,-3.318,,-3.318
+1009189,497,"Jack","Mahony","NTH","FWD",,7,,63,,,,,,,48,,,,,,,,,,,,,-3.709,-3.709
+295222,233,"Joel","Hamling","FRE","DEF",,7,,,,,,,,,72,,,,,,,,,,-2.588,,,,-2.588
+997842,675,"Colin","O'Riordan","SYD","DEF",,7,,50,,,,,,,50,,,,,,,,,,-4.964,,,,-4.964
+296078,491,"Taylor","Garner","NTH","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1002291,646,"James","Bell","SYD","FWD",,7,,,,,,,,,24,,,,,,,,,,,,,-5.887,-5.887
+1002242,315,"Charlie","Constable","GEE","MID",,7,,,,,,,,,45,,,,,,,,,,,-4.889,,,-4.889
+998390,415,"Changkuoth","Jiath","HAW","DEF",,7,,49,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","DEF",99,,,,,,,,,,0.328,,,,0.328
+1004965,518,"Tristan","Xerri","NTH","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+296211,685,"Lewis","Taylor","SYD","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1013611,246,"Sam","Sturt","FRE","FWD",,7,,,,,,,,,24,,,,,,,,,,,,,-5.887,-5.887
+1006097,201,"Irving","Mosquito","ESS","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1001017,495,"Nick","Larkey","NTH","FWD",,7,,54,,,,,,,46,,,,,,,,,,,,,-3.89,-3.89
+994385,452,"Jayden","Hunt","MEL","FWD",,7,,50,,,,,,,72,,,,,,,,,,,,,-1.531,-1.531
+1008154,92,"Matthew","Cottrell","CAR","MID",,7,,57,,,,,,,55,,,,,,,,,,,-4.059,,,-4.059
+999346,563,"Boyd","Woodcock","PTA","FWD",,7,,38,,,,,,,45,,,,,,,,,,,,,-3.981,-3.981
+294266,663,"Tom","Hickey","SYD","RUC",,7,,110,23345,"Pink Lloyd","Jordan",FALSE,"scoring","RUC",111,,,,,,,,,,,,-0.135,,-0.135
+992499,513,"Kayne","Turner","NTH","FWD",,7,,109,,,,,,,55,,,,,,,,,,,,,-3.074,-3.074
+291867,444,"Ben","Brown","MEL","FWD",,7,,57,22859,"Ariana Grundy","Lester",TRUE,"scoring","FWD",57,,,,,,,,,,,,,-2.892,-2.892
+1001028,125,"Jack","Silvagni","CAR","FWD",,7,,,,,,,,,38,,,,,,,,,,,,,-4.617,-4.617
+991773,10,"Billy","Frampton","ADE","FWD",,7,,,,,,,,,37,,,,,,,,,,,,,-4.707,-4.707
+1008454,265,"Connor","Budarick","GCS","DEF",,7,,,,,,,,,61.5,,,,,,,,,,-3.722,,,,-3.722
+1008541,469,"Kysaiah","Pickett","MEL","FWD",,7,,97,2018,"Surviving J.Kelly","Mark",TRUE,"scoring","FWD",85,,,,,,,,,,,,,-0.351,-0.351
+1004034,215,"Brandon","Zerk-Thatcher","ESS","DEF",,7,,,,,,,,,47,,,,,,,,,,-5.288,,,,-5.288
+1002347,75,"Jack","Payne","BRL","DEF",,7,,,,,,,,,51,,,,,,,,,,-4.856,,,,-4.856
+1004356,731,"Brayden","Ainsworth","WCE","FWD","MID",7,,,,,,,,,13,,,,,,,,,,,-7.544,,-6.886,-6.886
+294013,285,"Sean","Lemmens","GCS","FWD",,7,,62,,,,,,,62,,,,,,,,,,,,,-2.438,-2.438
+295942,291,"Jordan","Murdoch","GCS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+294168,45,"Marcus","Adams","BRL","DEF",,7,,69,,,,,,,69,,,,,,,,,,-2.912,,,,-2.912
+991976,703,"Will","Hayes","WBD","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+280038,634,"Shaun","McKernan","STK","FWD",,7,,,,,,,,,46,,,,,,,,,,,,,-3.89,-3.89
+1004894,482,"Aiden","Bonar","NTH","DEF",,7,,19,,,,,,,65,,,,,,,,,,-3.344,,,,-3.344
+295156,648,"Kaiden","Brand","SYD","DEF",,7,,,,,,,,,65,,,,,,,,,,-3.344,,,,-3.344
+1005084,517,"Will","Walker","NTH","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+294472,261,"Rory","Atkins","GCS","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+291784,514,"Dom","Tyson","NTH","MID",,7,,,,,,,,,35,,,,,,,,,,,-5.719,,,-5.719
+291891,305,"Jacob","Townsend","GCS","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1001043,408,"Oliver","Hanrahan","HAW","FWD",,7,,47,,,,,,,41,,,,,,,,,,,,,-4.344,-4.344
+1006203,17,"Chayce","Jones","ADE","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+298409,242,"Alex","Pearce","FRE","DEF",,7,,,,,,,,,11,,,,,,,,,,-9.176,,,,-9.176
+1006100,52,"Thomas","Berry","BRL","FWD",,7,,,,,,,,,30,,,,,,,,,,,,,-5.343,-5.343
+1008282,755,"Xavier","O'Neill","WCE","FWD","MID",7,,,,,,,,,45.5,,,,,,,,,,,-4.847,,-3.936,-3.936
+997501,701,"Ryan","Gardner","WBD","DEF",,7,,,,,,,,,62.5,,,,,,,,,,-3.614,,,,-3.614
+290199,782,"Majak","Daw","MEL","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+291964,282,"Jack","Hombsch","GCS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+280959,765,"Nathan","Vardy","WCE","RUC",,7,,54,,,,,,,34,,,,,,,,,,,,-4.759,,-4.759
+1008893,468,"Harrison","Petty","MEL","DEF","FWD",7,,,,,,,,,60,,,,,,,,,,-3.884,,,-2.62,-2.62
+1006135,381,"Xavier","O'Halloran","GWS","MID",,7,,76,,,,,,,57,,,,,,,,,,,-3.893,,,-3.893
+291797,358,"Matt","Buntine","GWS","DEF","FWD",7,,20,,,,,,,39.5,,,,,,,,,,-6.098,,,-4.48,-4.48
+1004286,751,"Zac","Langdon","WCE","FWD",,7,,66,,,,,,,35,,,,,,,,,,,,,-4.889,-4.889
+1009708,357,"Jack","Buckley","GWS","DEF","MID",7,,94,,,,,,,72,,,,,,,,,,-2.588,-2.648,,,-2.588
+295340,772,"Mason","Wood","STK","FWD",,7,,,,,,,,,45,,,,,,,,,,,,,-3.981,-3.981
+298265,633,"Daniel","McKenzie","STK","DEF",,7,,,,,,,,,52,,,,,,,,,,-4.748,,,,-4.748
+295599,173,"Patrick","Ambrose","ESS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+992752,82,"Archie","Smith","BRL","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+1006550,756,"Jack","Petruccelle","WCE","FWD",,7,,44,,,,,,,45,,,,,,,,,,,,,-3.981,-3.981
+280722,301,"Zac","Smith","GCS","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+1008083,375,"Connor","Idun","GWS","DEF",,7,,76,,,,,,,73,,,,,,,,,,-2.48,,,,-2.48
+993841,717,"Josh","Schache","WBD","FWD",,7,,45,,,,,,,45,,,,,,,,,,,,,-3.981,-3.981
+1008185,25,"Ned","McHenry","ADE","FWD",,7,,46,,,,,,,46,,,,,,,,,,,,,-3.89,-3.89
+1003546,473,"Joel","Smith","MEL","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1008159,13,"Will","Hamill","ADE","DEF",,7,,,,,,,,,48.5,,,,,,,,,,-5.126,,,,-5.126
+1000068,266,"Chris","Burgess","GCS","DEF",,7,,51,,,,,,,54,,,,,,,,,,-4.532,,,,-4.532
+1009301,722,"Jamarra","Ugle-Hagan","WBD","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+290889,398,"Keegan","Brooksby","HAW","RUC","FWD",7,,,,,,,,,0,,,,,,,,,,,,-6.8,-8.066,-6.8
+1009383,167,"Trey","Ruscoe","COL","FWD",,7,,,,,,,,,22,,,,,,,,,,,,,-6.069,-6.069
+1008384,42,"Riley","Thilthorpe","ADE","RUC","FWD",7,,55,20240,"MakingTheirMarcus","James",TRUE,"scoring","FWD",73,,,,,,,,,,,,-2.417,-1.44,-1.44
+1004909,519,"Lachie","Young","NTH","DEF","MID",7,,49,,,,,,,66,,,,,,,,,,-3.236,-3.146,,,-3.146
+992015,501,"Connor","Menadue","NTH","DEF",,7,,32,,,,,,,62,,,,,,,,,,-3.668,,,,-3.668
+1007238,389,"Jake","Stein","GWS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1000887,417,"Mitch","Lewis","HAW","FWD",,7,,29,,,,,,,79,,,,,,,,,,,,,-0.895,-0.895
+1009201,24,"Fischer","Mcasey","ADE","DEF","FWD",7,,,,,,,,,0,,,,,,,,,,-10.364,,,-8.066,-8.066
+1012829,503,"Will","Phillips","NTH","MID",,7,,53,,,,,,,41,,,,,,,,,,,-5.221,,,-5.221
+997316,729,"Lewis","Young","WBD","DEF",,7,,,,,,,,,69,,,,,,,,,,-2.912,,,,-2.912
+1009421,418,"Finn","Maginness","HAW","MID",,7,,47,,,,,,,33,,,,,,,,,,,-5.885,,,-5.885
+1008091,645,"Joel","Amartey","SYD","RUC","FWD",7,,,,,,,,,0,,,,,,,,,,,,-6.8,-8.066,-6.8
+296070,692,"Ben","Cavarra","WBD","FWD",,7,,,,,,,,,7,,,,,,,,,,,,,-7.43,-7.43
+1013230,668,"Logan","McDonald","SYD","FWD",,7,,,,,,,,,69,,,,,,,,,,,,,-1.803,-1.803
+1007124,425,"Conor","Nash","HAW","FWD",,7,,,,,,,,,18,,,,,,,,,,,,,-6.432,-6.432
+1011771,502,"Flynn","Perez","NTH","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1006114,768,"Bailey J.","Williams","WCE","RUC","FWD",7,,,,,,,,,0,,,,,,,,,,,,-6.8,-8.066,-6.8
+1009260,275,"Sam","Flanders","GCS","FWD",,7,,49,,,,,,,49,,,,,,,,,,,,,-3.618,-3.618
+298417,7,"Ben","Davis","ADE","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1011992,691,"Louis","Butler","WBD","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+998321,538,"Joel","Garner","PTA","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1013133,649,"Braeden","Campbell","SYD","MID","FWD",7,,,,,,,,,45,,,,,,,,,,,-4.889,,-3.981,-3.981
+998218,580,"Ryan","Garthwaite","RIC","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1008312,126,"Liam","Stocker","CAR","DEF",,7,,56,,,,,,,42.5,,,,,,,,,,-5.774,,,,-5.774
+281280,454,"Neville","Jetta","MEL","DEF",,7,,,,,,,,,42,,,,,,,,,,-5.828,,,,-5.828
+1013093,405,"Denver","Grainger-Barras","HAW","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1005988,234,"Liam","Henry","FRE","FWD",,7,,,,,,,,,28.5,,,,,,,,,,,,,-5.479,-5.479
+999715,273,"Jy","Farrar","GCS","FWD",,7,,43,,,,,,,59,,,,,,,,,,,,,-2.71,-2.71
+998791,748,"Jamaine","Jones","WCE","FWD",,7,,119,,,,,,,46,,,,,,,,,,,,,-3.89,-3.89
+260246,540,"Tyson","Goldsack","PTA","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1002259,115,"Lochie","O'Brien","CAR","MID",,7,,,,,,,,,50,,,,,,,,,,,-4.474,,,-4.474
+1004870,323,"Zach","Guthrie","GEE","DEF","MID",7,,37,,,,,,,46,,,,,,,,,,-5.396,-4.806,,,-4.806
+1002231,590,"Patrick","Naish","RIC","MID",,7,,5,,,,,,,5,,,,,,,,,,,-8.208,,,-8.208
+1012862,280,"Elijah","Hollands","GCS","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+998414,766,"Daniel","Venables","WCE","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1003520,627,"Darragh","Joyce","STK","DEF",,7,,40,,,,,,,37.5,,,,,,,,,,-6.314,,,,-6.314
+1004995,4,"Jordon","Butts","ADE","DEF",,7,,88,,,,,,,58,,,,,,,,,,-4.1,,,,-4.1
+1009385,79,"Deven","Robertson","BRL","MID","FWD",7,,69,,,,,,,76,,,,,,,,,,,-2.316,,-1.167,-1.167
+1015827,179,"Nikolas","Cox","ESS","DEF","FWD",7,,49,,,,,,,49,,,,,,,,,,-5.072,,,-3.618,-3.618
+999321,230,"Michael","Frederick","FRE","FWD",,7,,47,,,,,,,55.5,,,,,,,,,,,,,-3.028,-3.028
+1008288,483,"Atu","Bosenavulagi","NTH","FWD",,7,,59,,,,,,,62,,,,,,,,,,,,,-2.438,-2.438
+1011803,725,"Cody","Weightman","WBD","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1015873,203,"Archie","Perkins","ESS","MID","FWD",7,,94,,,,,,,50,,,,,,,,,,,-4.474,,-3.527,-3.527
+1011929,119,"Sam","Philp","CAR","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1012817,206,"Zach","Reid","ESS","DEF",,7,,,,,,,,,53,,,,,,,,,,-4.64,,,,-4.64
+1004949,665,"Matthew","Ling","SYD","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1012218,32,"Luke","Pedlar","ADE","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1009223,176,"Ned","Cahill","ESS","FWD",,7,,,,,,,,,26,,,,,,,,,,,,,-5.706,-5.706
+1005330,446,"Kade","Chandler","MEL","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1000061,573,"Callum","Coleman-Jones","RIC","RUC","FWD",7,,,,,,,,,0,,,,,,,,,,,,-6.8,-8.066,-6.8
+1013974,148,"Mark","Keane","COL","DEF",,7,,59,,,,,,,53.5,,,,,,,,,,-4.586,,,,-4.586
+1012805,356,"Tanner","Bruhn","GWS","MID",,7,,,,,,,,,32,,,,,,,,,,,-5.968,,,-5.968
+281052,745,"Mark","Hutchings","WCE","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+290246,484,"Tom","Campbell","NTH","RUC","FWD",7,,73,,,,,,,45.5,,,,,,,,,,,,-4.068,-3.936,-3.936
+1005793,735,"Jarrod","Cameron","WCE","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1011659,505,"Tom","Powell","NTH","MID",,7,,97,,,,,,,75,,,,,,,,,,,-2.399,,,-2.399
+1013224,223,"Heath","Chapman","FRE","DEF",,7,,28,,,,,,,48,,,,,,,,,,-5.18,,,,-5.18
+1008752,40,"Kieran","Strachan","ADE","RUC","FWD",7,,,,,,,,,0,,,,,,,,,,,,-6.8,-8.066,-6.8
+1002351,50,"Connor","Ballenden","BRL","FWD",,7,,,,,,,,,16,,,,,,,,,,,,,-6.613,-6.613
+1009226,578,"Thomson","Dow","RIC","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1008537,423,"Josh","Morris","HAW","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1015862,390,"Conor","Stone","GWS","FWD",,7,,,,,,,,,34,,,,,,,,,,,,,-4.98,-4.98
+1012014,686,"Chad","Warner","SYD","FWD",,7,,61,22859,"Ariana Grundy","Lester",TRUE,"scoring","FWD",73,,,,,,,,,,,,,-1.44,-1.44
+1009380,300,"Jeremy","Sharp","GCS","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1011583,546,"Lachlan","Jones","PTA","DEF",,7,,,,,,,,,65,,,,,,,,,,-3.344,,,,-3.344
+1008940,329,"Ben","Jarvis","GEE","DEF","FWD",7,,,,,,,,,0,,,,,,,,,,-10.364,,,-8.066,-8.066
+1008139,440,"Toby","Bedford","MEL","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1008285,149,"Will","Kelly","COL","FWD",,7,,,,,,,,,26,,,,,,,,,,,,,-5.706,-5.706
+296984,374,"Tom","Hutchesson","GWS","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1012860,145,"Oliver","Henry","COL","FWD",,7,,,,,,,,,9,,,,,,,,,,,,,-7.249,-7.249
+1015777,352,"Ryan","Angwin","GWS","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1013532,60,"Tom","Fullarton","BRL","RUC","FWD",7,,,,,,,,,39,,,,,,,,,,,,-4.458,-4.526,-4.458
+1005599,742,"Luke","Foley","WCE","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1012828,151,"Finlay","Macrae","COL","MID","FWD",7,,23,,,,,,,37,,,,,,,,,,,-5.553,,-4.707,-4.707
+1018075,12,"Lachlan","Gollant","ADE","DEF","MID",7,,,,,,,,,0,,,,,,,,,,-10.364,-8.623,,,-8.623
+1011254,31,"Ronin","O'Connor","ADE","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1011981,44,"Josh","Worrell","ADE","DEF","FWD",7,,,,,,,,,0,,,,,,,,,,-10.364,,,-8.066,-8.066
+298336,55,"Nakia","Cockatoo","BRL","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1006150,63,"Tom","Joyce","BRL","FWD","MID",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1013978,66,"James","Madden","BRL","DEF","FWD",7,,47,,,,,,,47,,,,,,,,,,-5.288,,,-3.8,-3.8
+1006085,70,"Connor","McFadyen","BRL","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1009386,76,"Jaxon","Prior","BRL","DEF",,7,,62,,,,,,,56,,,,,,,,,,-4.316,,,,-4.316
+1009242,83,"Brock","Smith","BRL","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1006033,84,"Ely","Smith","BRL","FWD","MID",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1002938,104,"Josh","Honey","CAR","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1009241,106,"Brodie","Kemp","CAR","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1013973,116,"Matthew","Owies","CAR","FWD",,7,,67,,,,,,,67,,,,,,,,,,,,,-1.984,-1.984
+1002942,122,"Sam","Ramsay","CAR","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1009186,132,"Trent","Bianco","COL","DEF","MID",7,,,,,,,,,0,,,,,,,,,,-10.364,-8.623,,,-8.623
+1000960,150,"Max","Lynch","COL","RUC","FWD",7,,,,,,,,,0,,,,,,,,,,,,-6.8,-8.066,-6.8
+1005107,160,"Nathan","Murphy","COL","DEF",,7,,55,,,,,,,51,,,,,,,,,,-4.856,,,,-4.856
+1015793,165,"Jay","Rantall","COL","MID",,7,,,,,,,,,25,,,,,,,,,,,-6.549,,,-6.549
+1013975,171,"Anton","Tohill","COL","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+993797,172,"Tom","Wilson","COL","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1011954,175,"Nick","Bryan","ESS","RUC",,7,,51,,,,,,,51,,,,,,,,,,,,-3.738,,-3.738
+1020224,189,"Tom","Hird","ESS","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1006506,192,"Lachlan","Johnson","ESS","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1011755,193,"Harrison","Jones","ESS","FWD",,7,,79,,,,,,,41,,,,,,,,,,,,,-4.344,-4.344
+1018969,196,"Cian","McBride","ESS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1019156,199,"Ross","McQuillan","ESS","DEF","FWD",7,,,,,,,,,0,,,,,,,,,,-10.364,,,-8.066,-8.066
+1002354,232,"Stefan","Giro","FRE","MID",,7,,,,,,,,,63,,,,,,,,,,,-3.395,,,-3.395
+1000980,239,"Lloyd","Meek","FRE","RUC",,7,,,,,,,,,56,,,,,,,,,,,,-3.438,,-3.438
+1009381,249,"Leno","Thomas","FRE","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1004850,252,"Luke","Valente","FRE","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1009334,268,"Matt","Conroy","GCS","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+1000044,289,"Jez","McLennan","GCS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1016116,292,"Patrick","Murtagh","GCS","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1005986,297,"Malcolm","Rosas","GCS","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+281075,303,"Rory","Thompson","GCS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1019157,304,"Luke","Towey","GCS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1006101,311,"Oscar","Brownless","GEE","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1009229,318,"Sam","De Koning","GEE","DEF",,7,,,,,,,,,27,,,,,,,,,,-7.448,,,,-7.448
+1017255,320,"Francis","Evans","GEE","FWD",,7,,,,,,,,,27.5,,,,,,,,,,,,,-5.57,-5.57
+997254,332,"Nathan","Kreuger","GEE","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1013977,338,"Stefan","Okunbor","GEE","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1004948,346,"Cooper","Stephens","GEE","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1008603,349,"Cameron","Taheny","GEE","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1008436,354,"Kieren","Briggs","GWS","DEF","FWD",7,,,,,,,,,0,,,,,,,,,,-10.364,,,-8.066,-8.066
+1014038,355,"Callum M.","Brown","GWS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+993902,366,"Matt","Flynn","GWS","RUC",,7,,,,,,,,,83.5,,,,,,,,,,,,-1.786,,-1.786
+1002296,387,"Nick","Shipley","GWS","MID",,7,,,,,,,,,34,,,,,,,,,,,-5.802,,,-5.802
+998225,388,"Zach","Sproule","GWS","FWD",,7,,,,,,,,,33,,,,,,,,,,,,,-5.07,-5.07
+1005150,414,"Emerson","Jeka","HAW","FWD",,7,,26,,,,,,,26,,,,,,,,,,,,,-5.706,-5.706
+1006030,416,"Jacob","Koschitzke","HAW","DEF",,7,,66,,,,,,,57.5,,,,,,,,,,-4.154,,,,-4.154
+1011873,429,"Harry","Pepper","HAW","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1001024,431,"Ned","Reeves","HAW","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+1014081,442,"Austin","Bradtke","MEL","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+1013409,456,"James","Jordon","MEL","MID",,7,,91,,,,,,,78,,,,,,,,,,,-2.15,,,-2.15
+1004695,465,"Aaron","Nietschke","MEL","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1015781,485,"Charlie","Comben","NTH","RUC","FWD",7,,,,,,,,,0,,,,,,,,,,,,-6.8,-8.066,-6.8
+1006653,499,"Matt","McGuinness","NTH","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1009191,524,"Miles","Bergman","PTA","FWD",,7,,76,,,,,,,58,,,,,,,,,,,,,-2.801,-2.801
+1008531,527,"Trent","Burgoyne","PTA","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+999320,537,"Martin","Frederick","PTA","DEF",,7,,74,,,,,,,81,,,,,,,,,,-1.616,,,,-1.616
+1002248,543,"Sam","Hayes","PTA","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+1005326,554,"Jackson","Mead","PTA","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1009389,556,"Jake","Pasini","PTA","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1009195,561,"Dylan","Williams","PTA","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1008297,575,"Riley","Collier-Dawkins","RIC","MID",,7,,76,,,,,,,76,,,,,,,,,,,-2.316,,,-2.316
+1009308,577,"Noah","Cumberland","RIC","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1009313,587,"Will","Martyn","RIC","MID",,7,,,,,,,,,27,,,,,,,,,,,-6.383,,,-6.383
+1002403,589,"Ben","Miller","RIC","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1006193,592,"Bigoa","Nyuon","RIC","DEF","RUC",7,,,,,,,,,0,,,,,,,,,,-10.364,,-6.8,,-6.8
+1011985,595,"Hugo","Ralphsmith","RIC","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1013976,605,"Sam","Alabakis","STK","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+1011994,609,"Ryan","Byrnes","STK","MID",,7,,52,,,,,,,52,,,,,,,,,,,-4.308,,,-4.308
+1002266,613,"Oscar","Clavarino","STK","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1009228,615,"Leo","Connolly","STK","DEF","MID",7,,,,,,,,,0,,,,,,,,,,-10.364,-8.623,,,-8.623
+1004113,657,"Will","Gould","SYD","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1019158,674,"Barry","O'Connor","SYD","DEF","FWD",7,,,,,,,,,0,,,,,,,,,,-10.364,,,-8.066,-8.066
+1006533,700,"Riley","Garcia","WBD","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+998782,708,"Buku","Khamis","WBD","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+992330,720,"Jordon","Sweet","WBD","RUC",,7,,,,,,,,,73,,,,,,,,,,,,-2.417,,-2.417
+1011437,740,"Harry","Edwards","WCE","DEF",,7,,61,,,,,,,61,,,,,,,,,,-3.776,,,,-3.776
+1011243,746,"Callum","Jamieson","WCE","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+1011464,747,"Ben","Johnson","WCE","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1015889,328,"Max","Holmes","GEE","MID","FWD",7,,,,,,,,,53,,,,,,,,,,,-4.225,,-3.255,-3.255
+1012807,1,"Sam","Berry","ADE","MID",,7,,43,,,,,,,54.5,,,,,,,,,,,-4.1,,,-4.1
+1018335,5,"Brayden","Cook","ADE","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+999316,33,"James","Rowe","ADE","FWD",,7,,36,,,,,,,40,,,,,,,,,,,,,-4.435,-4.435
+1013256,56,"Blake","Coleman","BRL","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1007099,81,"Harry","Sharp","BRL","DEF","MID",7,,,,,,,,,35.5,,,,,,,,,,-6.53,-5.677,,,-5.677
+1016189,85,"Henry","Smith","BRL","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+1013233,90,"Jack","Carroll","CAR","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1008510,100,"Corey","Durdin","CAR","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1004757,155,"Beau","McCreery","COL","FWD",,7,,57,,,,,,,56.5,,,,,,,,,,,,,-2.937,-2.937
+1013278,156,"Reef","McInnes","COL","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1012842,157,"Liam","McMahon","COL","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1011589,163,"Caleb","Poulter","COL","MID","FWD",7,,52,,,,,,,52,,,,,,,,,,,-4.308,,-3.346,-3.346
+1012837,174,"Cody","Brand","ESS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1015712,182,"Joshua","Eyre","ESS","DEF","FWD",7,,,,,,,,,0,,,,,,,,,,-10.364,,,-8.066,-8.066
+1013220,241,"Nathan","O'Driscoll","FRE","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1009410,253,"Brandon","Walker","FRE","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1009401,256,"Joel","Western","FRE","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1016433,336,"Shannon","Neale","GEE","RUC","FWD",7,,,,,,,,,0,,,,,,,,,,,,-6.8,-8.066,-6.8
+1007101,347,"Nick","Stevens","GEE","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1012863,365,"Cameron","Fleeton","GWS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1004530,394,"Jacob","Wehr","GWS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1013511,397,"Tyler","Brockman","HAW","MID","FWD",7,,,,,,,,,36.5,,,,,,,,,,,-5.594,,-4.753,-4.753
+1012830,403,"Connor","Downie","HAW","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1018016,420,"Seamus","Mitchell","HAW","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1012825,441,"Jake","Bowey","MEL","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1012826,458,"Bailey","Laurie","MEL","DEF","FWD",7,,,,,,,,,0,,,,,,,,,,-10.364,,,-8.066,-8.066
+1013086,471,"Fraser","Rosman","MEL","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1012833,490,"Eddie","Ford","NTH","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1012852,496,"Charlie","Lazzaro","NTH","MID",,7,,43,,,,,,,34,,,,,,,,,,,-5.802,,,-5.802
+1011647,508,"Phoenix","Spicer","NTH","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1012881,549,"Ollie","Lord","PTA","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1009551,598,"Maurice","Rioli","RIC","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1012386,600,"Samson","Ryan","RIC","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+998195,623,"Thomas","Highmore","STK","DEF",,7,,,,,,,,,68.5,,,,,,,,,,-2.966,,,,-2.966
+1015714,635,"Matthew","McLeod-Allison","STK","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1013128,659,"Errol","Gulden","SYD","MID",,7,,54,,,,,,,68,,,,,,,,,,,-2.98,,,-2.98
+1015822,688,"Dominic","Bedendo","WBD","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1006576,741,"Luke","Edwards","WCE","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1009291,769,"Isiah","Winder","WCE","DEF","MID",7,,,,,,,,,31,,,,,,,,,,-7.016,-6.051,,,-6.051
+1009029,2,"James","Borlase","ADE","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1016082,29,"Tariek","Newchurch","ADE","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1013260,73,"Carter","Michael","BRL","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1021659,87,"Deividas","Uosis","BRL","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1012409,117,"Luke","Parks","CAR","DEF",,7,,58,,,,,,,51,,,,,,,,,,-4.856,,,,-4.856
+1015901,136,"Isaac","Chugg","COL","DEF","FWD",7,,,,,,,,,0,,,,,,,,,,-10.364,,,-8.066,-8.066
+1012857,142,"Jack","Ginnivan","COL","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1012819,250,"Josh","Treacy","FRE","RUC","FWD",7,,,,,,,,,22,,,,,,,,,,,,-5.479,-6.069,-5.479
+1013268,270,"Alex","Davies","GCS","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1013263,276,"Aiden","Fyfe","GCS","DEF","MID",7,,,,,,,,,0,,,,,,,,,,-10.364,-8.623,,,-8.623
+1005992,283,"Joel","Jeffrey","GCS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1013247,293,"Rhys","Nicholls","GCS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1009320,294,"Hawego Paul","Oea","GCS","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1007049,350,"Paul","Tsapatolis","GEE","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+1015688,386,"Will","Shaw","GWS","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1008600,432,"Jack","Saunders","HAW","MID","FWD",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+1013191,516,"Patrick","Walker","NTH","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1012310,560,"Taj","Schofield","PTA","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1021660,574,"Mate","Colina","RIC","RUC",,7,,,,,,,,,0,,,,,,,,,,,,-6.8,,-6.8
+1011650,650,"Malachy","Carruthers","SYD","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+1013138,682,"Marc","Sheather","SYD","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1009015,714,"Lachlan","McNeil","WBD","MID",,7,,,,,,,,,47.5,,,,,,,,,,,-4.681,,,-4.681
+1011449,764,"Zane","Trew","WCE","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1008478,773,"Rhyan","Mansell","RIC","DEF",,7,,46,,,,,,,44.5,,,,,,,,,,-5.558,,,,-5.558
+992597,774,"Paul","Hunter","STK","RUC",,7,,,,,,,,,44,,,,,,,,,,,,-4.158,,-4.158
+992048,775,"Anthony","Scott","WBD","MID","FWD",7,,63,,,,,,,61,,,,,,,,,,,-3.561,,-2.529,-2.529
+298445,776,"Alec","Waterman","ESS","FWD",,7,,,,,,,,,56,,,,,,,,,,,,,-2.983,-2.983
+1000864,777,"Lachlan","Bramble","HAW","MID",,7,,,,,,,,,0,,,,,,,,,,,-8.623,,,-8.623
+1008975,778,"Kaine","Baldwin","ESS","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+1008230,779,"Nicholas","Murray","ADE","DEF",,7,,59,,,,,,,50,,,,,,,,,,-4.964,,,,-4.964
+1009288,781,"Deakyn","Smith","MEL","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+992472,780,"Oscar","McDonald","CAR","DEF",,7,,,,,,,,,53,,,,,,,,,,-4.64,,,,-4.64
+280969,434,"Tom","*** Scully","HAW","FWD","MID",7,,,,,,,,,0,,,,,,,,,,,-8.623,,-8.066,-8.066
+250417,11,"Bryce","*** Gibbs","ADE","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
+291821,428,"Jonathon","*** Patton","HAW","FWD",,7,,,,,,,,,0,,,,,,,,,,,,,-8.066,-8.066
+280933,638,"Dylan","*** Roberton","STK","DEF",,7,,,,,,,,,0,,,,,,,,,,-10.364,,,,-10.364
