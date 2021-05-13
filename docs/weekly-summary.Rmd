@@ -152,7 +152,7 @@ totw <- bind_rows(totw[totw$position!='FWD',], totw[totw$position=='FWD',]) %>%
 .position-header{
   display: flex;
   justify-content: center;
-  background-color: #09913f;
+  background-color: black;
   border-radius: 6px;
   font-size: 11px;
   font-weight: 700;
@@ -309,7 +309,7 @@ div(class='field-container',
     
     div(class='field-spacer'),
     div(class='position-container',
-      div(class='position-row', div(class='position-header','FOWARDS')),
+      div(class='position-row', div(class='position-header','FORWARDS')),
       div(class='position-row',
         div(class='player-cell',
           div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[14],'.png'))),
