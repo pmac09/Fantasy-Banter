@@ -79,6 +79,46 @@ highchart() %>%
 
 ```
 
+## Fixture Strength
+```{r, fixture_strength, echo=FALSE}
+
+fs <- fixture_data %>%
+  filter(!is.na(team_score)) %>%
+  filter(team_score > 0) %>%
+  group_by(round) %>%
+  mutate(score_rank = rank(-team_score)) %>%
+  mutate(opp_score_rank = rank(-opponent_score)) %>%
+  ungroup() %>%
+  group_by(coach) %>%
+  summarise(
+    avg_rank = round(mean(score_rank),1),
+    avg_opp_rank = round(mean(opp_score_rank),1)
+  ) %>%
+  arrange(avg_rank)
+
+highchart() %>%
+  hc_chart(type = 'bar') %>%
+  hc_title(text = 'Season Performance') %>%
+  hc_subtitle(text= 'Average Rank of Weekly Scores') %>%
+  hc_legend(enabled=FALSE) %>%
+  hc_xAxis(categories=fs$coach) %>%
+  hc_yAxis(min=1) %>%
+  hc_add_series(data=fs$avg_rank, color='green')
+
+fs <- fs %>%
+  arrange(avg_opp_rank)
+
+highchart() %>%
+  hc_chart(type = 'bar') %>%
+  hc_title(text = 'Fixture Difficulty') %>%
+  hc_subtitle(text= "Average Rank of Opponent's Weekly Scores") %>%
+  hc_legend(enabled=FALSE) %>%
+  hc_xAxis(categories=fs$coach) %>%
+  hc_yAxis(min=1) %>%
+  hc_add_series(data=fs$avg_opp_rank, color='red')
+
+```
+
 ## ASL Team of the Week
 ```{r, team_of_the_week, echo=FALSE}
 
@@ -105,23 +145,10 @@ totw_summary <- totw_data %>%
 
 totw <- totw_data %>%
   filter(round == max(round)) %>%
-  mutate(name=paste0(substr(first_name,1,1),'.',last_name)) %>%
-  select(position, feed_id, rank, name, points, coach)
+  mutate(name=paste0(substr(first_name,1,1),'.',last_name))
 
-totw <- bind_rows(totw[totw$position!='FWD',], totw[totw$position=='FWD',]) %>%
-  select(rank, feed_id, name, points, coach)
-
-#kbl(totw) %>%
-  # kable_paper("striped", full_width = F) %>%
-  # pack_rows("Defence", 1, 5) %>%
-  # pack_rows("Midfield", 6, 12) %>%
-  # pack_rows("Ruck", 13, 13) %>%
-  # pack_rows("Forward", 14, 18) 
-
-
-#kbl(totw_summary[c(1,3,4,2,5),c(1, rev(order(totw_summary[5,c(2:9)])+1))])
+totw <- bind_rows(totw[totw$position!='FWD',], totw[totw$position=='FWD',]) 
 ```
-
 
 ```{css, echo=FALSE}
 
@@ -216,143 +243,369 @@ totw <- bind_rows(totw[totw$position!='FWD',], totw[totw$position=='FWD',]) %>%
 }
 ```
 
-```{r, fieldView, echo=FALSE}
-
-div(class='field-container',
-  div(class='field-image',
+### Round `r max(totw$round)` Score: `r sum(totw$points)`
+```{r, totw_field, echo=FALSE}
+div(
+  div(class='field-container',
+    div(class='field-image',
+        
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','DEFENDERS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[1],'.png'))),
+            div(class='player-name', totw$name[1]),
+            div(class='player-score', totw$points[1]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[2],'.png'))),
+            div(class='player-name', totw$name[2]),
+            div(class='player-score', totw$points[2]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[3],'.png'))),
+            div(class='player-name', totw$name[3]),
+            div(class='player-score', totw$points[3]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[4],'.png'))),
+            div(class='player-name', totw$name[4]),
+            div(class='player-score', totw$points[5]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[5],'.png'))),
+            div(class='player-name', totw$name[5]),
+            div(class='player-score', totw$points[5]),
+          )
+        )
+      ),
       
-    div(class='field-spacer'),
-    div(class='position-container',
-      div(class='position-row', div(class='position-header','DEFENDERS')),
-      div(class='position-row',
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[1],'.png'))),
-          div(class='player-name', totw$name[1]),
-          div(class='player-score', totw$points[1]),
-        ),
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[2],'.png'))),
-          div(class='player-name', totw$name[2]),
-          div(class='player-score', totw$points[2]),
-        ),
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[3],'.png'))),
-          div(class='player-name', totw$name[3]),
-          div(class='player-score', totw$points[3]),
-        ),
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[4],'.png'))),
-          div(class='player-name', totw$name[4]),
-          div(class='player-score', totw$points[5]),
-        ),
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[5],'.png'))),
-          div(class='player-name', totw$name[5]),
-          div(class='player-score', totw$points[5]),
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','MIDFIELDERS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[6],'.png'))),
+            div(class='player-name', totw$name[6]),
+            div(class='player-score', totw$points[6]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[7],'.png'))),
+            div(class='player-name', totw$name[7]),
+            div(class='player-score', totw$points[7]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[8],'.png'))),
+            div(class='player-name', totw$name[8]),
+            div(class='player-score', totw$points[8]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[9],'.png'))),
+            div(class='player-name', totw$name[9]),
+            div(class='player-score', totw$points[9]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[10],'.png'))),
+            div(class='player-name', totw$name[10]),
+            div(class='player-score', totw$points[10]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[11],'.png'))),
+            div(class='player-name', totw$name[11]),
+            div(class='player-score', totw$points[11]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[12],'.png'))),
+            div(class='player-name', totw$name[12]),
+            div(class='player-score', totw$points[12]),
+          )
         )
-      )
-    ),
-    
-    div(class='field-spacer'),
-    div(class='position-container',
-      div(class='position-row', div(class='position-header','MIDFIELDERS')),
-      div(class='position-row',
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[6],'.png'))),
-          div(class='player-name', totw$name[6]),
-          div(class='player-score', totw$points[6]),
-        ),
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[7],'.png'))),
-          div(class='player-name', totw$name[7]),
-          div(class='player-score', totw$points[7]),
-        ),
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[8],'.png'))),
-          div(class='player-name', totw$name[8]),
-          div(class='player-score', totw$points[8]),
-        ),
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[9],'.png'))),
-          div(class='player-name', totw$name[9]),
-          div(class='player-score', totw$points[9]),
-        ),
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[10],'.png'))),
-          div(class='player-name', totw$name[10]),
-          div(class='player-score', totw$points[10]),
-        ),
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[11],'.png'))),
-          div(class='player-name', totw$name[11]),
-          div(class='player-score', totw$points[11]),
-        ),
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[12],'.png'))),
-          div(class='player-name', totw$name[12]),
-          div(class='player-score', totw$points[12]),
+      ),
+      
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','RUCKS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[13],'.png'))),
+            div(class='player-name', totw$name[13]),
+            div(class='player-score', totw$points[13]),
+          )
         )
-      )
-    ),
-    
-    div(class='field-spacer'),
-    div(class='position-container',
-      div(class='position-row', div(class='position-header','RUCKS')),
-      div(class='position-row',
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[13],'.png'))),
-          div(class='player-name', totw$name[13]),
-          div(class='player-score', totw$points[13]),
+      ),
+      
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','FORWARDS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[14],'.png'))),
+            div(class='player-name', totw$name[14]),
+            div(class='player-score', totw$points[14]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[15],'.png'))),
+            div(class='player-name', totw$name[15]),
+            div(class='player-score', totw$points[15]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[16],'.png'))),
+            div(class='player-name', totw$name[16]),
+            div(class='player-score', totw$points[16]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[17],'.png'))),
+            div(class='player-name', totw$name[17]),
+            div(class='player-score', totw$points[17]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[18],'.png'))),
+            div(class='player-name', totw$name[18]),
+            div(class='player-score', totw$points[18]),
+          )
         )
-      )
-    ),
-    
-    div(class='field-spacer'),
-    div(class='position-container',
-      div(class='position-row', div(class='position-header','FORWARDS')),
-      div(class='position-row',
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[14],'.png'))),
-          div(class='player-name', totw$name[14]),
-          div(class='player-score', totw$points[14]),
-        ),
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[15],'.png'))),
-          div(class='player-name', totw$name[15]),
-          div(class='player-score', totw$points[15]),
-        ),
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[16],'.png'))),
-          div(class='player-name', totw$name[16]),
-          div(class='player-score', totw$points[16]),
-        ),
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[17],'.png'))),
-          div(class='player-name', totw$name[17]),
-          div(class='player-score', totw$points[17]),
-        ),
-        div(class='player-cell',
-          div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[18],'.png'))),
-          div(class='player-name', totw$name[18]),
-          div(class='player-score', totw$points[18]),
-        )
-      )
-    ),
-    
-    div(class='field-spacer')
-  )
+      ),
+      
+      div(class='field-spacer')
+    )
+  ),
+  div(class='field-spacer')
 )
+```
+```{r, totw_round, echo=FALSE}
 
+totw_round <- totw_data %>%
+  group_by(coach, round) %>%
+  summarise(
+    n = n(),
+    .groups='drop'
+  ) %>%
+  spread(round, n) %>%
+  adorn_totals(where='col') %>%
+  arrange(desc(Total))
+
+totw_round[is.na(totw_round)] <- 0
+
+totw_round_hc <- totw_round %>%
+  select(-Total) %>%
+  pivot_longer(cols = -coach, names_to = "round", values_to = "n", names_pattern = "(\\d)$") %>%
+  group_by(round) %>%
+  do(data = list_parse2(data.frame(.$coach, .$n))) %>%
+  ungroup() %>%
+  rename(name = round)
+
+highchart() %>%
+  hc_chart(type = 'bar') %>%
+  hc_title(text = 'Nominations by Round') %>%
+  hc_subtitle(text= 'Team of the Week') %>%
+  hc_plotOptions(series=list(stacking='normal')) %>%
+  hc_xAxis(categories=totw_round$coach) %>%
+  hc_add_series_list(totw_round_hc)
+  
+```
+```{r, totw_pos, echo=FALSE}
+
+totw_pos <- totw_data %>%
+  group_by(coach,position) %>%
+  summarise(
+    n = n(),
+    .groups='drop'
+  ) %>%
+  spread(position, n) %>%
+  adorn_totals(where='col') %>%
+  arrange(desc(Total))
+
+totw_pos[is.na(totw_pos)] <- 0
+
+totw_pos_hc <- totw_pos  %>%
+  select(-Total) %>%
+  pivot_longer(cols = -coach, names_to = "position", values_to = "n") %>%
+  group_by(position) %>%
+  do(data = list_parse2(data.frame(.$coach, .$n))) %>%
+  ungroup() %>%
+  rename(name = position)
+
+highchart() %>%
+  hc_chart(type = 'bar') %>%
+  hc_title(text = 'Nominations by Position') %>%
+  hc_subtitle(text= 'Team of the Week') %>%
+  hc_plotOptions(series=list(stacking='normal')) %>%
+  hc_xAxis(categories=totw_round$coach) %>%
+  hc_add_series_list(totw_pos_hc)
+
+```
+
+## The Mcgoos of the Week
+```{r, mcgoos_of_the_week, echo=FALSE}
+
+motw_data <- player_data %>%
+  mutate(name = paste0(substr(first_name,1,1),'.',last_name)) %>%
+  mutate(last_round = round-1) %>%
+  select(feed_id, name, pos_1, team, round, points, last_round) %>%
+  inner_join(player_data[,c('feed_id','round','avg')], by=c('feed_id', 'last_round'='round')) %>%
+  filter(is.na(team)) %>%
+  filter(!is.na(points)) %>%
+  arrange(round, pos_1, desc(avg), desc(points)) %>%
+  group_by(round, pos_1) %>%
+  mutate(rank = rank(-avg, ties.method = 'first')) %>%
+  ungroup() %>%
+  filter((pos_1 == 'DEF' & rank <= 5)|
+         (pos_1 == 'MID' & rank <= 7)|
+         (pos_1 == 'RUC' & rank <= 1)|
+         (pos_1 == 'FWD' & rank <= 5)) 
+           
+motw_summary <- motw_data %>%
+  group_by(round) %>%
+  summarise(
+    score = sum(points),
+    .groups='drop'
+  )
+
+motw <- motw_data %>%
+  filter(round == max(round))
+
+motw <- bind_rows(motw[motw$pos_1!='FWD',], motw[motw$pos_1=='FWD',]) 
+
+```
+The Mcgoos are the highest averaging players from last round that were available on the waiver this week. These spuds are doing their best to prove themselves and fight their way onto an ASL list. Similar to the Herald Sun's "Kiss of Death", you wouldn't want to be outscored by this team.
+
+### Round `r max(motw$round)` Score: `r sum(motw$points)`
+```{r, motw_field, echo=FALSE}
+div(
+  div(class='field-container',
+    div(class='field-image',
+        
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','DEFENDERS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[1],'.png'))),
+            div(class='player-name', motw$name[1]),
+            div(class='player-score', motw$points[1]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[2],'.png'))),
+            div(class='player-name', motw$name[2]),
+            div(class='player-score', motw$points[2]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[3],'.png'))),
+            div(class='player-name', motw$name[3]),
+            div(class='player-score', motw$points[3]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[4],'.png'))),
+            div(class='player-name', motw$name[4]),
+            div(class='player-score', motw$points[5]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[5],'.png'))),
+            div(class='player-name', motw$name[5]),
+            div(class='player-score', motw$points[5]),
+          )
+        )
+      ),
+      
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','MIDFIELDERS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[6],'.png'))),
+            div(class='player-name', motw$name[6]),
+            div(class='player-score', motw$points[6]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[7],'.png'))),
+            div(class='player-name', motw$name[7]),
+            div(class='player-score', motw$points[7]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[8],'.png'))),
+            div(class='player-name', motw$name[8]),
+            div(class='player-score', motw$points[8]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[9],'.png'))),
+            div(class='player-name', motw$name[9]),
+            div(class='player-score', motw$points[9]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[10],'.png'))),
+            div(class='player-name', motw$name[10]),
+            div(class='player-score', motw$points[10]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[11],'.png'))),
+            div(class='player-name', motw$name[11]),
+            div(class='player-score', motw$points[11]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[12],'.png'))),
+            div(class='player-name', motw$name[12]),
+            div(class='player-score', motw$points[12]),
+          )
+        )
+      ),
+      
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','RUCKS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[13],'.png'))),
+            div(class='player-name', motw$name[13]),
+            div(class='player-score', motw$points[13]),
+          )
+        )
+      ),
+      
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','FORWARDS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[14],'.png'))),
+            div(class='player-name', motw$name[14]),
+            div(class='player-score', motw$points[14]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[15],'.png'))),
+            div(class='player-name', motw$name[15]),
+            div(class='player-score', motw$points[15]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[16],'.png'))),
+            div(class='player-name', motw$name[16]),
+            div(class='player-score', motw$points[16]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[17],'.png'))),
+            div(class='player-name', motw$name[17]),
+            div(class='player-score', motw$points[17]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[18],'.png'))),
+            div(class='player-name', motw$name[18]),
+            div(class='player-score', motw$points[18]),
+          )
+        )
+      ),
+      
+      div(class='field-spacer')
+    )
+  ),
+  div(class='field-spacer')
+)
 ```
 
 
 
 
 ## Wish list
-- team of the week
 - injury assessment
-- fixture strength
-- waiver team of the round
 - trade tracker
 - positional averages
 - draft heat map
