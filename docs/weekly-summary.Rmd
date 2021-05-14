@@ -21,101 +21,11 @@ source('/Users/paulmcgrath/Github/Addicts-Supercoach-League/functions/supercoach
 #player_data <- get_player_data(cid,tkn)
 #fixture_data <- get_fixture_data(cid, tkn)
 
-#saveRDS(player_data, '../data/2021/player_data.RDS')
+#saveRDS(player_data, './data/2021/player_data.RDS')
 #saveRDS(fixture_data, '../data/2021/fixture_data.RDS')
 
 player_data <- readRDS('../data/2021/player_data.RDS')
 fixture_data <- readRDS('../data/2021/fixture_data.RDS')
-
-```
-
-## Score Summary
-```{r, boxplots, echo=FALSE}
-
-boxplot_data <- fixture_data %>%
-  filter(!is.na(team_score)) %>%
-  filter(team_score > 0)
-  
-box_summary <- boxplot(team_score ~ coach, data = boxplot_data, range=3, plot=FALSE)
-box_order <- rev(order(box_summary$stats[3,]))
-box_data <- t(box_summary$stats[,box_order])
-rownames(box_data) <- box_summary$names[box_order]
-
-highchart() %>%
-  hc_chart(type = 'boxplot') %>%
-  hc_xAxis(categories = box_summary$names[box_order]) %>%
-  hc_add_series(data=box_data)
-
-```
-
-## Power Rankings
-```{r, power_rankings, echo=FALSE}
-
-rankings_data <- fixture_data %>%
-  filter(!is.na(team_score)) %>%
-  filter(team_score > 0) %>%
-  select(round, team, coach, team_score) %>% 
-  arrange(coach, round) %>%
-  group_by(coach) %>%
-  mutate(avg3 = round(rollapply(team_score,3,mean,align='right',fill='extend'),1)) %>%
-  ungroup() %>%
-  select(round, coach, avg3) %>%
-  spread(coach, avg3)
-
-#  rank(rankings_data[nrow(rankings_data),c(2:9)]) -
-# rank(rankings_data[nrow(rankings_data)-1,c(2:9)])
-
-highchart() %>%
-  hc_chart(type = 'spline') %>%
-  hc_xAxis(categories=rankings_data$round) %>%
-  hc_add_series(name=colnames(rankings_data)[2], data=rankings_data$Anthony) %>%
-  hc_add_series(name=colnames(rankings_data)[3], data=rankings_data$James)  %>%
-  hc_add_series(name=colnames(rankings_data)[4], data=rankings_data$Jordan)  %>%
-  hc_add_series(name=colnames(rankings_data)[5], data=rankings_data$Lester)  %>%
-  hc_add_series(name=colnames(rankings_data)[6], data=rankings_data$Luke)  %>%
-  hc_add_series(name=colnames(rankings_data)[7], data=rankings_data$Mark)  %>%
-  hc_add_series(name=colnames(rankings_data)[8], data=rankings_data$Paul)  %>%
-  hc_add_series(name=colnames(rankings_data)[9], data=rankings_data$Simon) 
-
-```
-
-## Fixture Strength
-```{r, fixture_strength, echo=FALSE}
-
-fs <- fixture_data %>%
-  filter(!is.na(team_score)) %>%
-  filter(team_score > 0) %>%
-  group_by(round) %>%
-  mutate(score_rank = rank(-team_score)) %>%
-  mutate(opp_score_rank = rank(-opponent_score)) %>%
-  ungroup() %>%
-  group_by(coach) %>%
-  summarise(
-    avg_rank = round(mean(score_rank),1),
-    avg_opp_rank = round(mean(opp_score_rank),1)
-  ) %>%
-  arrange(avg_rank)
-
-highchart() %>%
-  hc_chart(type = 'bar') %>%
-  hc_title(text = 'Season Performance') %>%
-  hc_subtitle(text= 'Average Rank of Weekly Scores') %>%
-  hc_legend(enabled=FALSE) %>%
-  hc_xAxis(categories=fs$coach) %>%
-  hc_yAxis(min=1) %>%
-  hc_add_series(data=fs$avg_rank, color='green')
-
-fs <- fs %>%
-  arrange(avg_opp_rank)
-
-highchart() %>%
-  hc_chart(type = 'bar') %>%
-  hc_title(text = 'Fixture Difficulty') %>%
-  hc_subtitle(text= "Average Rank of Opponent's Weekly Scores") %>%
-  hc_legend(enabled=FALSE) %>%
-  hc_xAxis(categories=fs$coach) %>%
-  hc_yAxis(min=1) %>%
-  hc_add_series(data=fs$avg_opp_rank, color='red')
 
 ```
 
@@ -149,7 +59,6 @@ totw <- totw_data %>%
 
 totw <- bind_rows(totw[totw$position!='FWD',], totw[totw$position=='FWD',]) 
 ```
-
 ```{css, echo=FALSE}
 
 .field-container {
@@ -436,39 +345,71 @@ highchart() %>%
 
 ```
 
-## The Mcgoos of the Week
-```{r, mcgoos_of_the_week, echo=FALSE}
+## Magoos of the Week
+```{r, magoos_of_the_week, echo=FALSE}
 
 motw_data <- player_data %>%
   mutate(name = paste0(substr(first_name,1,1),'.',last_name)) %>%
   mutate(last_round = round-1) %>%
-  select(feed_id, name, pos_1, team, round, points, last_round) %>%
-  inner_join(player_data[,c('feed_id','round','avg')], by=c('feed_id', 'last_round'='round')) %>%
+  select(feed_id, name, pos_1, team, round, points, price, last_round) %>%
+  left_join(player_data[,c('feed_id','round','avg', 'avg3', 'avg5')], by=c('feed_id', 'last_round'='round')) %>%
   filter(is.na(team)) %>%
-  filter(!is.na(points)) %>%
-  arrange(round, pos_1, desc(avg), desc(points)) %>%
+  filter(!is.na(points))
+           
+motw_avg <- motw_data %>%
+  arrange(round, pos_1, desc(avg), desc(price), desc(points)) %>%
   group_by(round, pos_1) %>%
   mutate(rank = rank(-avg, ties.method = 'first')) %>%
   ungroup() %>%
   filter((pos_1 == 'DEF' & rank <= 5)|
          (pos_1 == 'MID' & rank <= 7)|
          (pos_1 == 'RUC' & rank <= 1)|
-         (pos_1 == 'FWD' & rank <= 5)) 
-           
-motw_summary <- motw_data %>%
-  group_by(round) %>%
+         (pos_1 == 'FWD' & rank <= 5)) %>%
+  arrange(round, match(pos_1, c("DEF", "MID", "RUC", 'FWD'))) %>%
+  mutate(type = 'avg') %>%
+  select(type, round, feed_id, name, pos_1, points)
+
+motw_avg3 <- motw_data %>%
+  arrange(round, pos_1, desc(avg3), desc(price), desc(points)) %>%
+  group_by(round, pos_1) %>%
+  mutate(rank = rank(-avg3, ties.method = 'first')) %>%
+  ungroup() %>%
+  filter((pos_1 == 'DEF' & rank <= 5)|
+         (pos_1 == 'MID' & rank <= 7)|
+         (pos_1 == 'RUC' & rank <= 1)|
+         (pos_1 == 'FWD' & rank <= 5)) %>%
+  arrange(round, match(pos_1, c("DEF", "MID", "RUC", 'FWD'))) %>%
+  mutate(type = 'avg3') %>%
+  select(type, round, feed_id, name, pos_1, points)
+
+motw_avg5 <- motw_data %>%
+  arrange(round, pos_1, desc(avg5), desc(price), desc(points)) %>%
+  group_by(round, pos_1) %>%
+  mutate(rank = rank(-avg5, ties.method = 'first')) %>%
+  ungroup() %>%
+  filter((pos_1 == 'DEF' & rank <= 5)|
+         (pos_1 == 'MID' & rank <= 7)|
+         (pos_1 == 'RUC' & rank <= 1)|
+         (pos_1 == 'FWD' & rank <= 5)) %>%
+  arrange(round, match(pos_1, c("DEF", "MID", "RUC", 'FWD'))) %>%
+  mutate(type = 'avg5') %>%
+  select(type, round, feed_id, name, pos_1, points)
+
+motw_summary <- bind_rows(motw_avg, motw_avg3) %>%
+  bind_rows(motw_avg5) %>%
+  group_by(type, round) %>%
   summarise(
     score = sum(points),
     .groups='drop'
-  )
+  ) %>%
+  spread(type, score) %>%
+  adorn_totals()
 
-motw <- motw_data %>%
+motw <- motw_avg5 %>%
   filter(round == max(round))
 
-motw <- bind_rows(motw[motw$pos_1!='FWD',], motw[motw$pos_1=='FWD',]) 
-
 ```
-The Mcgoos are the highest averaging players from last round that were available on the waiver this week. These spuds are doing their best to prove themselves and fight their way onto an ASL list. Similar to the Herald Sun's "Kiss of Death", you wouldn't want to be outscored by this team.
+The Magoos are the players with the highest 5 round average from last round from last week that were available on the waiver. These spuds are doing their best to fight their way onto an ASL list. Similar to the Herald Sun's "Kiss of Death", you wouldn't want to be outscored by this team.
 
 ### Round `r max(motw$round)` Score: `r sum(motw$points)`
 ```{r, motw_field, echo=FALSE}
@@ -600,9 +541,120 @@ div(
   div(class='field-spacer')
 )
 ```
+```{r, motw_types, echo=FALSE}
 
+ motw_type_hc <- motw_summary  %>%
+  pivot_longer(cols = -round, names_to = "type", values_to = "n") %>%
+  filter(round != 'Total') %>%
+  group_by(type) %>%
+  do(data = list_parse2(data.frame(.$round, .$n))) %>%
+  ungroup() %>%
+  rename(name = type)
 
+# highchart() %>%
+#   hc_chart(type = 'column') %>%
+#   hc_title(text = 'Performance by Selection Criteria') %>%
+#   hc_subtitle(text= 'magoos of the Week') %>%
+#   hc_xAxis(categories=motw_summary$round) %>%
+#   hc_add_series_list(motw_type_hc) 
 
+```
+
+## Season Scores
+```{r, boxplots, echo=FALSE}
+
+boxplot_data <- fixture_data %>%
+  filter(!is.na(team_score)) %>%
+  filter(team_score > 0) %>%
+  select(round, coach, team_score)
+
+boxplot_magoo <- motw_avg5 %>%
+  group_by(round) %>%
+  summarise(
+    team_score = sum(points),
+    .groups = 'drop'
+  ) %>%
+  mutate(coach = 'Magoos')
+
+boxplot_data <- bind_rows(boxplot_data, boxplot_magoo)
+  
+box_summary <- boxplot(team_score ~ coach, data = boxplot_data, range=3, plot=FALSE)
+box_order <- rev(order(box_summary$stats[3,]))
+box_data <- t(box_summary$stats[,box_order])
+rownames(box_data) <- box_summary$names[box_order]
+
+highchart() %>%
+  hc_chart(type = 'boxplot') %>%
+  hc_legend(enabled=FALSE) %>%
+  hc_xAxis(categories = box_summary$names[box_order]) %>%
+  hc_add_series(data=box_data)
+  
+```
+
+## Power Rankings
+```{r, power_rankings, echo=FALSE}
+
+rankings_data <- boxplot_data %>%
+  arrange(coach, round) %>%
+  group_by(coach) %>%
+  mutate(avg3 = round(rollapply(team_score,3,mean,align='right',fill='extend'),1)) %>%
+  ungroup() %>%
+  select(round, coach, avg3) %>%
+  spread(coach, avg3)
+
+rankings_data_hc <- rankings_data %>%
+  pivot_longer(cols = -round, names_to = "coach", values_to = "n") %>%
+  group_by(coach) %>%
+  do(data = list_parse2(data.frame(.$round, .$n))) %>%
+  ungroup() %>%
+  rename(name = coach)
+
+highchart() %>%
+  hc_chart(type = 'spline') %>%
+  hc_xAxis(categories=rankings_data$round) %>%
+  hc_add_series_list(rankings_data_hc) 
+
+```
+
+## Fixture Strength
+```{r, fixture_strength, echo=FALSE}
+
+fs <- fixture_data %>%
+  filter(!is.na(team_score)) %>%
+  filter(team_score > 0) %>%
+  group_by(round) %>%
+  mutate(score_rank = rank(-team_score)) %>%
+  mutate(opp_score_rank = rank(-opponent_score)) %>%
+  ungroup() %>%
+  group_by(coach) %>%
+  summarise(
+    avg_rank = round(mean(score_rank),1),
+    avg_opp_rank = round(mean(opp_score_rank),1)
+  ) %>%
+  arrange(avg_rank)
+
+highchart() %>%
+  hc_chart(type = 'bar') %>%
+  hc_title(text = 'Season Performance') %>%
+  hc_subtitle(text= 'Average Rank of Weekly Scores') %>%
+  hc_legend(enabled=FALSE) %>%
+  hc_xAxis(categories=fs$coach) %>%
+  hc_yAxis(min=1) %>%
+  hc_add_series(data=fs$avg_rank, color='green')
+
+fs <- fs %>%
+  arrange(avg_opp_rank)
+
+highchart() %>%
+  hc_chart(type = 'bar') %>%
+  hc_title(text = 'Fixture Difficulty') %>%
+  hc_subtitle(text= "Average Rank of Opponent's Weekly Scores") %>%
+  hc_legend(enabled=FALSE) %>%
+  hc_xAxis(categories=fs$coach) %>%
+  hc_yAxis(min=1) %>%
+  hc_add_series(data=fs$avg_opp_rank, color='red')
+
+```
 
 ## Wish list
 - injury assessment
@@ -615,3 +667,5 @@ div(
 - records
 - H2H matchups 
 - B&F
+- players picked up by another team and improved
+- Benchwarmers
