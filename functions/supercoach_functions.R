@@ -138,7 +138,10 @@ get_sc_player_data <- function(sc_players){
     round            = as.numeric(raw$player_stats.round),
     projected_points = rep(NA, length(raw$feed_id)),
     points           = as.numeric(raw$player_match_stats.points),
-    avg              = as.numeric(raw$player_stats.avg)
+    avg              = as.numeric(raw$player_stats.avg),
+    avg3             = as.numeric(raw$player_stats.avg3),
+    avg5             = as.numeric(raw$player_stats.avg5),
+    price            = as.numeric(raw$player_stats.price)
   )
   
   if('player_stats.ppts' %in% names(raw)){
@@ -388,7 +391,15 @@ get_fixture_data <- function(cid, tkn, round=NA){
 # ))
 
 # Will post a waiver - I wonder whether you can also grab free agents this way?
-# url <- paste0('https://supercoach.heraldsun.com.au/2021/api/afl/draft/v1/leagues/575/userteam/2016/claimWaiverPlayer/302/droppedWaiverPlayer/698')
+# no you cant get FA this way
+# player_data %>%
+#   filter(round == 8) %>%
+#   filter((first_name == 'Zak' & last_name=='Jones') | 
+#         (first_name == 'Sebastian' & last_name=='Ross') |
+#           last_name == 'Coniglio')
+# 
+# sc_auth <- get_sc_auth(cid,tkn)
+# url <- paste0('https://supercoach.heraldsun.com.au/2021/api/afl/draft/v1/leagues/575/userteam/2016/claimWaiverPlayer/626/droppedWaiverPlayer/639')
 # test <- content(POST(
 #   url = url,
 #   config = sc_auth
