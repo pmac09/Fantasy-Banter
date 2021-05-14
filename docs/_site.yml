@@ -8,4 +8,6 @@ navbar:
     href: about.html
   - text: "Weekly Summary"
     href: weekly-summary.html
+  - text: "Shiny"
+    href: https://pmac.shinyapps.io/Fantasy-Banter/
 output_dir: "."
