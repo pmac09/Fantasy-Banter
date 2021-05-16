@@ -1,5 +1,7 @@
 ---
 title: "Fantasy Banter"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, setup, echo=FALSE, include=FALSE}
@@ -16,16 +18,27 @@ library(kableExtra)
 ```
 
 ```{r, echo=FALSE,include=FALSE}
-source('/Users/paulmcgrath/Github/Addicts-Supercoach-League/functions/supercoach_functions.R')
+## Rstudio
+source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.R')
+
+# player_data <- readRDS('./data/2021/player_data.RDS')
+# fixture_data <- readRDS('./data/2021/fixture_data.RDS')
 
 #player_data <- get_player_data(cid,tkn)
 #fixture_data <- get_fixture_data(cid, tkn)
 
 #saveRDS(player_data, './data/2021/player_data.RDS')
-#saveRDS(fixture_data, '../data/2021/fixture_data.RDS')
+#saveRDS(fixture_data, './data/2021/fixture_data.RDS')
 
-player_data <- readRDS('../data/2021/player_data.RDS')
-fixture_data <- readRDS('../data/2021/fixture_data.RDS')
+
+# Rmarkdown
+# source('../functions/supercoach_functions.R')
+# 
+# player_data <- readRDS('../data/2021/player_data.RDS')
+# fixture_data <- readRDS('../data/2021/fixture_data.RDS')
+
+player_data <- get_player_data(cid,tkn)
+fixture_data <- get_fixture_data(cid, tkn)
 
 ```
 
@@ -653,6 +666,20 @@ highchart() %>%
   hc_xAxis(categories=fs$coach) %>%
   hc_yAxis(min=1) %>%
   hc_add_series(data=fs$avg_opp_rank, color='red')
+
+```
+
+```{r, win_loss_scatter, echo=FALSE}
+# 
+# scatter <- fixture_data %>%
+#   filter(!is.na(team_score)) %>%
+#   filter(team_score > 0) 
+# 
+# highchart() %>%
+#   hc_chart(type='scatter')
+# 
+# scatter %>%
+#   hchart('scatter', hcaes(x = opponent_score, y = team_score , group = coach))
 
 ```
 
