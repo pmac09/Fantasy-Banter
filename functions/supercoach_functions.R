@@ -9,7 +9,7 @@ library(tidyverse)
 library(lubridate)
 library(tictoc)
 
-source('/Users/paulmcgrath/Github/Addicts-Supercoach-League/functions/secrets.R') # import supercoach authentication variables
+source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/secrets.R') # import supercoach authentication variables
 
 ## Data Extraction Scripts
 get_sc_auth <- function(cid, tkn){
