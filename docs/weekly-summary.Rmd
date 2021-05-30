@@ -786,7 +786,7 @@ highchart() %>%
   hc_chart(type = 'spline') %>%
   hc_add_series_list(pos_avg_hc) 
 
-brks <- c(70,75,80,85,90,95,100)-0.01
+brks <- c(70,75,80,85,90,95,100)+10-0.01
 clrs <- brewer.pal(8, 'RdYlGn')
 
 datatable(
@@ -828,7 +828,7 @@ highchart() %>%
   hc_chart(type = 'spline') %>%
   hc_add_series_list(pos_avg_hc) 
 
-brks <- c(70,75,80,85,90,95,100)-0.01
+brks <- c(70,75,80,85,90,95,100)+10-0.01
 clrs <- brewer.pal(8, 'RdYlGn')
 
 datatable(
@@ -949,10 +949,4 @@ highchart() %>%
 #   hchart('scatter', hcaes(x = opponent_score, y = team_score , group = coach))
 
 ```
-
-```{r, score_worm, echo=FALSE}
-
-
-
-
 ```
