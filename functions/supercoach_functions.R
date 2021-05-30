@@ -121,6 +121,18 @@ get_sc_team <- function(sc_auth, team_id, round=0){
   return(sc_team)
 }
 
+get_afl_fixture <- function(sc_auth, round){
+  year <- year(Sys.Date())
+  url <- paste0('https://supercoach.heraldsun.com.au/',year,'/api/afl/draft/v1/real_fixture?round=',round)
+  
+  afl_fixture <- content(GET(
+    url = url,
+    config = sc_auth
+  ))
+  
+  return(afl_fixture)
+}
+
 ## Data Cleansing Scripts
 get_sc_player_data <- function(sc_players){
   
@@ -284,6 +296,24 @@ get_sc_fixture_data <- function(sc_league){
     
   return(fixture_data)
 }
+
+get_afl_fixture_data <- function(afl_fixture){
+  
+  raw <- lapply(afl_fixture, unlist)
+  raw <- bind_rows(lapply(raw, as.data.frame.list))
+  
+  afl_fixture_data <- tibble(
+    season       = as.numeric(raw$season),
+    round        = as.numeric(raw$round),
+    game_num     = as.numeric(row.names(raw)),
+    kickoff      = with_tz(as_datetime(raw$kickoff), "Australia/Melbourne"),
+    team1        = raw$team1.abbrev,
+    team2        = raw$team2.abbrev
+  )
+ 
+  return(afl_fixture_data)
+}
+
 
 ## Data Processing Scripts
 get_player_data <- function(cid, tkn, round=NA){
