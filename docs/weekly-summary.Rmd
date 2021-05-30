@@ -23,14 +23,14 @@ library(RColorBrewer)
 ```{r, echo=FALSE,include=FALSE}
 source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.R')
 
-player_data <- get_player_data(cid,tkn)
-fixture_data <- get_fixture_data(cid, tkn)
+# player_data <- get_player_data(cid,tkn)
+# fixture_data <- get_fixture_data(cid, tkn)
+# 
+# saveRDS(player_data, '../data/2021/player_data.RDS')
+# saveRDS(fixture_data, '../data/2021/fixture_data.RDS')
 
-saveRDS(player_data, '../data/2021/player_data.RDS')
-saveRDS(fixture_data, '../data/2021/fixture_data.RDS')
-
-#player_data <- readRDS('../data/2021/player_data.RDS')
-#fixture_data <- readRDS('../data/2021/fixture_data.RDS')
+player_data <- readRDS('../data/2021/player_data.RDS')
+fixture_data <- readRDS('../data/2021/fixture_data.RDS')
 
 vRound <- max(player_data$round)
 
@@ -743,9 +743,8 @@ highchart() %>%
   hc_chart(type = 'spline') %>%
   hc_add_series_list(pos_avg_hc) 
 
-brks <- quantile(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))], 
-                 probs = seq(.1, .9, .8/5), na.rm = TRUE)
-clrs <- brewer.pal(7, 'RdYlGn')
+brks <- c(70,75,80,85,90,95,100)-0.01
+clrs <- brewer.pal(8, 'RdYlGn')
 
 datatable(
   pos_smy_fltr,
@@ -787,10 +786,8 @@ highchart() %>%
   hc_chart(type = 'spline') %>%
   hc_add_series_list(pos_avg_hc) 
 
-
-brks <- quantile(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))], 
-                 probs = seq(.1, .9, .8/5), na.rm = TRUE)
-clrs <- brewer.pal(7, 'RdYlGn')
+brks <- c(70,75,80,85,90,95,100)-0.01
+clrs <- brewer.pal(8, 'RdYlGn')
 
 datatable(
   pos_smy_fltr,
@@ -831,10 +828,8 @@ highchart() %>%
   hc_chart(type = 'spline') %>%
   hc_add_series_list(pos_avg_hc) 
 
-
-brks <- quantile(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))], 
-                 probs = seq(.1, .9, .8/5), na.rm = TRUE)
-clrs <- brewer.pal(7, 'RdYlGn')
+brks <- c(70,75,80,85,90,95,100)-0.01
+clrs <- brewer.pal(8, 'RdYlGn')
 
 datatable(
   pos_smy_fltr,
@@ -876,10 +871,8 @@ highchart() %>%
   hc_chart(type = 'spline') %>%
   hc_add_series_list(pos_avg_hc) 
 
-
-brks <- quantile(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))], 
-                 probs = seq(.1, .9, .8/5), na.rm = TRUE)
-clrs <- brewer.pal(7, 'RdYlGn')
+brks <- c(70,75,80,85,90,95,100)-0.01
+clrs <- brewer.pal(8, 'RdYlGn')
 
 datatable(
   pos_smy_fltr,
