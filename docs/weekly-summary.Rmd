@@ -16,6 +16,7 @@ library(janitor)
 library(shiny)
 library(DT)
 library(kableExtra)
+library(RColorBrewer)
 
 ```
 
@@ -304,10 +305,12 @@ totw_round[is.na(totw_round)] <- 0
 
 totw_round_hc <- totw_round %>%
   select(-Total) %>%
-  pivot_longer(cols = -coach, names_to = "round", values_to = "n", names_pattern = "(\\d)$") %>%
+  pivot_longer(cols = -coach, names_to = "round", values_to = "n") %>%
   group_by(round) %>%
   do(data = list_parse2(data.frame(.$coach, .$n))) %>%
   ungroup() %>%
+  mutate(round = as.numeric(round)) %>%
+  arrange(round) %>%
   rename(name = round)
 
 highchart() %>%
@@ -638,10 +641,10 @@ fs <- fixture_data %>%
   ungroup() %>%
   group_by(coach) %>%
   summarise(
-    avg_rank = round(mean(score_rank),1),
-    avg_opp_rank = round(mean(opp_score_rank),1)
+    avg_rank = round(mean(score_rank),2),
+    avg_opp_rank = round(mean(opp_score_rank),2)
   ) %>%
-  arrange(avg_rank)
+  arrange(avg_rank) 
 
 highchart() %>%
   hc_chart(type = 'bar') %>%
@@ -649,7 +652,10 @@ highchart() %>%
   hc_subtitle(text= 'Average Rank of Weekly Scores') %>%
   hc_legend(enabled=FALSE) %>%
   hc_xAxis(categories=fs$coach) %>%
-  hc_yAxis(min=1) %>%
+  hc_yAxis(min=1,
+           max=8,
+           tickInterval = 1,
+           plotLines = list(list(label=list(text='Average'),value=4.5, color='black', dashStyle='shortdash'))) %>%
   hc_add_series(data=fs$avg_rank, color='green')
 
 fs <- fs %>%
@@ -661,7 +667,10 @@ highchart() %>%
   hc_subtitle(text= "Average Rank of Opponent's Weekly Scores") %>%
   hc_legend(enabled=FALSE) %>%
   hc_xAxis(categories=fs$coach) %>%
-  hc_yAxis(min=1) %>%
+  hc_yAxis(min=1,
+           max=8,
+           tickInterval = 1,
+           plotLines = list(list(label=list(text='Average'),value=4.5, color='black', dashStyle='shortdash'))) %>%
   hc_add_series(data=fs$avg_opp_rank, color='red')
 
 ```
@@ -683,7 +692,7 @@ pos_avg <- player_data %>%
   arrange(position,coach, round, avg) %>%
   group_by(position,coach) %>%
   mutate(avg3 = round(rollapply(score,width=3,sum,align='right',partial=TRUE) /
-                      rollapply(n,3,sum,align='right', partial=TRUE))) %>%
+                      rollapply(n,3,sum,align='right', partial=TRUE),1)) %>%
   ungroup()
 
 pos_avg_wide <- pos_avg %>%
@@ -734,7 +743,12 @@ highchart() %>%
   hc_chart(type = 'spline') %>%
   hc_add_series_list(pos_avg_hc) 
 
-datatable(pos_smy_fltr,
+brks <- quantile(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))], 
+                 probs = seq(.1, .9, .8/5), na.rm = TRUE)
+clrs <- brewer.pal(7, 'RdYlGn')
+
+datatable(
+  pos_smy_fltr,
   rownames=FALSE,
   class = 'row-border stripe',
   colnames = c('Coach' = 'coach', 'Avg' = 'avg_tot', '3Rd Avg' = 'avg3'),
@@ -745,7 +759,9 @@ datatable(pos_smy_fltr,
     fixedColumns = list(leftColumns = 3),
     columnDefs = list(list(className = 'dt-center', targets = 0:(ncol(pos_smy_fltr)-1)))
   )
-)
+) %>% 
+  formatStyle(names(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))]), 
+              backgroundColor = styleInterval(brks, clrs))
 
 ```
 ### Midfield
@@ -771,7 +787,13 @@ highchart() %>%
   hc_chart(type = 'spline') %>%
   hc_add_series_list(pos_avg_hc) 
 
-datatable(pos_smy_fltr,
+
+brks <- quantile(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))], 
+                 probs = seq(.1, .9, .8/5), na.rm = TRUE)
+clrs <- brewer.pal(7, 'RdYlGn')
+
+datatable(
+  pos_smy_fltr,
   rownames=FALSE,
   class = 'row-border stripe',
   colnames = c('Coach' = 'coach', 'Avg' = 'avg_tot', '3Rd Avg' = 'avg3'),
@@ -782,8 +804,9 @@ datatable(pos_smy_fltr,
     fixedColumns = list(leftColumns = 3),
     columnDefs = list(list(className = 'dt-center', targets = 0:(ncol(pos_smy_fltr)-1)))
   )
-)
-
+) %>% 
+  formatStyle(names(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))]), 
+              backgroundColor = styleInterval(brks, clrs))
 ```
 ### Ruck
 ```{r pos_avg_ruc}
@@ -808,7 +831,13 @@ highchart() %>%
   hc_chart(type = 'spline') %>%
   hc_add_series_list(pos_avg_hc) 
 
-datatable(pos_smy_fltr,
+
+brks <- quantile(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))], 
+                 probs = seq(.1, .9, .8/5), na.rm = TRUE)
+clrs <- brewer.pal(7, 'RdYlGn')
+
+datatable(
+  pos_smy_fltr,
   rownames=FALSE,
   class = 'row-border stripe',
   colnames = c('Coach' = 'coach', 'Avg' = 'avg_tot', '3Rd Avg' = 'avg3'),
@@ -819,7 +848,9 @@ datatable(pos_smy_fltr,
     fixedColumns = list(leftColumns = 3),
     columnDefs = list(list(className = 'dt-center', targets = 0:(ncol(pos_smy_fltr)-1)))
   )
-)
+) %>% 
+  formatStyle(names(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))]), 
+              backgroundColor = styleInterval(brks, clrs))
 
 ```
 ### Forward
@@ -845,7 +876,13 @@ highchart() %>%
   hc_chart(type = 'spline') %>%
   hc_add_series_list(pos_avg_hc) 
 
-datatable(pos_smy_fltr,
+
+brks <- quantile(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))], 
+                 probs = seq(.1, .9, .8/5), na.rm = TRUE)
+clrs <- brewer.pal(7, 'RdYlGn')
+
+datatable(
+  pos_smy_fltr,
   rownames=FALSE,
   class = 'row-border stripe',
   colnames = c('Coach' = 'coach', 'Avg' = 'avg_tot', '3Rd Avg' = 'avg3'),
@@ -856,7 +893,9 @@ datatable(pos_smy_fltr,
     fixedColumns = list(leftColumns = 3),
     columnDefs = list(list(className = 'dt-center', targets = 0:(ncol(pos_smy_fltr)-1)))
   )
-)
+) %>% 
+  formatStyle(names(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))]), 
+              backgroundColor = styleInterval(brks, clrs))
 
 ```
 
