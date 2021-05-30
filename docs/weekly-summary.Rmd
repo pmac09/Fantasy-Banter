@@ -917,3 +917,10 @@ highchart() %>%
 #   hchart('scatter', hcaes(x = opponent_score, y = team_score , group = coach))
 
 ```
+
+```{r, score_worm, echo=FALSE}
+
+
+
+
+```
