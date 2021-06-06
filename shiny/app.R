@@ -17,7 +17,24 @@ ui <- dashboardPage(
     
     dashboardBody(
         tabItems(        
-            tabItem(tabName = "tabMatchday", source('./ui/matchday_ui.R', local= TRUE)$value)
+            tabItem(tabName = "tabMatchday", #source('./ui/matchday_ui.R', local= TRUE)$value)
+## MATCHDAY START #######            
+div(
+  style='max-width: 940px;
+         margin-left: auto;
+         margin-right: auto;
+         background-color: green;',
+
+  
+  
+    
+    
+    
+)
+
+
+)## MATCHDAY END #######  
+
         )   
     )
 )
@@ -26,8 +43,9 @@ ui <- dashboardPage(
 server <- function(input, output) {
 
     sc_auth <- get_sc_auth(cid, tkn)
+    sc_settings <- get_sc_settings(sc_auth)
+    sc_me <- get_sc_me(sc_auth)
     
-    print(sc_auth)
     
     output$test <- renderText({
         

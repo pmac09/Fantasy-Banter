@@ -6,7 +6,7 @@ source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.
 sc_auth <- get_sc_auth(cid, tkn)
 
 sc_settings <- get_sc_settings(sc_auth)
-round <- sc_ysettings$competition$current_round
+round <- sc_settings$competition$next_round
 
 sc_me <- get_sc_me(sc_auth)
 user_id <- sc_me$id
@@ -26,47 +26,9 @@ vGames <- bind_rows(
   ) %>%
   arrange(game_num)
 
-vTeam1 <- player_data %>%
-  filter(coach == fixture_data$coach[1]) %>%
-  filter(type == 'scoring') %>%
-  left_join(vGames, by=c('team_abbrev'='team')) %>%
-  arrange(game_num, desc(points)) %>%
-  group_by(game_num) %>%
-  mutate(n = rank(-points)) %>%
-  ungroup() %>%
-  mutate(sum = cumsum(points)) %>%
-  mutate(app = round(sum/row_number(),1)) %>%
-  select(coach, last_name, points, game_num, n, app)
 
-vTeam2 <- player_data %>%
-  filter(coach == fixture_data$opponent_coach[1]) %>%
-  filter(type == 'scoring') %>%
-  left_join(vGames, by=c('team_abbrev'='team')) %>%
-  arrange(game_num, desc(points)) %>%
-  group_by(game_num) %>%
-  mutate(n = rank(-points)) %>%
-  ungroup() %>%
-  mutate(sum = cumsum(points)) %>%
-  mutate(app = round(sum/row_number(),1)) %>%
-  select(coach, last_name, points, game_num, n, app)
-  
+vGame <- 1
 
-x <- full_join(vTeam1, vTeam2, by=c('game_num', 'n')) %>%
-  add_row(tibble_row(app.x=0, app.y=0, game_num=0), .before=1) %>%
-  arrange(game_num, n) %>%
-  mutate(app.x = na.locf(app.x)) %>%
-  mutate(app.y = na.locf(app.y)) %>%
-  mutate(diff = app.x - app.y)
-
-highchart() %>%
-  hc_chart(type='line') %>%
-  hc_add_series(data=x$diff,
-                step=TRUE,
-                color='#0088FF',
-                negativeColor= '#FF0000')
-
-
-vGame <- 2
 vT1 <- player_data %>%
   filter(coach == fixture_data$coach[vGame]) %>%
   filter(type == 'scoring') %>%
