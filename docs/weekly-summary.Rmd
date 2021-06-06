@@ -20,7 +20,7 @@ library(RColorBrewer)
 
 ```
 
-```{r, echo=FALSE,include=FALSE}
+```{r, import_data, include=FALSE}
 source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.R')
 
 # player_data <- get_player_data(cid,tkn)
@@ -600,32 +600,27 @@ highchart() %>%
   
 ```
 
-## Power Rankings
-```{r, power_rankings, echo=FALSE}
+```{r, ladder_journey}
 
-rankings_data <- boxplot_data %>%
-  arrange(coach, round) %>%
-  group_by(coach) %>%
-  mutate(avg3 = round(rollapply(team_score,3,mean,align='right',partial=TRUE),1)) %>%
+ladder_journey <- fixture_data %>%
+  filter(!is.na(team_score)) %>%
+  group_by(round) %>%
+  arrange(round, desc(points), desc(pcnt), desc(cumul_points_for)) %>%
+  mutate(ladder_position = rank(-points, ties.method = 'first')) %>%
   ungroup() %>%
-  select(round, coach, avg3) %>%
-  spread(coach, avg3)
-
-rankings_data_hc <- rankings_data %>%
-  pivot_longer(cols = -round, names_to = "coach", values_to = "n") %>%
+  select(round, ladder_position, coach) %>%
   group_by(coach) %>%
-  do(data = list_parse2(data.frame(.$round, .$n))) %>%
+  do(data = list_parse2(data.frame(.$round, .$ladder_position))) %>%
   ungroup() %>%
   rename(name = coach)
-
-rankings_data_hc <- bind_rows(
-  rankings_data_hc[rankings_data_hc$name!='Magoos',],
-  rankings_data_hc[rankings_data_hc$name=='Magoos',]
-)
-
+  
 highchart() %>%
-  hc_chart(type = 'spline') %>%
-  hc_add_series_list(rankings_data_hc) 
+  hc_chart(type='line') %>%
+  hc_title(text='Ladder Journey') %>%
+  hc_xAxis(opposite=TRUE, title=list(text='Round'), tickInterval=1) %>%
+  hc_yAxis(min=1,max=8, reversed=TRUE, categories=c(NA,1:8),
+           title=list(text='Ladder Position')) %>%
+  hc_add_series_list(ladder_journey)
 
 ```
 
@@ -672,6 +667,35 @@ highchart() %>%
            tickInterval = 1,
            plotLines = list(list(label=list(text='Average'),value=4.5, color='black', dashStyle='shortdash'))) %>%
   hc_add_series(data=fs$avg_opp_rank, color='red')
+
+```
+
+## Power Rankings
+```{r, power_rankings, echo=FALSE}
+
+rankings_data <- boxplot_data %>%
+  arrange(coach, round) %>%
+  group_by(coach) %>%
+  mutate(avg3 = round(rollapply(team_score,3,mean,align='right',partial=TRUE),1)) %>%
+  ungroup() %>%
+  select(round, coach, avg3) %>%
+  spread(coach, avg3)
+
+rankings_data_hc <- rankings_data %>%
+  pivot_longer(cols = -round, names_to = "coach", values_to = "n") %>%
+  group_by(coach) %>%
+  do(data = list_parse2(data.frame(.$round, .$n))) %>%
+  ungroup() %>%
+  rename(name = coach)
+
+rankings_data_hc <- bind_rows(
+  rankings_data_hc[rankings_data_hc$name!='Magoos',],
+  rankings_data_hc[rankings_data_hc$name=='Magoos',]
+)
+
+highchart() %>%
+  hc_chart(type = 'spline') %>%
+  hc_add_series_list(rankings_data_hc) 
 
 ```
 
@@ -921,6 +945,8 @@ highchart() %>%
 
 ```
 
+
+
 ## Wish list
 - injury assessment
 - trade tracker
@@ -947,6 +973,7 @@ highchart() %>%
 # 
 # scatter %>%
 #   hchart('scatter', hcaes(x = opponent_score, y = team_score , group = coach))
+
 
 ```
 ```
