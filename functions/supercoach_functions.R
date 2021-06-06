@@ -8,6 +8,7 @@ library(httr)
 library(tidyverse)
 library(lubridate)
 library(tictoc)
+library(data.table)
 
 source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/secrets.R') # import supercoach authentication variables
 
@@ -120,7 +121,6 @@ get_sc_team <- function(sc_auth, team_id, round=0){
   
   return(sc_team)
 }
-
 get_afl_fixture <- function(sc_auth, round){
   year <- year(Sys.Date())
   url <- paste0('https://supercoach.heraldsun.com.au/',year,'/api/afl/draft/v1/real_fixture?round=',round)
@@ -296,26 +296,104 @@ get_sc_fixture_data <- function(sc_league){
     
   return(fixture_data)
 }
-
 get_afl_fixture_data <- function(afl_fixture){
   
   raw <- lapply(afl_fixture, unlist)
   raw <- bind_rows(lapply(raw, as.data.frame.list))
   
-  afl_fixture_data <- tibble(
+  home <- tibble(
     season       = as.numeric(raw$season),
     round        = as.numeric(raw$round),
     game_num     = as.numeric(row.names(raw)),
     kickoff      = with_tz(as_datetime(raw$kickoff), "Australia/Melbourne"),
-    team1        = raw$team1.abbrev,
-    team2        = raw$team2.abbrev
+    status       = raw$status, 
+    team1        = raw$team1.name,
+    team1_abbrev = raw$team1.abbrev,
+    team2        = raw$team2.name,
+    team2_abbrev = raw$team2.abbrev,
+    home_flag    = 1
   )
+  
+  away <- home %>%
+    rename(temp = team1) %>%
+    rename(team1 = team2) %>%
+    rename(team2 = temp) %>%
+    rename(temp_abbrev = team1_abbrev) %>%
+    rename(team1_abbrev = team2_abbrev) %>%
+    rename(team2_abbrev = temp_abbrev) %>%
+    mutate(home_flag = 0)
  
+  afl_fixture_data <- bind_rows(home,away) %>%
+    arrange(kickoff, desc(home_flag))
+  
   return(afl_fixture_data)
+}
+
+get_ff_fixture_data <- function(vSeason=NA, vRound=NA){
+  
+  ff_fixture <- as_tibble(fread('http://www.fanfooty.com.au/resource/draw.php'))
+  colnames(ff_fixture) <- c('game_id', 
+                             'year', 
+                             'competition', 
+                             'round', 
+                             'gametime_AET', 
+                             'day', 
+                             'home_team', 
+                             'away_team', 
+                             'ground', 
+                             'timeslot', 
+                             'TV_coverage', 
+                             'home_supergoals', 
+                             'home_goals', 
+                             'home_behinds', 
+                             'home_points', 
+                             'away_supergoals', 
+                             'away_goals', 
+                             'away_behinds', 
+                             'away_points', 
+                             'match_status')
+  
+  if(!is.na(vSeason)){
+    ff_fixture <- ff_fixture %>%
+      filter(year==vSeason)
+  }
+  
+  if(!is.na(vRound)){
+    ff_fixture <- ff_fixture %>%
+      filter(round==vRound)
+  }
+  
+  return(ff_fixture)
 }
 
 
 ## Data Processing Scripts
+get_settings_data <- function(cid, tkn){
+  
+  # Output Variable
+  settings <- list()
+  
+  # Get Authentication
+  sc_auth <- get_sc_auth(cid, tkn)
+  settings$sc_auth <- sc_auth
+  
+  # Get settings for Round
+  sc_settings <- get_sc_settings(sc_auth)
+  settings$current_round <- sc_settings$competition$current_round
+  settings$next_round <- sc_settings$competition$next_round
+  
+  # Get me for user ID
+  sc_me <- get_sc_me(sc_auth)
+  user_id <- sc_me$id
+  settings$user_id <- user_id
+  
+  # Get user for league ID
+  sc_user <- get_sc_user(sc_auth, user_id)
+  league_id <- sc_user$draft[[1]]$leagues[[1]]$id
+  settings$league_id <- league_id
+  
+  return(settings)
+}
 get_player_data <- function(cid, tkn, round=NA){
   tic()
   
@@ -395,6 +473,23 @@ get_fixture_data <- function(cid, tkn, round=NA){
     fixture_data <- bind_rows(fixture_data, f_data)
   
   }
+  
+  fixture_data$team_score[fixture_data$team_score == 0] <- NA
+  fixture_data$opponent_score[fixture_data$opponent_score == 0] <- NA
+  
+  fixture_data <- fixture_data %>%
+    mutate(differential = team_score - opponent_score) %>%
+    mutate(win = ifelse(differential > 0, 1,0)) %>%
+    mutate(draw = ifelse(differential == 0, 1,0)) %>%
+    mutate(loss = ifelse(differential < 0, 1,0)) %>%
+    group_by(coach) %>%
+    mutate(cumul_win = cumsum(win)) %>%
+    mutate(cumul_draw = cumsum(draw)) %>%
+    mutate(cumul_loss = cumsum(loss)) %>%
+    mutate(cumul_points_for = cumsum(team_score)) %>%
+    mutate(cumul_points_against = cumsum(opponent_score)) %>%
+    mutate(points = cumul_win*4 + cumul_draw*2) %>%
+    mutate(pcnt = round(cumul_points_for/cumul_points_against*100,2))
   
   toc()
   return(fixture_data)
