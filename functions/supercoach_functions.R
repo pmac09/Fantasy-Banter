@@ -495,6 +495,55 @@ get_fixture_data <- function(cid, tkn, round=NA){
   return(fixture_data)
 }
 
+## Other Handy Functions
+get_sc_logo <- function(logoSize=38, shirttype, shortcolor, basecolor, secondcolor){
+  
+  # Get
+  logoBgSize <- logoSize*8
+  logoShortsXY <- as.numeric(unlist(str_split(shortcolor,',')))
+  logoJumperXY <- as.numeric(unlist(str_split(basecolor,',')))
+  logoPatternXY <- as.numeric(unlist(str_split(secondcolor,',')))
+  logoPatternType <- as.numeric(shirttype)
+  
+  logo <- div(
+    id='scLogo',
+    class='logoShorts',
+    style=paste0("
+      height:", logoSize,"px;
+      width:", logoSize,"px;
+      background-image:url('shirt_shorts.png');
+      background-size:",logoBgSize,"px;
+      background-position:",-logoSize*logoShortsXY[1],"px ",-logoSize*logoShortsXY[2],"px;
+    "),
+    
+    div(
+      class='logoJumper',
+      style=paste0("
+        height:100%;
+        width:100%;
+        background-image:url('shirt_jumper.png');
+        background-size:",logoBgSize,"px;
+        background-position:",-logoSize*logoJumperXY[1],"px ",-logoSize*logoJumperXY[2],"px;
+      "),
+      
+      div(
+        class='logoPattern',
+        style=paste0("
+          height:100%;
+          width:100%;
+          background-image:url('shirt_pattern_",logoPatternType,".png');
+          background-size:",logoBgSize,"px;
+          background-position:",-logoSize*logoPatternXY[1],"px ",-logoSize*logoPatternXY[2],"px;
+        ")
+      )
+    )
+  )
+  
+}
+
+
+
+
 ################################################################################
 ## Other APIs available:
 
