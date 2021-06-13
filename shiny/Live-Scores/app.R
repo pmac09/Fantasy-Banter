@@ -164,6 +164,7 @@ server <- function(input, output) {
       mutate(points = ifelse(status =='now', live_points, points)) %>%
       mutate(projected_points = ifelse(status=='now', live_projection, projected_points)) %>%
       mutate(points = ifelse(is.na(points),0,points)) %>%
+      mutate(projected_points = ifelse(is.na(projected_points),0,projected_points)) %>%
       arrange(game_num, team, desc(projected_points)) %>%
       select(name, team_abbrev, position, projected_points, points)
     
@@ -177,6 +178,7 @@ server <- function(input, output) {
       mutate(points = ifelse(status =='now', live_points, points)) %>%
       mutate(projected_points = ifelse(status=='now', live_projection, projected_points)) %>%
       mutate(points = ifelse(is.na(points),0,points)) %>%
+      mutate(projected_points = ifelse(is.na(projected_points),0,projected_points)) %>%
       arrange(game_num, team, desc(projected_points)) %>%
       select(name, team_abbrev, position, projected_points, points)
 
