@@ -1,5 +1,6 @@
 library(shiny)
 library(html2canvas)
+library(highcharter)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -19,7 +20,8 @@ ui <- fluidPage(
         ),
     
         mainPanel(
-            uiOutput('uiLogo')
+            uiOutput('uiLogo'),
+            highchartOutput("test")
         )
     )
 )
@@ -60,7 +62,20 @@ server <- function(input, output) {
     output$uiLogo <- renderUI({
         get_sc_logo(input$uiLogoSize, shirttype(), shortcolor(), basecolor(), secondcolor())
     })
-
+    
+    output$test <- renderHighchart({
+        
+        highchart() %>%
+            hc_chart(type='line') %>%
+            hc_title(text='Ladder Journey') %>%
+            hc_xAxis(opposite=TRUE, title=list(text='Round'), tickInterval=1) %>%
+            hc_yAxis(min=1,max=8, reversed=TRUE, categories=c(NA,1:8),
+                     title=list(text='Ladder Position')) %>%
+            hc_add_series(name="Test",
+                          data=c(1:8),
+                          marker=list(symbol='Paul.png'))
+        
+    })
 }
 
 # Run the application 
