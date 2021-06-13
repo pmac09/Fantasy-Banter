@@ -1,5 +1,5 @@
 ---
-title: "Fantasy Banter"
+title: "2021 Season Summary"
 editor_options: 
   chunk_output_type: console
 ---
@@ -17,9 +17,9 @@ library(shiny)
 library(DT)
 library(kableExtra)
 library(RColorBrewer)
+library(rlist)
 
 ```
-
 ```{r, import_data, include=FALSE}
 source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.R')
 
@@ -35,6 +35,155 @@ fixture_data <- readRDS('../data/2021/fixture_data.RDS')
 vRound <- max(player_data$round)
 
 ```
+```{r, team_colours_hc}
+
+team_colours <- lapply(team_colours, unlist)
+team_colours <- bind_rows(lapply(team_colours, as.data.frame.list))
+
+team_colours_hc <- team_colours %>%
+  group_by(name,color) %>%
+  mutate(logo = paste0('url(data:image/png;base64,', logo,')')) %>%
+  do(marker = list.flatten(list_parse(data.frame('symbol'=.$logo,'height'=24,'width'=24))))
+
+sml_team_colours_hc <- team_colours %>%
+  group_by(name,color) %>%
+  mutate(logo = paste0('url(data:image/png;base64,', logo,')')) %>%
+  do(marker = list.flatten(list_parse(data.frame('symbol'=.$logo,'height'=16,'width'=16))))
+
+```
+
+## Round 12
+
+
+## Season Summary
+```{r, ladder_journey}
+
+ladder_journey <- fixture_data %>%
+  filter(!is.na(team_score)) %>%
+  group_by(round) %>%
+  arrange(round, desc(points), desc(pcnt), desc(cumul_points_for)) %>%
+  mutate(ladder_position = rank(-points, ties.method = 'first')) %>%
+  ungroup() 
+
+ladder_journey_hc <- ladder_journey %>%
+  select(round, ladder_position, coach) %>%
+  group_by(coach) %>%
+  do(data = list_parse2(data.frame(.$round, .$ladder_position))) %>%
+  ungroup() %>%
+  rename(name = coach) %>%
+  left_join(team_colours_hc, by=c('name')) 
+
+highchart() %>%
+  hc_chart(type='line') %>%
+  hc_title(text='Ladder Journey') %>%
+  hc_tooltip(enabled=FALSE) %>%
+  hc_xAxis(opposite=TRUE, tickInterval=1) %>%
+  hc_yAxis(min=1,max=8, reversed=TRUE, categories=c(NA,1:8),
+           title=list(text='Ladder Position')) %>%
+  hc_add_series_list(ladder_journey_hc)
+
+```
+```{r, season_boxplot}
+
+boxplot_data <- fixture_data %>%
+  filter(!is.na(team_score)) %>%
+  filter(team_score > 0) %>%
+  select(round, coach, team_score)
+  
+box_summary <- boxplot(team_score ~ coach, data = boxplot_data, range=3, plot=FALSE)
+box_data <- t(box_summary$stats)
+colnames(box_data) <- c('low','q1','median','q3','high')
+
+boxplot_hc <- as_tibble(box_data) %>%
+  mutate(name= box_summary$names) %>%
+  left_join(team_colours_hc, by=c('name')) %>%
+  select(-marker) %>%
+  arrange(desc(median))
+
+highchart() %>%
+  hc_chart(type = 'boxplot') %>%
+  hc_title(text='Score Summary') %>%
+  hc_subtitle(text='Ordered by Median') %>%
+  hc_exporting(enabled=TRUE) %>%
+  hc_xAxis(categories = boxplot_hc$name) %>%
+  hc_legend(enabled = FALSE) %>%
+  hc_add_series(name='2021',
+                data=boxplot_hc) 
+  
+```
+```{r, score_scatter}
+score_scatter <- fixture_data %>%
+  filter(team_score >= 0) %>%
+  group_by(coach) %>%
+  summarise(
+    team_score = round(mean(team_score)),
+    opponent_score = round(mean(opponent_score))
+  ) 
+
+score_scatter_hc <- score_scatter %>%
+  group_by(coach) %>%
+  do(data = list_parse2(data.frame(.$opponent_score, .$team_score))) %>%
+  ungroup() %>%
+  rename(name = coach) %>%
+  left_join(team_colours_hc, by=c('name'))
+  
+highchart() %>%
+  hc_chart(type='scatter') %>%
+  hc_title(text='Score Scatter') %>%
+  hc_exporting(enabled=TRUE) %>%
+  hc_xAxis(title=list(text='Average Points Against'),
+           min=min(score_scatter$opponent_score)-20,
+           max=max(score_scatter$opponent_score)+20) %>%
+  hc_yAxis(title=list(text='Average Points For'),
+           min=min(score_scatter$team_score)-20,
+           max=max(score_scatter$team_score)+20) %>%
+  hc_tooltip(pointFormat='PF: <b>{point.y}</b><br/>PA: <b>{point.x}</b><br/>') %>%
+  hc_add_series_list(score_scatter_hc) %>%
+  hc_add_series(name='100%',
+                data=list(list(1000,1000),list(2000,2000)),
+                lineWidth=2,
+                color='red',
+                dashStyle='Dash',
+                showInLegend=FALSE)
+
+```
+
+## Season Performance
+```{r, power_rankings}
+
+rankings_data <- player_data %>%
+  filter(type=='scoring') %>%
+  group_by(coach,round) %>%
+  summarise(
+    n = n(),
+    points = sum(points),
+    .groups='drop'
+  ) %>%
+  mutate(score = round(points/n*18)) %>%
+  arrange(coach, round) %>%
+  group_by(coach) %>%
+  mutate(avg3 = round(rollapply(score,3,mean,align='right',partial=TRUE),1)) %>%
+  ungroup() %>%
+  select(round, coach, avg3) %>%
+  spread(coach, avg3)
+
+rankings_data_hc <- rankings_data %>%
+  pivot_longer(cols = -round, names_to = "coach", values_to = "n") %>%
+  group_by(coach) %>%
+  do(data = list_parse2(data.frame(.$round, .$n))) %>%
+  ungroup() %>%
+  rename(name = coach) %>%
+  left_join(sml_team_colours_hc, by=c('name'))
+
+highchart() %>%
+  hc_chart(type = 'spline') %>%
+  hc_title(text='Power Rankings') %>%
+  hc_subtitle(text='3 Round Average') %>%
+  hc_exporting(enabled=TRUE) %>%
+  hc_add_series_list(rankings_data_hc)
+
+```
+
 
 ## ASL Team of the Week
 ```{r, team_of_the_week, echo=FALSE}
@@ -569,60 +718,6 @@ div(
 
 ```
 
-## Season Scores
-```{r, boxplots, echo=FALSE}
-
-boxplot_data <- fixture_data %>%
-  filter(!is.na(team_score)) %>%
-  filter(team_score > 0) %>%
-  select(round, coach, team_score)
-
-boxplot_magoo <- motw_avg5 %>%
-  group_by(round) %>%
-  summarise(
-    team_score = sum(points),
-    .groups = 'drop'
-  ) %>%
-  mutate(coach = 'Magoos')
-
-boxplot_data <- bind_rows(boxplot_data, boxplot_magoo)
-  
-box_summary <- boxplot(team_score ~ coach, data = boxplot_data, range=3, plot=FALSE)
-box_order <- rev(order(box_summary$stats[3,]))
-box_data <- t(box_summary$stats[,box_order])
-rownames(box_data) <- box_summary$names[box_order]
-
-highchart() %>%
-  hc_chart(type = 'boxplot') %>%
-  hc_legend(enabled=FALSE) %>%
-  hc_xAxis(categories = box_summary$names[box_order]) %>%
-  hc_add_series(data=box_data)
-  
-```
-
-```{r, ladder_journey}
-
-ladder_journey <- fixture_data %>%
-  filter(!is.na(team_score)) %>%
-  group_by(round) %>%
-  arrange(round, desc(points), desc(pcnt), desc(cumul_points_for)) %>%
-  mutate(ladder_position = rank(-points, ties.method = 'first')) %>%
-  ungroup() %>%
-  select(round, ladder_position, coach) %>%
-  group_by(coach) %>%
-  do(data = list_parse2(data.frame(.$round, .$ladder_position))) %>%
-  ungroup() %>%
-  rename(name = coach)
-  
-highchart() %>%
-  hc_chart(type='line') %>%
-  hc_title(text='Ladder Journey') %>%
-  hc_xAxis(opposite=TRUE, title=list(text='Round'), tickInterval=1) %>%
-  hc_yAxis(min=1,max=8, reversed=TRUE, categories=c(NA,1:8),
-           title=list(text='Ladder Position')) %>%
-  hc_add_series_list(ladder_journey)
-
-```
 
 ## Fixture Strength
 ```{r, fixture_strength, echo=FALSE}
@@ -670,34 +765,6 @@ highchart() %>%
 
 ```
 
-## Power Rankings
-```{r, power_rankings, echo=FALSE}
-
-rankings_data <- boxplot_data %>%
-  arrange(coach, round) %>%
-  group_by(coach) %>%
-  mutate(avg3 = round(rollapply(team_score,3,mean,align='right',partial=TRUE),1)) %>%
-  ungroup() %>%
-  select(round, coach, avg3) %>%
-  spread(coach, avg3)
-
-rankings_data_hc <- rankings_data %>%
-  pivot_longer(cols = -round, names_to = "coach", values_to = "n") %>%
-  group_by(coach) %>%
-  do(data = list_parse2(data.frame(.$round, .$n))) %>%
-  ungroup() %>%
-  rename(name = coach)
-
-rankings_data_hc <- bind_rows(
-  rankings_data_hc[rankings_data_hc$name!='Magoos',],
-  rankings_data_hc[rankings_data_hc$name=='Magoos',]
-)
-
-highchart() %>%
-  hc_chart(type = 'spline') %>%
-  hc_add_series_list(rankings_data_hc) 
-
-```
 
 ## Positional Averages
 ```{r, positional_average, echo=FALSE}
@@ -944,6 +1011,7 @@ highchart() %>%
   hc_add_series(name='Scoring Spread', data=emrg_box_data) 
 
 ```
+
 
 
 
