@@ -52,7 +52,7 @@ sml_team_colours_hc <- team_colours %>%
 
 ```
 
-## Round 12
+
 
 
 ## Season Summary
@@ -74,7 +74,8 @@ ladder_journey_hc <- ladder_journey %>%
   left_join(team_colours_hc, by=c('name')) 
 
 highchart() %>%
-  hc_chart(type='line') %>%
+  hc_chart(type='line',
+           scrollablePlotArea= list(minWidth=700)) %>%
   hc_title(text='Ladder Journey') %>%
   hc_tooltip(enabled=FALSE) %>%
   hc_xAxis(opposite=TRUE, tickInterval=1) %>%
