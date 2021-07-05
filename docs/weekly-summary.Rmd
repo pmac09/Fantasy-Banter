@@ -52,9 +52,6 @@ sml_team_colours_hc <- team_colours %>%
 
 ```
 
-
-
-
 ## Season Summary
 ```{r, ladder_journey}
 
@@ -150,6 +147,12 @@ highchart() %>%
 ```
 
 ## Season Performance
+
+
+## Power Rankings {.tabset}
+
+### OVERALL
+
 ```{r, power_rankings}
 
 rankings_data <- player_data %>%
@@ -183,7 +186,46 @@ highchart() %>%
   hc_exporting(enabled=TRUE) %>%
   hc_add_series_list(rankings_data_hc)
 
+# 
+# 
+# datatable(
+#   pos_smy_fltr,
+#   rownames=FALSE,
+#   class = 'row-border stripe',
+#   colnames = c('Coach' = 'coach', 'Avg' = 'avg_tot', '3Rd Avg' = 'avg3'),
+#   extensions = 'FixedColumns',
+#   options = list(
+#     dom = 't',
+#     scrollX = TRUE,
+#     fixedColumns = list(leftColumns = 3),
+#     columnDefs = list(list(className = 'dt-center', targets = 0:(ncol(pos_smy_fltr)-1)))
+#   )
+# ) %>% 
+#   formatStyle(names(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))]), 
+#               backgroundColor = styleInterval(brks, clrs))
+
 ```
+
+### DEF
+
+y
+
+### MID
+
+z
+
+### RUC
+
+a
+
+### FWD
+
+b
+
+## {-}
+
+
+
 
 
 ## ASL Team of the Week
@@ -1014,6 +1056,64 @@ highchart() %>%
 ```
 
 
+## The one that got away
+Difference in averages by coach
+```{r}
+
+a <- player_data %>%
+  group_by(feed_id) %>%
+  mutate(avg = round(mean(points, na.rm=T))) %>%
+  filter(type=='scoring') %>%
+  group_by(feed_id, last_name, avg, coach) %>%
+  summarise(
+    coach_avg = round(mean(points, na.rm=T)),
+    .groups='drop'
+  ) %>%
+  ungroup() %>%
+  mutate(avg_diff = coach_avg - avg)
+
+b <- a %>%
+  group_by(feed_id) %>%
+  summarise(
+    n = n(),
+    min = min(coach_avg),
+    max = max(coach_avg),
+    .groups='drop'
+  ) %>%
+  mutate(coach_diff = round(max-min)) %>%
+  select(feed_id, coach_diff, n)
+
+c <- a %>%
+  left_join(b, by=c('feed_id')) %>%
+  arrange(desc(avg_diff)) %>%
+  select(last_name, avg, n, coach_diff, coach, avg_diff) %>%
+  spread(coach, avg_diff) %>%
+  arrange(desc(coach_diff))
+
+
+brks <- c(-30,-15,0,15,30)
+clrs <- brewer.pal(6, 'RdYlGn')
+
+datatable(
+  c,
+  rownames=FALSE,
+  class = 'row-border stripe',
+  colnames = c('Player'='last_name', 'Avg'='avg', 'Delta'='coach_diff', 'N'='n'),
+  extensions = 'FixedColumns',
+  options = list(
+    filter=FALSE,
+    pageLength = 10, 
+    lengthChange = FALSE,
+    paging=TRUE,
+    scrollX = TRUE,
+    fixedColumns = list(leftColumns = 2),
+    columnDefs = list(list(className = 'dt-center', targets = 1:(ncol(c)-1)))
+  )
+) %>% 
+  formatStyle(names(c[,c(5:ncol(c))]), 
+              backgroundColor = styleInterval(brks, clrs))
+
+```
 
 
 ## Wish list
