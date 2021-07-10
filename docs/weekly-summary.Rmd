@@ -146,81 +146,143 @@ highchart() %>%
 
 ```
 
-## Season Performance
-
-
 ## Power Rankings {.tabset}
 
 ### OVERALL
 
 ```{r, power_rankings}
 
-rankings_data <- player_data %>%
-  filter(type=='scoring') %>%
-  group_by(coach,round) %>%
-  summarise(
-    n = n(),
-    points = sum(points),
-    .groups='drop'
-  ) %>%
-  mutate(score = round(points/n*18)) %>%
-  arrange(coach, round) %>%
-  group_by(coach) %>%
-  mutate(avg3 = round(rollapply(score,3,mean,align='right',partial=TRUE),1)) %>%
-  ungroup() %>%
-  select(round, coach, avg3) %>%
-  spread(coach, avg3)
+power_rankings <- function(player_data, sml_team_colours_hc, vPos=NULL){
+  
+  pRanks <- player_data
+  
+  if(!is.null(vPos)){
+    pRanks <- pRanks %>%
+      filter(position == vPos)
+  }
+  
+  pRanks <- pRanks %>%
+    filter(!is.na(coach)) %>%
+    filter(type == 'scoring') %>%
+    group_by(round, coach) %>%
+    summarise(
+      n=n(),
+      score = sum(points),
+      .groups='drop'
+    ) %>%
+    ungroup() %>%
+    mutate(avg = round(score/n)) %>%
+    arrange(coach, round) %>%
+    group_by(coach) %>%
+    mutate(avg3 = round(rollapply(score,width=3,sum,align='right',partial=TRUE)/
+                        rollapply(n,3,sum,align='right', partial=TRUE),1)) %>%
+    ungroup()
+  
+  # Data for chart
+  pRanks_hc <- pRanks %>%
+    select(coach, round, avg3) %>%
+    group_by(coach) %>%
+    do(data = list_parse2(data.frame(.$round, .$avg3))) %>%
+    ungroup() %>%
+    rename(name = coach) %>%
+    left_join(sml_team_colours_hc, by=c('name'))
+  
+  # Power ranking chart
+  chart <- highchart() %>%
+    hc_title(text=paste0('Power Rankings', ifelse(!is.null(vPos),paste0(' (',vPos,')'),''))) %>%
+    hc_subtitle(text='3 Round Average by per Player') %>%
+    hc_chart(type = 'spline') %>%
+    hc_add_series_list(pRanks_hc) 
+  
+  # Data for heat map
+  pRanks_wide <- pRanks %>%
+    select(coach, round, avg) %>%
+    spread(round, avg)
+  
+  pRanks_avg3 <- pRanks %>%
+    filter(round >= (max(round)-2)) %>%
+    group_by(coach) %>%
+    summarise(
+      avg3 = round(sum(score)/sum(n),1),
+      .groups='drop'
+    ) 
+  
+  pRanks_tbl <- pRanks %>%
+    group_by(coach) %>%
+    summarise(
+      avg = round(sum(score)/sum(n),1),
+      .groups='drop'
+    ) %>%
+    left_join(pRanks_avg3, by=c('coach')) %>%
+    left_join(pRanks_wide[,rev(names(pRanks_wide))], by=c('coach')) %>%
+    arrange(desc(avg3))
+  
+  # Conditional formatting
+  brks <- c(75,80,85,90,95,100,105)-0.01
+  clrs <- brewer.pal(8, 'RdYlGn')
+  
+  # Power rankings table
+  table <- datatable(
+    pRanks_tbl,
+    rownames=FALSE,
+    class = 'row-border stripe',
+    colnames = c('Coach' = 'coach', 'Avg' = 'avg', '3Rd Avg' = 'avg3'),
+    extensions = 'FixedColumns',
+    options = list(
+      dom = 't',
+      scrollX = TRUE,
+      fixedColumns = list(leftColumns = 3),
+      columnDefs = list(list(className = 'dt-center', targets = 0:(ncol(pRanks_tbl)-1)))
+    )
+  ) %>% 
+    formatStyle(names(pRanks_tbl[,c(4:ncol(pRanks_tbl))]), 
+                backgroundColor = styleInterval(brks, clrs))
+  
+  # Return object
+  return(
+    list(chart = chart,
+         table = table)
+  )
 
-rankings_data_hc <- rankings_data %>%
-  pivot_longer(cols = -round, names_to = "coach", values_to = "n") %>%
-  group_by(coach) %>%
-  do(data = list_parse2(data.frame(.$round, .$n))) %>%
-  ungroup() %>%
-  rename(name = coach) %>%
-  left_join(sml_team_colours_hc, by=c('name'))
+}
 
-highchart() %>%
-  hc_chart(type = 'spline') %>%
-  hc_title(text='Power Rankings') %>%
-  hc_subtitle(text='3 Round Average') %>%
-  hc_exporting(enabled=TRUE) %>%
-  hc_add_series_list(rankings_data_hc)
+pRank_all <- power_rankings(player_data, sml_team_colours_hc)
+pRank_def <- power_rankings(player_data, sml_team_colours_hc, 'DEF')
+pRank_mid <- power_rankings(player_data, sml_team_colours_hc, 'MID')
+pRank_ruc <- power_rankings(player_data, sml_team_colours_hc, 'RUC')
+pRank_fwd <- power_rankings(player_data, sml_team_colours_hc, 'FWD')
 
-# 
-# 
-# datatable(
-#   pos_smy_fltr,
-#   rownames=FALSE,
-#   class = 'row-border stripe',
-#   colnames = c('Coach' = 'coach', 'Avg' = 'avg_tot', '3Rd Avg' = 'avg3'),
-#   extensions = 'FixedColumns',
-#   options = list(
-#     dom = 't',
-#     scrollX = TRUE,
-#     fixedColumns = list(leftColumns = 3),
-#     columnDefs = list(list(className = 'dt-center', targets = 0:(ncol(pos_smy_fltr)-1)))
-#   )
-# ) %>% 
-#   formatStyle(names(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))]), 
-#               backgroundColor = styleInterval(brks, clrs))
-
+pRank_all$chart
+pRank_all$table
 ```
 
 ### DEF
 
-y
+```{r, pRanks_def}
+pRank_def$chart
+pRank_def$table
+```
 
 ### MID
 
-z
+```{r, pRanks_mid}
+pRank_mid$chart
+pRank_mid$table
+```
 
 ### RUC
 
-a
+```{r, pRanks_ruc}
+pRank_ruc$chart
+pRank_ruc$table
+```
 
 ### FWD
 
-b
+```{r, pRanks_fwd}
+pRank_fwd$chart
+pRank_fwd$table
+```
 
 ## {-}
 
@@ -808,223 +870,6 @@ highchart() %>%
 
 ```
 
-
-## Positional Averages
-```{r, positional_average, echo=FALSE}
-
-pos_avg <- player_data %>%
-  filter(!is.na(coach)) %>%
-  filter(type == 'scoring') %>%
-  group_by(round, coach, position) %>%
-  summarise(
-    n = n(),
-    score = sum(points),
-    .groups='drop'
-  ) %>%
-  ungroup() %>%
-  mutate(avg = round(score/n)) %>%
-  arrange(position,coach, round, avg) %>%
-  group_by(position,coach) %>%
-  mutate(avg3 = round(rollapply(score,width=3,sum,align='right',partial=TRUE) /
-                      rollapply(n,3,sum,align='right', partial=TRUE),1)) %>%
-  ungroup()
-
-pos_avg_wide <- pos_avg %>%
-  select(position, coach, round, avg) %>%
-  spread(round, avg) 
-
-pos_avg3 <- pos_avg %>%
-  filter(round == vRound) %>%
-  select(coach, position, avg3)
-
-pos_smy <- pos_avg %>%
-  group_by(coach, position) %>%
-  summarise(
-    n = sum(n),
-    score = sum(score),
-    .groups='drop'
-  ) %>%
-  ungroup() %>%
-  mutate(avg_tot= round(score/n)) %>%
-  arrange(position,coach) %>%
-  select(position, coach, avg_tot) %>%
-  left_join(pos_avg3, by=c('coach','position')) %>%
-  left_join(pos_avg_wide[,rev(names(pos_avg_wide))], by=c('coach','position')) %>%
-  arrange(position, desc(avg3))
-
-```
-
-### Defence
-```{r pos_avg_def}
-
-vPos <- 'DEF'
-
-pos_smy_fltr <- pos_smy %>%
-  filter(position == vPos) %>%
-  select(-position)
-
-pos_avg_hc <- pos_avg %>%
-  filter(position == vPos) %>%
-  select(coach, round, avg3) %>%
-  group_by(coach) %>%
-  do(data = list_parse2(data.frame(.$round, .$avg3))) %>%
-  ungroup() %>%
-  rename(name = coach)
-
-highchart() %>%
-  hc_title(text='Power Rankings') %>%
-  hc_subtitle(text=paste0('3 Round Average by Position (',vPos,')')) %>%
-  hc_chart(type = 'spline') %>%
-  hc_add_series_list(pos_avg_hc) 
-
-brks <- c(70,75,80,85,90,95,100)-0.01
-clrs <- brewer.pal(8, 'RdYlGn')
-
-datatable(
-  pos_smy_fltr,
-  rownames=FALSE,
-  class = 'row-border stripe',
-  colnames = c('Coach' = 'coach', 'Avg' = 'avg_tot', '3Rd Avg' = 'avg3'),
-  extensions = 'FixedColumns',
-  options = list(
-    dom = 't',
-    scrollX = TRUE,
-    fixedColumns = list(leftColumns = 3),
-    columnDefs = list(list(className = 'dt-center', targets = 0:(ncol(pos_smy_fltr)-1)))
-  )
-) %>% 
-  formatStyle(names(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))]), 
-              backgroundColor = styleInterval(brks, clrs))
-
-```
-### Midfield
-```{r pos_avg_mid}
-
-vPos <- 'MID'
-
-pos_smy_fltr <- pos_smy %>%
-  filter(position == vPos) %>%
-  select(-position)
-
-pos_avg_hc <- pos_avg %>%
-  filter(position == vPos) %>%
-  select(coach, round, avg3) %>%
-  group_by(coach) %>%
-  do(data = list_parse2(data.frame(.$round, .$avg3))) %>%
-  ungroup() %>%
-  rename(name = coach)
-
-highchart() %>%
-  hc_title(text='Power Rankings') %>%
-  hc_subtitle(text=paste0('3 Round Average by Position (',vPos,')')) %>%
-  hc_chart(type = 'spline') %>%
-  hc_add_series_list(pos_avg_hc) 
-
-brks <- c(70,75,80,85,90,95,100)+10-0.01
-clrs <- brewer.pal(8, 'RdYlGn')
-
-datatable(
-  pos_smy_fltr,
-  rownames=FALSE,
-  class = 'row-border stripe',
-  colnames = c('Coach' = 'coach', 'Avg' = 'avg_tot', '3Rd Avg' = 'avg3'),
-  extensions = 'FixedColumns',
-  options = list(
-    dom = 't',
-    scrollX = TRUE,
-    fixedColumns = list(leftColumns = 3),
-    columnDefs = list(list(className = 'dt-center', targets = 0:(ncol(pos_smy_fltr)-1)))
-  )
-) %>% 
-  formatStyle(names(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))]), 
-              backgroundColor = styleInterval(brks, clrs))
-```
-### Ruck
-```{r pos_avg_ruc}
-
-vPos <- 'RUC'
-
-pos_smy_fltr <- pos_smy %>%
-  filter(position == vPos) %>%
-  select(-position)
-
-pos_avg_hc <- pos_avg %>%
-  filter(position == vPos) %>%
-  select(coach, round, avg3) %>%
-  group_by(coach) %>%
-  do(data = list_parse2(data.frame(.$round, .$avg3))) %>%
-  ungroup() %>%
-  rename(name = coach)
-
-highchart() %>%
-  hc_title(text='Power Rankings') %>%
-  hc_subtitle(text=paste0('3 Round Average by Position (',vPos,')')) %>%
-  hc_chart(type = 'spline') %>%
-  hc_add_series_list(pos_avg_hc) 
-
-brks <- c(70,75,80,85,90,95,100)+10-0.01
-clrs <- brewer.pal(8, 'RdYlGn')
-
-datatable(
-  pos_smy_fltr,
-  rownames=FALSE,
-  class = 'row-border stripe',
-  colnames = c('Coach' = 'coach', 'Avg' = 'avg_tot', '3Rd Avg' = 'avg3'),
-  extensions = 'FixedColumns',
-  options = list(
-    dom = 't',
-    scrollX = TRUE,
-    fixedColumns = list(leftColumns = 3),
-    columnDefs = list(list(className = 'dt-center', targets = 0:(ncol(pos_smy_fltr)-1)))
-  )
-) %>% 
-  formatStyle(names(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))]), 
-              backgroundColor = styleInterval(brks, clrs))
-
-```
-### Forward
-```{r pos_avg_fwd}
-
-vPos <- 'FWD'
-
-pos_smy_fltr <- pos_smy %>%
-  filter(position == vPos) %>%
-  select(-position)
-
-pos_avg_hc <- pos_avg %>%
-  filter(position == vPos) %>%
-  select(coach, round, avg3) %>%
-  group_by(coach) %>%
-  do(data = list_parse2(data.frame(.$round, .$avg3))) %>%
-  ungroup() %>%
-  rename(name = coach)
-
-highchart() %>%
-  hc_title(text='Power Rankings') %>%
-  hc_subtitle(text=paste0('3 Round Average by Position (',vPos,')')) %>%
-  hc_chart(type = 'spline') %>%
-  hc_add_series_list(pos_avg_hc) 
-
-brks <- c(70,75,80,85,90,95,100)-0.01
-clrs <- brewer.pal(8, 'RdYlGn')
-
-datatable(
-  pos_smy_fltr,
-  rownames=FALSE,
-  class = 'row-border stripe',
-  colnames = c('Coach' = 'coach', 'Avg' = 'avg_tot', '3Rd Avg' = 'avg3'),
-  extensions = 'FixedColumns',
-  options = list(
-    dom = 't',
-    scrollX = TRUE,
-    fixedColumns = list(leftColumns = 3),
-    columnDefs = list(list(className = 'dt-center', targets = 0:(ncol(pos_smy_fltr)-1)))
-  )
-) %>% 
-  formatStyle(names(pos_smy_fltr[,c(4:ncol(pos_smy_fltr))]), 
-              backgroundColor = styleInterval(brks, clrs))
-
-```
 
 ```{r, emergency_use}
 emrg_data <- player_data %>%
