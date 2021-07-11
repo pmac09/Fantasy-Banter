@@ -136,32 +136,26 @@ get_afl_fixture <- function(sc_auth, round){
 ## Data Cleansing Scripts
 get_sc_player_data <- function(sc_players){
   
-  raw <- lapply(sc_players, unlist)
-  raw <- bind_rows(lapply(raw, as.data.frame.list))
-  
   player_data <- tibble(
-    feed_id          = as.numeric(raw$feed_id),
-    player_id        = as.numeric(raw$id),
-    first_name       = raw$first_name,
-    last_name        = raw$last_name,
-    team_abbrev      = raw$team.abbrev,
-    pos_1            = raw$positions.position,
-    pos_2            = raw$positions.position.1,
-    round            = as.numeric(raw$player_stats.round),
-    status           = raw$played_status.status,
-    projected_points = rep(NA, length(raw$feed_id)),
-    points           = as.numeric(raw$player_match_stats.points),
-    avg              = as.numeric(raw$player_stats.avg),
-    avg3             = as.numeric(raw$player_stats.avg3),
-    avg5             = as.numeric(raw$player_stats.avg5),
-    price            = as.numeric(raw$player_stats.price)
+    feed_id          = as.numeric(sapply(sc_players, function(x) x[['feed_id']])),
+    player_id        = as.numeric(sapply(sc_players, function(x) x[['id']])),
+    first_name       = sapply(sc_players, function(x) x[['first_name']]),
+    last_name        = sapply(sc_players, function(x) x[['last_name']]),
+    team_abbrev      = sapply(sc_players, function(x) x[['team']][['abbrev']]),
+    pos_1            = sapply(sc_players, function(x) x[['positions']][[1]][['position']]),
+    pos_2            = sapply(sc_players, function(x) ifelse(length(x[['positions']])>1, x[['positions']][[2]][['position']],NA)),
+    round            = as.numeric(sapply(sc_players, function(x) x[['player_stats']][[1]][['round']])),
+    status           = sapply(sc_players, function(x) x[['played_status']][['status']]),
+    projected_points = as.numeric(sapply(sc_players, function(x) x[['player_stats']][[1]][['ppts']])),
+    points           = as.numeric(sapply(sc_players, function(x) ifelse(length(x[['player_match_stats']])>0, x[['player_match_stats']][[1]][['points']],NA))),
+    avg              = as.numeric(sapply(sc_players, function(x) x[['player_stats']][[1]][['avg']])),
+    avg3             = as.numeric(sapply(sc_players, function(x) x[['player_stats']][[1]][['avg3']])),
+    avg5             = as.numeric(sapply(sc_players, function(x) x[['player_stats']][[1]][['avg5']])),
+    price            = as.numeric(sapply(sc_players, function(x) x[['player_stats']][[1]][['price']]))
   )
   
-  if('player_stats.ppts' %in% names(raw)){
-    player_data$projected_points = as.numeric(raw$player_stats.ppts)
-  }
-  
   return(player_data)
+  
 }
 get_sc_team_data <- function(sc_league){
   
