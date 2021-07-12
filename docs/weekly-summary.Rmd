@@ -190,7 +190,7 @@ power_rankings <- function(player_data, sml_team_colours_hc, vPos=NULL){
   # Power ranking chart
   chart <- highchart() %>%
     hc_title(text=paste0('Power Rankings', ifelse(!is.null(vPos),paste0(' (',vPos,')'),''))) %>%
-    hc_subtitle(text='3 Round Average by per Player') %>%
+    hc_subtitle(text='3 Round Average per Player') %>%
     hc_chart(type = 'spline') %>%
     hc_add_series_list(pRanks_hc) 
   
