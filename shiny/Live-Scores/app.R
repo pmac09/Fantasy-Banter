@@ -10,7 +10,7 @@ ui <- miniPage(
   ),
   
   gadgetTitleBar(
-    'ASL Round 13',
+    'ASL Live Scores',
     left  = NULL,
     right = miniTitleBarButton("btnRefreshFF", icon("sync"), primary = FALSE)
   ),
@@ -165,7 +165,7 @@ server <- function(input, output) {
       mutate(projected_points = ifelse(status=='now', live_projection, projected_points)) %>%
       mutate(points = ifelse(is.na(points),0,points)) %>%
       mutate(projected_points = ifelse(is.na(projected_points),0,projected_points)) %>%
-      arrange(game_num, team, desc(projected_points)) %>%
+      arrange(match(status, c('now','pre','post')), team, desc(projected_points)) %>%
       select(name, team_abbrev, position, projected_points, points)
     
     awayTeam <- live_data %>%
@@ -179,7 +179,7 @@ server <- function(input, output) {
       mutate(projected_points = ifelse(status=='now', live_projection, projected_points)) %>%
       mutate(points = ifelse(is.na(points),0,points)) %>%
       mutate(projected_points = ifelse(is.na(projected_points),0,projected_points)) %>%
-      arrange(game_num, team, desc(projected_points)) %>%
+      arrange(match(status, c('now','pre','post')), team, desc(projected_points)) %>%
       select(name, team_abbrev, position, projected_points, points)
 
 
