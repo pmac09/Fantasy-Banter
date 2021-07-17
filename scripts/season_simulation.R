@@ -1,9 +1,9 @@
+
+
 # Load supercoach functions
 source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.R')
 
 fixture_data <- get_fixture_data(cid,tkn)
-
-
 ## START SIM ------------------
 
 scores <- fixture_data %>% 
@@ -13,6 +13,8 @@ mean <- mean(scores$team_score, na.rm=T)
 sd <- sd(scores$team_score, na.rm=T)/1.5
 
 noOfSims <- 10000
+
+pb   <- txtProgressBar(1, noOfSims, style=3)
 
 results <- tibble()
 for( sim in 1:noOfSims){
@@ -51,12 +53,10 @@ for( sim in 1:noOfSims){
   
   results <- rbind(results, res)
   
-  if(sim %in% round(seq(0, noOfSims, noOfSims/100))){
-    print(paste0(round(sim/noOfSims*100),'% complete'))
-  }
+  setTxtProgressBar(pb, sim)
 }
 
-write.csv(results, 'simulation_R15.csv', na='', row.names = F)
+ write.csv(results, 'simulation_R17.csv', na='', row.names = F)
 
 summary <- results %>%
   mutate(TOP4 = ifelse(pos <= 4, 1,0)) %>%
@@ -83,7 +83,7 @@ smy <- results %>%
   summarise(mean = mean(mean),
             n=n(),
             .groups='drop') %>%
-  mutate(pcnt = round(n/noOfSims*100,1)) %>%
+  mutate(pcnt = round(n/noOfSims*100)) %>%
   select(-n) %>%
   spread(pos, pcnt) %>%
   arrange(mean)
@@ -111,10 +111,5 @@ results %>%
 
 results %>%
   filter(coach == 'Simon' & pos == 2)
-
-
-
-
-
 
 
