@@ -146,178 +146,116 @@ get_sc_player_data <- function(sc_players){
     pos_2            = sapply(sc_players, function(x) ifelse(length(x[['positions']])>1, x[['positions']][[2]][['position']],NA)),
     round            = as.numeric(sapply(sc_players, function(x) x[['player_stats']][[1]][['round']])),
     status           = sapply(sc_players, function(x) x[['played_status']][['status']]),
-    projected_points = as.numeric(sapply(sc_players, function(x) x[['player_stats']][[1]][['ppts']])),
-    points           = as.numeric(sapply(sc_players, function(x) ifelse(length(x[['player_match_stats']])>0, x[['player_match_stats']][[1]][['points']],NA))),
-    avg              = as.numeric(sapply(sc_players, function(x) x[['player_stats']][[1]][['avg']])),
-    avg3             = as.numeric(sapply(sc_players, function(x) x[['player_stats']][[1]][['avg3']])),
-    avg5             = as.numeric(sapply(sc_players, function(x) x[['player_stats']][[1]][['avg5']])),
-    price            = as.numeric(sapply(sc_players, function(x) x[['player_stats']][[1]][['price']]))
+    projected_points = as.numeric(sapply(sc_players, function(x) ifelse(is.null(x[['player_stats']][[1]][['ppts']]), NA,x[['player_stats']][[1]][['ppts']]))),
+    points           = as.numeric(sapply(sc_players, function(x) ifelse(length(x[['player_match_stats']])==0,        NA,x[['player_match_stats']][[1]][['points']]))),
+    avg              = as.numeric(sapply(sc_players, function(x) ifelse(is.null(x[['player_stats']][[1]][['avg']]),  NA,x[['player_stats']][[1]][['avg']]))),
+    avg3             = as.numeric(sapply(sc_players, function(x) ifelse(is.null(x[['player_stats']][[1]][['avg3']]), NA,x[['player_stats']][[1]][['avg3']]))),
+    avg5             = as.numeric(sapply(sc_players, function(x) ifelse(is.null(x[['player_stats']][[1]][['avg5']]), NA,x[['player_stats']][[1]][['avg5']]))),
+    price            = as.numeric(sapply(sc_players, function(x) ifelse(is.null(x[['player_stats']][[1]][['price']]),NA,x[['player_stats']][[1]][['price']])))
   )
   
   return(player_data)
-  
 }
 get_sc_team_data <- function(sc_league){
   
   team_data <- tibble()
   for(i in 1:length(sc_league$ladder)){
     
-    scoring <- lapply(sc_league$ladder[[i]]$userTeam$scores$scoring, unlist)
-    scoring <- bind_rows(lapply(scoring, as.data.frame.list)) %>%
-      mutate(type = 'scoring') %>%
-      mutate(team = sc_league$ladder[[i]]$userTeam$teamname) %>%
-      mutate(coach = sc_league$ladder[[i]]$userTeam$user$first_name) %>%
-      select(round,
-             user_team_id,
-             team,
-             coach,
-             player_id,
-             picked,
-             type,
-             position)
+    this_team <- tibble()
+    for(type in c('scoring','nonscoring')){
+      
+      tData <- tibble(
+        round        = as.numeric(sapply(sc_league$ladder[[i]]$userTeam$scores[[type]], function(x) x[['round']])),
+        player_id    = as.numeric(sapply(sc_league$ladder[[i]]$userTeam$scores[[type]], function(x) x[['player_id']])),
+        picked       = as.logical(sapply(sc_league$ladder[[i]]$userTeam$scores[[type]], function(x) x[['picked']])),
+        position     = sapply(sc_league$ladder[[i]]$userTeam$scores[[type]], function(x) x[['position']]),
+        user_team_id = as.numeric(sapply(sc_league$ladder[[i]]$userTeam$scores[[type]], function(x) x[['user_team_id']]))
+      ) %>%
+        mutate(team  = sc_league$ladder[[i]]$userTeam$teamname) %>%
+        mutate(coach = sc_league$ladder[[i]]$userTeam$user$first_name) %>%
+        mutate(type  = type) %>%
+        select(round,
+               user_team_id,
+               team,
+               coach,
+               player_id,
+               picked,
+               type,
+               position)
+      
+      this_team <- bind_rows(this_team, tData)
+      
+    }
     
-    nonscoring <- lapply(sc_league$ladder[[i]]$userTeam$scores$nonscoring, unlist)
-    nonscoring <- bind_rows(lapply(nonscoring, as.data.frame.list)) %>%
-      mutate(type = 'non-scoring') %>%
-      mutate(team = sc_league$ladder[[i]]$userTeam$teamname) %>%
-      mutate(coach = sc_league$ladder[[i]]$userTeam$user$first_name) %>%
-      select(round,
-             user_team_id,
-             team,
-             coach,
-             player_id,
-             picked,
-             type,
-             position)
+    team_data <- bind_rows(team_data, this_team)
     
-    team_data <- team_data %>%
-      bind_rows(scoring) %>%
-      bind_rows(nonscoring)
   }
-  
-  team_data <- team_data %>%
-    mutate(round = as.numeric(round)) %>%
-    mutate(player_id = as.numeric(player_id)) %>%
-    mutate(user_team_id = as.numeric(user_team_id)) %>%
-    mutate(picked = as.logical(picked))
     
   return(team_data)
   
 }
 get_sc_ladder_data <- function(sc_league){
-  raw <- sc_league$ladder
-  
-  raw <- lapply(raw, unlist)
-  raw <- bind_rows(lapply(raw, as.data.frame.list))
-  
+
   ladder_data <- tibble(
-    user_team_id   = as.numeric(raw$user_team_id),
-    teamname       = raw$userTeam.teamname,
-    coach          = raw$userTeam.user.first_name,
-    round          = as.numeric(raw$round),
-    wins           = as.numeric(raw$wins),
-    draws          = as.numeric(raw$draws),
-    losses         = as.numeric(raw$losses),
-    points         = as.numeric(raw$points),
-    points_for     = as.numeric(raw$points_for),
-    points_against = as.numeric(raw$points_against),
-    position       = as.numeric(raw$position),
-    round_points   = as.numeric(raw$userTeam.stats.points),
-    total_points   = as.numeric(raw$userTeam.stats.total_points)
+    user_team_id   = as.numeric(sapply(sc_league$ladder, function(x) x$user_team_id)),
+    teamname       = sapply(sc_league$ladder, function(x) x$userTeam$teamname),
+    coach          = sapply(sc_league$ladder, function(x) x$userTeam$user$first_name),
+    round          = as.numeric(sapply(sc_league$ladder, function(x) x$round)),
+    wins           = as.numeric(sapply(sc_league$ladder, function(x) x$wins)),
+    draws          = as.numeric(sapply(sc_league$ladder, function(x) x$draws)),
+    losses         = as.numeric(sapply(sc_league$ladder, function(x) x$losses)),
+    points         = as.numeric(sapply(sc_league$ladder, function(x) x$points)),
+    points_for     = as.numeric(sapply(sc_league$ladder, function(x) x$points_for)),
+    points_against = as.numeric(sapply(sc_league$ladder, function(x) x$points_against)),
+    position       = as.numeric(sapply(sc_league$ladder, function(x) x$position)),
+    round_points   = as.numeric(sapply(sc_league$ladder, function(x) x$userTeam$stats[[1]]$points)),
+    total_points   = as.numeric(sapply(sc_league$ladder, function(x) x$userTeam$stats[[1]]$total_points))
   )
   
   return(ladder_data)
 }
 get_sc_fixture_data <- function(sc_league){
   
-  raw <- lapply(sc_league$fixtures, unlist)
-  raw <- bind_rows(lapply(raw, as.data.frame.list))
+  home_data <- tibble(
+    round            = as.numeric(sapply(sc_league$fixture, function(x) x$round)),
+    fixture          = as.numeric(sapply(sc_league$fixture, function(x) x$fixture)),
+    team_id          = as.numeric(sapply(sc_league$fixture, function(x) x$user_team1$id)),
+    team             = sapply(sc_league$fixture, function(x) x$user_team1$teamname),
+    coach            = sapply(sc_league$fixture, function(x) x$user_team1$user$first_name),
+    team_score       = as.numeric(sapply(sc_league$fixture, function(x) ifelse(is.null(x$user_team1$stats[[1]]$points),NA,x$user_team1$stats[[1]]$points))),
+    opponent_team_id = as.numeric(sapply(sc_league$fixture, function(x) x$user_team2$id)),
+    opponent_team    = sapply(sc_league$fixture, function(x) x$user_team2$teamname),
+    opponent_coach   = sapply(sc_league$fixture, function(x) x$user_team2$user$first_name),
+    opponent_score   = as.numeric(sapply(sc_league$fixture, function(x) ifelse(is.null(x$user_team2$stats[[1]]$points),NA,x$user_team2$stats[[1]]$points)))
+  )
   
-  home_data <- raw %>%
-    rename(team_id = user_team1.id,
-           team = user_team1.teamname,
-           coach = user_team1.user.first_name,
-           opponent_team_id = user_team2.id,
-           opponent_team = user_team2.teamname,
-           opponent_coach = user_team2.user.first_name
-    )
+  away_data <- home_data 
+  names(away_data) <- names(home_data)[c(1:2,7:10,3:6)]
   
-  home_data <- home_data[,c(
-    'round',
-    'fixture',
-    'team_id',
-    'team',
-    'coach',
-    'opponent_team_id',
-    'opponent_team',
-    'opponent_coach'
-  )]
-  
-  # Join on scores if they exist
-  if('user_team1.stats.points' %in% names(raw)){
-    scores <- raw %>%
-      rename(team_score = user_team1.stats.points,
-             opponent_score = user_team2.stats.points) %>%
-      select(team_score, opponent_score)
-    
-    home_data <- bind_cols(home_data, scores)
-  } else {
-    home_data$team_score <- NA
-    home_data$opponent_score <- NA
-  }
-
-  away_data <- home_data[,c(
-    'round',
-    'fixture',
-    'opponent_team_id',
-    'opponent_team',
-    'opponent_coach',
-    'team_id',
-    'team',
-    'coach',
-    'opponent_score',
-    'team_score'
-  )]
-  
-  names(away_data) <- names(home_data)
-  
-  fixture_data <- as_tibble(bind_rows(home_data, away_data)) %>%
-    mutate(team_id = as.numeric(team_id)) %>%
-    mutate(opponent_team_id = as.numeric(opponent_team_id)) %>%
-    mutate(round = as.numeric(round)) %>%
-    mutate(fixture = as.numeric(fixture)) %>%
-    mutate(team_score = as.numeric(team_score)) %>%
-    mutate(opponent_score = as.numeric(opponent_score))
+  fixture_data <- bind_rows(home_data,away_data)
     
   return(fixture_data)
 }
 get_afl_fixture_data <- function(afl_fixture){
   
-  raw <- lapply(afl_fixture, unlist)
-  raw <- bind_rows(lapply(raw, as.data.frame.list))
-  
   home <- tibble(
-    season       = as.numeric(raw$season),
-    round        = as.numeric(raw$round),
-    game_num     = as.numeric(row.names(raw)),
-    kickoff      = with_tz(as_datetime(raw$kickoff), "Australia/Melbourne"),
-    status       = raw$status, 
-    team1        = raw$team1.name,
-    team1_abbrev = raw$team1.abbrev,
-    team2        = raw$team2.name,
-    team2_abbrev = raw$team2.abbrev,
+    season       = as.numeric(sapply(afl_fixture, function(x) x$season)),
+    round        = as.numeric(sapply(afl_fixture, function(x) x$round)),
+    game_num     = as.numeric(sapply(afl_fixture, function(x) x$id)),
+    kickoff      = with_tz(as_datetime(sapply(afl_fixture, function(x) x$kickoff)), "Australia/Melbourne"),
+    status       = sapply(afl_fixture, function(x) x$status),
+    team1        = sapply(afl_fixture, function(x) x$team1$name),
+    team1_abbrev = sapply(afl_fixture, function(x) x$team1$abbrev),
+    team2        = sapply(afl_fixture, function(x) x$team2$name),
+    team2_abbrev = sapply(afl_fixture, function(x) x$team2$abbrev),
     home_flag    = 1
   )
   
   away <- home %>%
-    rename(temp = team1) %>%
-    rename(team1 = team2) %>%
-    rename(team2 = temp) %>%
-    rename(temp_abbrev = team1_abbrev) %>%
-    rename(team1_abbrev = team2_abbrev) %>%
-    rename(team2_abbrev = temp_abbrev) %>%
     mutate(home_flag = 0)
- 
+  
+  names(away) <- names(home)[c(1:5,8:9,6:7,10)]
+  
   afl_fixture_data <- bind_rows(home,away) %>%
     arrange(kickoff, desc(home_flag))
   
