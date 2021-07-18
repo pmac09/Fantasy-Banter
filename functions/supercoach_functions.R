@@ -4,16 +4,17 @@
 ## Functions for interacting with the supercoach website and extracting data.
 
 options(stringsAsFactors = FALSE)
-library(httr)
-library(tidyverse)
-library(lubridate)
-library(tictoc)
-library(data.table)
+
+suppressMessages(library(httr))
+suppressMessages(library(tidyverse))
+suppressMessages(library(lubridate))
+suppressMessages(library(data.table))
 
 source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/secrets.R') # import supercoach authentication variables
 
 ## Data Extraction Scripts
 get_sc_auth <- function(cid, tkn){
+  log('get_sc_auth')
   
   year <- year(Sys.Date())
   url <- paste0('https://supercoach.heraldsun.com.au/', year, '/api/afl/classic/v1/access_token')
@@ -38,6 +39,7 @@ get_sc_auth <- function(cid, tkn){
   return(sc_auth)
 }
 get_sc_settings <- function(sc_auth){
+  log('get_sc_settings')
   
   year <- year(Sys.Date())
   url <- paste0('https://supercoach.heraldsun.com.au/', year, '/api/afl/draft/v1/settings')
@@ -50,6 +52,7 @@ get_sc_settings <- function(sc_auth){
   return(sc_settings)
 }
 get_sc_me <- function(sc_auth){
+  log('get_sc_me')
   
   year <- year(Sys.Date())
   url <- paste0('https://supercoach.heraldsun.com.au/', year, '/api/afl/classic/v1/me')
@@ -62,6 +65,7 @@ get_sc_me <- function(sc_auth){
   return(sc_me)
 }
 get_sc_user <- function(sc_auth, user_id){
+  log('get_sc_user')
   
   year <- year(Sys.Date())
   url <- paste0('https://supercoach.heraldsun.com.au/', year, '/api/afl/classic/v1/users/', user_id, '/stats')
@@ -74,6 +78,7 @@ get_sc_user <- function(sc_auth, user_id){
   return(sc_user)
 }
 get_sc_players <- function(sc_auth, round=0){
+  log('get_sc_players')
   
   year <- year(Sys.Date())
   url <- paste0('https://supercoach.heraldsun.com.au/', year, '/api/afl/draft/v1/players-cf?embed=notes%2Codds%2Cplayer_stats%2Cpositions%2Cplayer_match_stats&round=', round)
@@ -86,6 +91,7 @@ get_sc_players <- function(sc_auth, round=0){
   return(sc_players)
 }
 get_sc_playerStatus <- function(sc_auth, league_id){
+  log('get_sc_playerStatus')
   
   year <- year(Sys.Date())
   url <- paste0('https://supercoach.heraldsun.com.au/', year, '/api/afl/draft/v1/leagues/',league_id,'/playersStatus')
@@ -98,6 +104,7 @@ get_sc_playerStatus <- function(sc_auth, league_id){
   return(sc_playerStatus)
 }
 get_sc_league <- function(sc_auth, league_id, round=0){
+  log('get_sc_league')
   
   year <- year(Sys.Date())
   url <- paste0('https://supercoach.heraldsun.com.au/', year, '/api/afl/draft/v1/leagues/',league_id,'/ladderAndFixtures?round=', round,'&scores=true')
@@ -110,6 +117,7 @@ get_sc_league <- function(sc_auth, league_id, round=0){
   return(sc_league)
 }
 get_sc_team <- function(sc_auth, team_id, round=0){
+  log('get_sc_team')
   
   year <- year(Sys.Date())
   url <- paste0('https://supercoach.heraldsun.com.au/', year, '/api/afl/draft/v1/userteams/', team_id,'/statsPlayers?round=',round)
@@ -122,6 +130,8 @@ get_sc_team <- function(sc_auth, team_id, round=0){
   return(sc_team)
 }
 get_afl_fixture <- function(sc_auth, round){
+  log('get_afl_fixture')
+  
   year <- year(Sys.Date())
   url <- paste0('https://supercoach.heraldsun.com.au/',year,'/api/afl/draft/v1/real_fixture?round=',round)
   
@@ -135,6 +145,7 @@ get_afl_fixture <- function(sc_auth, round){
 
 ## Data Cleansing Scripts
 get_sc_player_data <- function(sc_players){
+  log('get_sc_player_data')
   
   player_data <- tibble(
     feed_id          = as.numeric(sapply(sc_players, function(x) x[['feed_id']])),
@@ -157,6 +168,7 @@ get_sc_player_data <- function(sc_players){
   return(player_data)
 }
 get_sc_team_data <- function(sc_league){
+  log('get_sc_team_data')
   
   team_data <- tibble()
   for(i in 1:length(sc_league$ladder)){
@@ -195,26 +207,27 @@ get_sc_team_data <- function(sc_league){
   
 }
 get_sc_ladder_data <- function(sc_league){
-
+  log('get_sc_ladder_data')
+  
   ladder_data <- tibble(
-    user_team_id   = as.numeric(sapply(sc_league$ladder, function(x) x$user_team_id)),
+    team_id        = as.numeric(sapply(sc_league$ladder, function(x) x$user_team_id)),
     teamname       = sapply(sc_league$ladder, function(x) x$userTeam$teamname),
     coach          = sapply(sc_league$ladder, function(x) x$userTeam$user$first_name),
     round          = as.numeric(sapply(sc_league$ladder, function(x) x$round)),
+    position       = as.numeric(sapply(sc_league$ladder, function(x) x$position)),
+    points         = as.numeric(sapply(sc_league$ladder, function(x) x$points)),
     wins           = as.numeric(sapply(sc_league$ladder, function(x) x$wins)),
     draws          = as.numeric(sapply(sc_league$ladder, function(x) x$draws)),
     losses         = as.numeric(sapply(sc_league$ladder, function(x) x$losses)),
-    points         = as.numeric(sapply(sc_league$ladder, function(x) x$points)),
     points_for     = as.numeric(sapply(sc_league$ladder, function(x) x$points_for)),
-    points_against = as.numeric(sapply(sc_league$ladder, function(x) x$points_against)),
-    position       = as.numeric(sapply(sc_league$ladder, function(x) x$position)),
-    round_points   = as.numeric(sapply(sc_league$ladder, function(x) x$userTeam$stats[[1]]$points)),
-    total_points   = as.numeric(sapply(sc_league$ladder, function(x) x$userTeam$stats[[1]]$total_points))
-  )
+    points_against = as.numeric(sapply(sc_league$ladder, function(x) x$points_against))
+  ) %>%
+    mutate(pcnt = round(points_for/points_against*100,2))
   
   return(ladder_data)
 }
 get_sc_fixture_data <- function(sc_league){
+  log('get_sc_fixture_data')
   
   home_data <- tibble(
     round            = as.numeric(sapply(sc_league$fixture, function(x) x$round)),
@@ -232,11 +245,18 @@ get_sc_fixture_data <- function(sc_league){
   away_data <- home_data 
   names(away_data) <- names(home_data)[c(1:2,7:10,3:6)]
   
-  fixture_data <- bind_rows(home_data,away_data)
-    
+  fixture_data <- bind_rows(home_data,away_data) %>%
+    mutate(team_score = ifelse(team_score==0,NA,team_score)) %>%
+    mutate(opponent_score = ifelse(opponent_score==0,NA,opponent_score)) %>%
+    mutate(differential = team_score - opponent_score) %>%
+    mutate(win = ifelse(differential > 0, 1,0)) %>%
+    mutate(draw = ifelse(differential == 0, 1,0)) %>%
+    mutate(loss = ifelse(differential < 0, 1,0))
+
   return(fixture_data)
 }
 get_afl_fixture_data <- function(afl_fixture){
+  log('get_afl_fixture_data')
   
   home <- tibble(
     season       = as.numeric(sapply(afl_fixture, function(x) x$season)),
@@ -263,6 +283,7 @@ get_afl_fixture_data <- function(afl_fixture){
 }
 
 get_ff_fixture_data <- function(vSeason=NA, vRound=NA){
+  log('get_ff_fixture_data')
   
   ff_fixture <- as_tibble(fread('http://www.fanfooty.com.au/resource/draw.php'))
   colnames(ff_fixture) <- c('game_id', 
@@ -299,6 +320,7 @@ get_ff_fixture_data <- function(vSeason=NA, vRound=NA){
   return(ff_fixture)
 }
 get_ff_game_data <- function(game_id){
+  log('get_ff_game_data')
   
   url <- paste0("https://www.fanfooty.com.au/live/", game_id, ".txt")
   game_data <- strsplit(readLines(url),",", useBytes = TRUE)
@@ -361,51 +383,34 @@ get_ff_game_data <- function(game_id){
 }
 
 ## Data Processing Scripts
-get_settings_data <- function(cid, tkn){
+get_sc <- function(cid, tkn){
+  log('get_sc')
   
   # Output Variable
-  settings <- list()
+  sc <- list()
   
   # Get Authentication
-  sc_auth <- get_sc_auth(cid, tkn)
-  settings$sc_auth <- sc_auth
+  sc$auth  <- get_sc_auth(cid, tkn)
   
-  # Get settings for Round
-  sc_settings <- get_sc_settings(sc_auth)
-  settings$current_round <- sc_settings$competition$current_round
-  settings$next_round <- sc_settings$competition$next_round
+  # Get settings 
+  sc$settings <- get_sc_settings(sc$auth)
   
   # Get me for user ID
-  sc_me <- get_sc_me(sc_auth)
-  user_id <- sc_me$id
-  settings$user_id <- user_id
+  sc$me <- get_sc_me(sc$auth)
   
   # Get user for league ID
-  sc_user <- get_sc_user(sc_auth, user_id)
-  league_id <- sc_user$draft[[1]]$leagues[[1]]$id
-  settings$league_id <- league_id
+  sc$user <- get_sc_user(sc$auth, sc$me$id)
   
-  return(settings)
+  return(sc)
 }
-get_player_data <- function(cid, tkn, round=NA){
-  tic()
-  
-  # Get authentication
-  sc_auth <- get_sc_auth(cid, tkn)
-  
-  # Get round information
-  if(is.na(round)){
-    sc_settings <- get_sc_settings(sc_auth)
-    round <- c(1:sc_settings$competition$current_round)
-  }
-  
-  # Get user id
-  sc_me <- get_sc_me(sc_auth)
-  user_id <- sc_me$id
+get_player_data <- function(sc, round=NA){
+  log('get_player_data')
+
+  # Get all rounds if round not provided
+  if(is.na(round)) round <- c(1:sc$settings$competition$current_round)
   
   # Get draft league id
-  sc_user <- get_sc_user(sc_auth, user_id)
-  league_id <- sc_user$draft[[1]]$leagues[[1]]$id
+  league_id <- sc$user$draft[[1]]$leagues[[1]]$id
   
   # Create data placeholders
   player_data <- tibble()
@@ -413,14 +418,15 @@ get_player_data <- function(cid, tkn, round=NA){
   
   # Gather data for selected rounds
   for(i in round){
+    log(paste0('Round ', i))
     
     # Gather player data
-    sc_players <- get_sc_players(sc_auth, i)
+    sc_players <- get_sc_players(sc$auth, i)
     p_data <- get_sc_player_data(sc_players)
     player_data <- bind_rows(player_data, p_data)
     
     # Gather league data
-    sc_league <- get_sc_league(sc_auth, league_id, i)
+    sc_league <- get_sc_league(sc$auth, league_id, i)
     
     # Gather team data
     t_data <- get_sc_team_data(sc_league)
@@ -431,61 +437,48 @@ get_player_data <- function(cid, tkn, round=NA){
   player_data <- player_data %>%
     left_join(team_data, by=c('round', 'player_id'))
   
-  toc()
   return(player_data)
 }
-get_fixture_data <- function(cid, tkn, round=NA){
-  tic()
+get_league_data <- function(sc, round=NA){
+  log('get_league_data')
   
-  # Get authentication
-  sc_auth <- get_sc_auth(cid, tkn)
-  
-  # Get user id
-  sc_me <- get_sc_me(sc_auth)
-  user_id <- sc_me$id
+  # Get all rounds if round not provided
+  if(is.na(round)) round <- c(1:(sc$user$draft[[1]]$leagues[[1]]$options$game_finals_round-1))
   
   # Get draft league id
-  sc_user <- get_sc_user(sc_auth, user_id)
-  league_id <- sc_user$draft[[1]]$leagues[[1]]$id
-
-  # If round is NA get whole season
-  if(is.na(round)){
-    season_length <- sc_user$draft[[1]]$leagues[[1]]$options$game_finals_round-1
-    round <- c(1:season_length)
-  }
+  league_id <- sc$user$draft[[1]]$leagues[[1]]$id
   
   # Create data placeholders
-  fixture_data <- tibble()
+  leauge_data <- tibble()
   
   # Gather data for selected rounds
   for(i in round){
+    log(paste0('Round ', i))
     
     # Gather fixture data
-    sc_league <- get_sc_league(sc_auth, league_id, i)
-    f_data <- get_sc_fixture_data(sc_league)
-    fixture_data <- bind_rows(fixture_data, f_data)
-  
+    sc_league <- get_sc_league(sc$auth, league_id, i)
+    
+    # Transform
+    fData <- get_sc_fixture_data(sc_league)
+    
+    if(i <= sc$settings$competition$current_round){
+      
+      lData <- get_sc_ladder_data(sc_league) %>%
+        dplyr::select(-teamname, -coach, -round)
+      
+      data <- fData %>%
+        left_join(lData, by=c('team_id'))
+      
+    } else {
+      data <- fData
+    }
+    
+    # bind
+    leauge_data <- bind_rows(leauge_data, data)
+    
   }
   
-  fixture_data$team_score[fixture_data$team_score == 0] <- NA
-  fixture_data$opponent_score[fixture_data$opponent_score == 0] <- NA
-  
-  fixture_data <- fixture_data %>%
-    mutate(differential = team_score - opponent_score) %>%
-    mutate(win = ifelse(differential > 0, 1,0)) %>%
-    mutate(draw = ifelse(differential == 0, 1,0)) %>%
-    mutate(loss = ifelse(differential < 0, 1,0)) %>%
-    group_by(coach) %>%
-    mutate(cumul_win = cumsum(win)) %>%
-    mutate(cumul_draw = cumsum(draw)) %>%
-    mutate(cumul_loss = cumsum(loss)) %>%
-    mutate(cumul_points_for = cumsum(team_score)) %>%
-    mutate(cumul_points_against = cumsum(opponent_score)) %>%
-    mutate(points = cumul_win*4 + cumul_draw*2) %>%
-    mutate(pcnt = round(cumul_points_for/cumul_points_against*100,2))
-  
-  toc()
-  return(fixture_data)
+  return(leauge_data)
 }
 
 ## Other Handy Functions
@@ -542,7 +535,11 @@ get_sc_logo <- function(logoSize=38, shirttype, shortcolor, basecolor, secondcol
   )
   
 }
-
+log <- function(...){
+  time <- format(with_tz(as_datetime(Sys.time()), "Australia/Melbourne"), format="%Y-%m-%d %H:%M:%S")
+  msg <- paste0(time,': ', ...)
+  message(msg)
+}
 
 ## Other Handy Variables
 team_colours <- list(
