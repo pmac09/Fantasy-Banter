@@ -317,6 +317,9 @@ get_ff_fixture_data <- function(vSeason=NA, vRound=NA){
       filter(round==vRound)
   }
   
+  ff_fixture$home_team[ff_fixture$home_team == 'GWS'] <- 'GWS Giants'
+  ff_fixture$away_team[ff_fixture$away_team == 'GWS'] <- 'GWS Giants'
+  
   return(ff_fixture)
 }
 get_ff_game_data <- function(game_id){
@@ -372,11 +375,13 @@ get_ff_game_data <- function(game_id){
     'clangers',
     'disposal_effeciency',
     'time_on_ground',
-    'metres_gained'
+    'metres_gained',
+    'bench_flag'
   )
   
   game_data$feed_id <- as.numeric(game_data$feed_id)
   game_data$supercoach <- as.numeric(game_data$supercoach)
+  game_data$time_on_ground <- as.numeric(game_data$time_on_ground)
   
   return(game_data)
   
