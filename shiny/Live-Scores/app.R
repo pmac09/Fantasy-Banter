@@ -1,8 +1,31 @@
+## SETUP ----
 library(shiny)
 library(miniUI)
+library(DT)
+
 
 source('www/supercoach_functions.R')
 
+## GLOBAL ----
+g <- list(sc = get_sc(cid,tkn))
+
+g$ladder_data <-get_sc_ladder_data(get_sc_league(g$sc$auth, 
+                                                 g$sc$user$draft[[1]]$leagues[[1]]$id, 
+                                                 g$sc$settings$competition$current_round))
+
+g$fixture_data <- get_sc_fixture_data(get_sc_league(g$sc$auth, 
+                                                    g$sc$user$draft[[1]]$leagues[[1]]$id, 
+                                                    g$sc$settings$competition$next_round))
+
+g$player_data <- get_player_data(g$sc, g$sc$settings$competition$next_round)
+
+g$ff_fixture <- get_ff_fixture_data(vSeason = year(with_tz(as_datetime(Sys.time()), "Australia/Melbourne")), 
+                                    vRound = g$sc$settings$competition$next_round)
+
+g$afl_fixture <- get_afl_fixture_data(get_afl_fixture(g$sc$auth, 
+                                                      g$sc$settings$competition$next_round))
+
+## UI ----
 ui <- miniPage(
   
   tags$head(
@@ -16,73 +39,62 @@ ui <- miniPage(
   ),
   
   miniTabstripPanel(
-    #miniTabPanel('Live Ladder'),
-    miniTabPanel('Game 1',uiOutput('pgGame1')),
-    miniTabPanel('Game 2',uiOutput('pgGame2')),
-    miniTabPanel('Game 3',uiOutput('pgGame3')),
-    miniTabPanel('Game 4',uiOutput('pgGame4'))
+    miniTabPanel('Game 1',icon=icon('user-friends'),uiOutput('pgGame1')),
+    miniTabPanel('Game 2',icon=icon('user-friends'),uiOutput('pgGame2')),
+    miniTabPanel('Game 3',icon=icon('user-friends'),uiOutput('pgGame3')),
+    miniTabPanel('Game 4',icon=icon('user-friends'),uiOutput('pgGame4')),
+    miniTabPanel('Ladder', icon=icon('align-justify'), DTOutput('tbl'))
   )
 )
 
+## SERVER ----
+server <- function(input, output, session) {
 
-server <- function(input, output) {
-  
-  
-  rv <- reactiveValues(refreshFanfooty = 0,
-                       liveFixture = NULL)
-  
-  settings_data <- get_settings_data(cid,tkn)
-  sc_auth <- settings_data$sc_auth
-  vSeason <- 2021
-  vRound <- settings_data$next_round
-  
-  # Get sc fixture
-  fixture_data <-get_fixture_data(cid, tkn, vRound)
-  
-  ## Get the live fixture
-  rv$liveFixture <- get_afl_fixture_data(get_afl_fixture(sc_auth, vRound))
+  # Initialise Reactive Variables
+  rv <- reactiveValues(sc = g$sc,
+                       player_data = g$player_data,
+                       ladder_data = g$ladder_data,
+                       fixture_data = g$fixture_data,
+                       ff_fixture = g$ff_fixture,
+                       afl_fixture = g$afl_fixture,
+                       vRound = g$sc$settings$competition$next_round,
+                       refreshFanfooty = 0,
+                       refreshSupercoach = NULL)
   
   ## On button press, compare status to existing status
   observeEvent(input$btnRefreshFF, {
     
     # Get the live fixture
-    newFixture <- get_afl_fixture_data(get_afl_fixture(sc_auth, vRound))
+    newFixture <- get_afl_fixture_data(get_afl_fixture(rv$sc$auth, rv$vRound))
     
     # Check status are identical
-    if(all(rv$liveFixture$status == newFixture$status)){
+    if(all(rv$afl_fixture$status == newFixture$status)){
       # Trigger Fanfooty Refresh
       rv$refreshFanfooty = rv$refreshFanfooty + 1
     } else {
-      # Update live fixture to trigger complete refresh
-      rv$liveFixture <- newFixture
+      # Update afl fixture locally and globally
+      rv$afl_fixture <- newFixture
+      g$afl_fixture <<-newFixture
+      # Trigger supercoach refresh
+      rv$refreshSupercoach = ifelse(is.null(rv$refreshSupercoach),0,rv$refreshSupercoach) + 1
     }
   })
   
-  # Get player data from supercoach
-  player_data_r <- reactive({
+  # Update Supercoach data
+  observeEvent(rv$refreshSupercoach, {
     
-    # Create static version of reactiveVal
-    afl_fixture <- rv$liveFixture
+    # Update player data locally and globally
+    rv$player_data <- get_player_data(rv$sc, rv$vRound)
+    g$player_data <<- rv$player_data
     
-    # Get player data
-    player_data <- get_player_data(cid, tkn, vRound)
-    
-    # Join the fixture
-    player_data <- player_data %>% 
-      left_join(afl_fixture[,c('team1_abbrev','game_num')], by=c('team_abbrev'='team1_abbrev')) %>%
-      arrange(coach, game_num)
-    
-    return(player_data)
   })
-  
-  ## Get the fanfooty fixture
-  ff_fixture <- get_ff_fixture_data(vSeason = vSeason, vRound = vRound)
   
   # filter for the live games
   ff_live_games_r <- reactive({
     
-    # Create static version of reactiveVal
-    afl_fixture <- rv$liveFixture
+    # Create static versions
+    afl_fixture <- rv$afl_fixture
+    ff_fixture <- rv$ff_fixture
     
     # get Live games
     ff_live_games <- ff_fixture %>%
@@ -102,16 +114,23 @@ server <- function(input, output) {
     ff_live_games <- ff_live_games_r()
     
     # container for loop
-    ff_live_scores <- tibble()
+    ff_live_scores <- tibble(
+      feed_id = numeric(0),
+      live_points = numeric(0),
+      live_projection = numeric(0),
+      max_tog = numeric(0)
+    )
     
     # loop through live games
     for (game_id in ff_live_games$game_id){
       
       # get specific fanfooty data
       ff_game_data <- get_ff_game_data(game_id) %>%
-        select(feed_id, supercoach) %>%
+        select(feed_id, supercoach, time_on_ground) %>%
         rename(live_points = supercoach) %>%
-        mutate(live_projection = round(live_points * 3300/sum(live_points)))
+        mutate(live_projection = round(live_points * 3300/sum(live_points))) %>%
+        mutate(max_tog = max(time_on_ground)) %>%
+        select(feed_id, live_points, live_projection, max_tog)
       
       # merge to container
       ff_live_scores <- bind_rows(ff_live_scores,ff_game_data) 
@@ -119,34 +138,95 @@ server <- function(input, output) {
     
     return(ff_live_scores)
   })
-  
+
   # Create live data tables
   live_data_r <- reactive({
     
-    player_data <- player_data_r()
-    ff_live_scores<- ff_live_scores_r()
+    player_data <- rv$player_data
+    player_data$points[is.na(player_data$points)] <- 0
+    player_data$projected_points[is.na(player_data$projected_points)] <- round(player_data$avg3[is.na(player_data$projected_points)])
+    player_data$projected_points[is.na(player_data$projected_points)] <- 0
     
+    afl_fixture <- rv$afl_fixture
+    ff_live_scores <- ff_live_scores_r()
     
-    if(nrow(ff_live_scores)==0){
-      #combine all the data
-      live_data <- player_data %>%
-        mutate(name = paste0(substr(first_name,1,1),'.',last_name)) %>%
-        select(feed_id, name, team_abbrev, game_num, status,
-               team, coach, picked, type, position,
-               projected_points, points) %>%
-        mutate(live_points = NA) %>%
-        mutate(live_projection=NA)      
-    } else {
-      #combine all the data
-      live_data <- player_data %>%
-        left_join(ff_live_scores, by=c('feed_id')) %>%
-        mutate(name = paste0(substr(first_name,1,1),'.',last_name)) %>%
-        select(feed_id, name, team_abbrev, game_num, status,
-               team, coach, picked, type, position,
-               projected_points, points, live_points, live_projection)
-    }
-    
+    # Merge supercoach with live stats
+    live_data <- player_data %>%
+      mutate(name = paste0(substr(first_name,1,1),'.',last_name)) %>%
+      select(feed_id, name, team_abbrev,team, coach, picked, type, position, projected_points, points) %>%
+      left_join(ff_live_scores, by=c('feed_id'))  %>%
+      left_join(afl_fixture[c('team1_abbrev','kickoff','status')], by=c('team_abbrev'='team1_abbrev')) %>%
+      arrange(coach, desc(type), desc(picked)) %>%
+      group_by(coach) %>%
+      mutate(row_num = row_number()) %>%
+      filter(row_num <= 18) %>%
+      mutate(proj = case_when(status == 'post'                ~ points,
+                              status == 'pre'                 ~ projected_points,
+                              live_points >= projected_points ~ live_projection,
+                              max_tog >= 75                   ~ live_projection,
+                              TRUE                            ~ projected_points)) %>%
+      mutate(pnts = case_when(status == 'now'                 ~ live_points,
+                              TRUE                            ~ points)) %>%
+      arrange(coach, match(status, c('now','pre','post')), kickoff, team_abbrev, desc(proj)) %>%
+      ungroup() %>%
+      select(coach, team, name, team_abbrev, position, proj, pnts) %>%
+      rename(projected_points = proj) %>%
+      rename(points = pnts)
+
     return(live_data)
+  })
+  
+  # Create live ladder
+  live_ladder_r <- reactive({
+    
+    live_data <- live_data_r()
+    ladder_data <- rv$ladder_data
+    fixture_data <- rv$fixture_data
+    
+    live_smy <- live_data %>%
+      filter(!is.na(coach)) %>%
+      group_by(coach) %>%
+      summarise(
+        points = sum(projected_points),
+        .groups='drop'
+      )
+    
+    fData <- fixture_data %>%
+      select(fixture, team, coach, opponent_coach) %>%
+      left_join(live_smy, by=c('coach')) %>%
+      rename(points_for = points) %>%
+      left_join(live_smy, by=c('opponent_coach'='coach')) %>%
+      rename(points_against = points) %>%
+      mutate(wins = ifelse(points_for > points_against,1,0)) %>%
+      mutate(draws = ifelse(points_for == points_against, 1,0)) %>%
+      mutate(losses = ifelse(points_for < points_against,1,0)) %>%
+      rename(teamname = team)
+    
+    live_ladder <- bind_rows(ladder_data, fData) %>%
+      group_by(coach, teamname) %>%
+      summarise(
+        W = sum(wins),
+        D = sum(draws),
+        L = sum(losses),
+        PF = sum(points_for),
+        PA = sum(points_against),
+        .groups='drop'
+      ) %>%
+      mutate(pcent = round(PF/PA*100,2)) %>%
+      mutate(points = (W*4)+(D*2)) %>%
+      arrange(desc(points), desc(pcent)) %>%
+      mutate(rank = row_number())
+    
+    tbl <- fData[,c('coach','teamname','points_for','wins')] %>%
+      left_join(live_ladder[,c('coach','rank','points','W','pcent')], by=c('coach')) %>%
+      left_join(ladder_data[,c('coach','position','pcnt')], by=c('coach')) %>%
+      mutate(pos_change = position - rank) %>%
+      mutate(pcnt_change = round(pcent - pcnt,digits=2)) %>%
+      mutate(pcent = round(pcent,1)) %>%
+      arrange(rank) %>%
+      select(rank, coach, teamname, points_for, wins, pos_change, W, pcent, pcnt_change)
+    
+    return(tbl)
   })
   
   displayGame <- function(fixture_data, game_num, live_data){
@@ -156,30 +236,10 @@ server <- function(input, output) {
     
     homeTeam <- live_data %>%
       filter(coach == game_data$coach[1]) %>%
-      arrange(desc(type), picked) %>%
-      mutate(row_num = row_number()) %>%
-      filter(row_num <= 18) %>%
-      mutate(points = ifelse(status=='post' & is.na(points), 0 , points)) %>%
-      mutate(projected_points = ifelse(status=='post', points, projected_points)) %>%
-      mutate(points = ifelse(status =='now', live_points, points)) %>%
-      mutate(projected_points = ifelse(status=='now', live_projection, projected_points)) %>%
-      mutate(points = ifelse(is.na(points),0,points)) %>%
-      mutate(projected_points = ifelse(is.na(projected_points),0,projected_points)) %>%
-      arrange(match(status, c('now','pre','post')), team, desc(projected_points)) %>%
       select(name, team_abbrev, position, projected_points, points)
     
     awayTeam <- live_data %>%
       filter(coach == game_data$opponent_coach[1]) %>%
-      arrange(desc(type), picked) %>%
-      mutate(row_num = row_number()) %>%
-      filter(row_num <= 18) %>%
-      mutate(points = ifelse(status=='post' & is.na(points), 0 , points)) %>%
-      mutate(projected_points = ifelse(status=='post', points, projected_points)) %>%
-      mutate(points = ifelse(status =='now', live_points, points)) %>%
-      mutate(projected_points = ifelse(status=='now', live_projection, projected_points)) %>%
-      mutate(points = ifelse(is.na(points),0,points)) %>%
-      mutate(projected_points = ifelse(is.na(projected_points),0,projected_points)) %>%
-      arrange(match(status, c('now','pre','post')), team, desc(projected_points)) %>%
       select(name, team_abbrev, position, projected_points, points)
 
 
@@ -256,36 +316,47 @@ server <- function(input, output) {
     return(cell)
   }
   
-  # UI Ouptut
+  # UI Output
   output$pgGame1 <- renderUI({
     req(live_data_r())
-    live_data <- live_data_r()
-    
-    ui <- displayGame(fixture_data, 1, live_data)
+    ui <- displayGame(rv$fixture_data, 1, live_data_r())
     return(ui)
   })
   output$pgGame2 <- renderUI({
     req(live_data_r())
-    ui <- displayGame(fixture_data, 2, live_data_r())
+    ui <- displayGame(rv$fixture_data, 2, live_data_r())
     return(ui)
   })
   output$pgGame3 <- renderUI({
     req(live_data_r())
-    ui <- displayGame(fixture_data, 3, live_data_r())
+    ui <- displayGame(rv$fixture_data, 3, live_data_r())
     return(ui)
   })
   output$pgGame4 <- renderUI({
     req(live_data_r())
-    ui <- displayGame(fixture_data, 4, live_data_r())
+    ui <- displayGame(rv$fixture_data, 4, live_data_r())
     return(ui)
   })
-    
   
-  ## OBSERVES #####
-  observeEvent(input$btnRefreshFF, {
-    rv$refreshFanfooty <- rv$refreshFanfooty + 1
-    print(rv$refreshFanfooty)
-  })
+  output$tbl = renderDT(
+    live_ladder_r(), 
+    class="display compact cell-border stripe",
+    rownames = FALSE,
+    colnames = c('Coach'='coach',
+                 'Rd Score'='points_for',
+                 'Pos Chg' = 'pos_change',
+                 'Wins'='W',
+                 '%'='pcent',
+                 '% Chg' = 'pcnt_change'),
+    options = list(
+      dom='t',
+      lengthChange = FALSE,
+      columnDefs = list(
+        list(targets= c(0,2,4), visible=F),
+        list(targets= c(3,5,6), className='dt-center')
+      )
+    )
+  )
   
 }
 
