@@ -230,7 +230,7 @@ server <- function(input, output, session) {
       class="display compact cell-border stripe",
       rownames = FALSE,
       colnames = c('Coach'='coach',
-                   'Rd Score'='points_for',
+                   'Proj'='points_for',
                    'Pos Chg' = 'pos_change',
                    'Wins'='W',
                    '%'='pcent',
@@ -244,7 +244,7 @@ server <- function(input, output, session) {
         )
       )
     ) %>%
-      formatStyle('Rd Score',
+      formatStyle('Proj',
                   'wins',
                   backgroundColor = styleInterval(c(0), c('#F46D43','#66BD63')))
     
