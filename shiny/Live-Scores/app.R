@@ -3,7 +3,6 @@ library(shiny)
 library(miniUI)
 library(DT)
 
-
 source('www/supercoach_functions.R')
 
 ## GLOBAL ----
@@ -226,7 +225,30 @@ server <- function(input, output, session) {
       arrange(rank) %>%
       select(rank, coach, teamname, points_for, wins, pos_change, W, pcent, pcnt_change)
     
-    return(tbl)
+    output <- datatable(
+      tbl, 
+      class="display compact cell-border stripe",
+      rownames = FALSE,
+      colnames = c('Coach'='coach',
+                   'Rd Score'='points_for',
+                   'Pos Chg' = 'pos_change',
+                   'Wins'='W',
+                   '%'='pcent',
+                   '% Chg' = 'pcnt_change'),
+      options = list(
+        dom='t',
+        lengthChange = FALSE,
+        columnDefs = list(
+          list(targets= c(0,2,4), visible=F),
+          list(targets= c(3,5,6:8), className='dt-center')
+        )
+      )
+    ) %>%
+      formatStyle('Rd Score',
+                  'wins',
+                  backgroundColor = styleInterval(c(0), c('#F46D43','#66BD63')))
+    
+    return(output)
   })
   
   displayGame <- function(fixture_data, game_num, live_data){
@@ -338,25 +360,8 @@ server <- function(input, output, session) {
     return(ui)
   })
   
-  output$tbl = renderDT(
-    live_ladder_r(), 
-    class="display compact cell-border stripe",
-    rownames = FALSE,
-    colnames = c('Coach'='coach',
-                 'Rd Score'='points_for',
-                 'Pos Chg' = 'pos_change',
-                 'Wins'='W',
-                 '%'='pcent',
-                 '% Chg' = 'pcnt_change'),
-    options = list(
-      dom='t',
-      lengthChange = FALSE,
-      columnDefs = list(
-        list(targets= c(0,2,4), visible=F),
-        list(targets= c(3,5,6), className='dt-center')
-      )
-    )
-  )
+  output$tbl = renderDT(live_ladder_r())
+    
   
 }
 
