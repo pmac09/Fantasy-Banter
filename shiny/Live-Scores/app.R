@@ -3,6 +3,7 @@ library(shiny)
 library(miniUI)
 library(DT)
 
+#setwd('./shiny/Live-Scores')
 source('www/supercoach_functions.R')
 
 ## GLOBAL ----
@@ -128,7 +129,7 @@ server <- function(input, output, session) {
         select(feed_id, supercoach, time_on_ground) %>%
         rename(live_points = supercoach) %>%
         mutate(live_projection = round(live_points * 3300/sum(live_points))) %>%
-        mutate(max_tog = max(time_on_ground)) %>%
+        mutate(max_tog = round(sum(live_points/3300)*100)) %>%
         select(feed_id, live_points, live_projection, max_tog)
       
       # merge to container
