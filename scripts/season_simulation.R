@@ -3,10 +3,11 @@
 # Load supercoach functions
 source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.R')
 
-fixture_data <- get_fixture_data(cid,tkn)
+sc <- get_sc(cid, tkn)
+league_data <- get_league_data(sc)
 ## START SIM ------------------
 
-scores <- fixture_data %>% 
+scores <- league_data %>% 
   filter(round != 12 & round != 13 & round != 14) 
 
 mean <- mean(scores$team_score, na.rm=T)
@@ -19,7 +20,7 @@ pb   <- txtProgressBar(1, noOfSims, style=3)
 results <- tibble()
 for( sim in 1:noOfSims){
   
-  proj <- fixture_data %>%
+  proj <- league_data %>%
     ungroup() %>%
     rowwise() %>%
     mutate(team_score = ifelse(is.na(team_score), round(rnorm(1, mean, sd)), team_score)) %>%
@@ -56,7 +57,7 @@ for( sim in 1:noOfSims){
   setTxtProgressBar(pb, sim)
 }
 
- write.csv(results, 'simulation_R17.csv', na='', row.names = F)
+ write.csv(results, '/Users/paulmcgrath/Github/Fantasy-Banter/data/2021/simulation_R19.csv', na='', row.names = F)
 
 summary <- results %>%
   mutate(TOP4 = ifelse(pos <= 4, 1,0)) %>%
@@ -89,6 +90,34 @@ smy <- results %>%
   arrange(mean)
 
 smy
+
+
+results %>%
+  group_by(simulation) %>%
+  summarise(
+
+  )
+
+
+c <- results[,c('simulation','pos','coach')] %>%
+  filter(pos == 3 | pos == 4) %>%
+  spread(pos, coach) %>%
+  pivot_longer(cols=c('3','4')) %>%
+  select(simulation, value) %>%
+  arrange(simulation, value) %>%
+  mutate(n = 1) %>%
+  spread(value, value) 
+
+c[is.na(c)] <- ''
+
+c %>%
+  mutate(combo = paste0(James, Jordan, Lester, Luke)) %>%
+  group_by(combo) %>%
+  summarise(
+    n=n()
+  ) %>%
+  mutate(rate = round(n/10000*100)) %>%
+  arrange(desc(rate))
 
 
 pos_smy <- results %>%
