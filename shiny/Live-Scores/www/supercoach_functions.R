@@ -319,6 +319,8 @@ get_ff_fixture_data <- function(vSeason=NA, vRound=NA){
   
   ff_fixture$home_team[ff_fixture$home_team == 'GWS'] <- 'GWS Giants'
   ff_fixture$away_team[ff_fixture$away_team == 'GWS'] <- 'GWS Giants'
+  ff_fixture$home_team[ff_fixture$home_team == 'Brisbane Lions'] <- 'Brisbane'
+  ff_fixture$away_team[ff_fixture$away_team == 'Brisbane Lions'] <- 'Brisbane'
   
   return(ff_fixture)
 }
