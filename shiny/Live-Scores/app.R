@@ -163,7 +163,7 @@ server <- function(input, output, session) {
       mutate(proj = case_when(status == 'post'                ~ points,
                               status == 'pre'                 ~ projected_points,
                               live_points >= projected_points ~ live_projection,
-                              max_tog >= 75                   ~ live_projection,
+                              max_tog >= 50                   ~ live_projection,
                               TRUE                            ~ projected_points)) %>%
       mutate(pnts = case_when(status == 'now'                 ~ live_points,
                               TRUE                            ~ points)) %>%
