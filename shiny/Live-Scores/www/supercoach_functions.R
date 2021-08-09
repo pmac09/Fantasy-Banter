@@ -186,7 +186,7 @@ get_sc_team_data <- function(sc_league){
         mutate(team  = sc_league$ladder[[i]]$userTeam$teamname) %>%
         mutate(coach = sc_league$ladder[[i]]$userTeam$user$first_name) %>%
         mutate(type  = type) %>%
-        select(round,
+        dplyr::select(round,
                user_team_id,
                team,
                coach,
