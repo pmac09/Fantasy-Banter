@@ -57,8 +57,12 @@ for( sim in 1:noOfSims){
   setTxtProgressBar(pb, sim)
 }
 
- write.csv(results, '/Users/paulmcgrath/Github/Fantasy-Banter/data/2021/simulation_R19.csv', na='', row.names = F)
+path <- '/Users/paulmcgrath/Github/Fantasy-Banter/data/2021/simulation_R20.csv'
 
+write.csv(results, path, na='', row.names = F)
+results <- read.csv(path)
+ 
+ 
 summary <- results %>%
   mutate(TOP4 = ifelse(pos <= 4, 1,0)) %>%
   group_by(coach) %>%
@@ -92,13 +96,6 @@ smy <- results %>%
 smy
 
 
-results %>%
-  group_by(simulation) %>%
-  summarise(
-
-  )
-
-
 c <- results[,c('simulation','pos','coach')] %>%
   filter(pos == 3 | pos == 4) %>%
   spread(pos, coach) %>%
@@ -118,6 +115,8 @@ c %>%
   ) %>%
   mutate(rate = round(n/10000*100)) %>%
   arrange(desc(rate))
+
+
 
 
 pos_smy <- results %>%
@@ -140,5 +139,22 @@ results %>%
 
 results %>%
   filter(coach == 'Simon' & pos == 2)
+
+
+z <- results %>%
+  filter(coach == 'Lester' & cumul_win == 10) %>%
+  group_by(pos) %>%
+  summarise(
+    n=n(),
+    min=min(pcnt),
+    median=median(pcnt),
+    max=max(pcnt)
+  ) %>%
+  mutate(chance = round(n/10000*100,1))
+
+summary(z$pcnt)
+
+
+
 
 
