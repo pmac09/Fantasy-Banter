@@ -150,26 +150,31 @@ server <- function(input, output, session) {
     afl_fixture <- rv$afl_fixture
     ff_live_scores <- ff_live_scores_r()
     
+    
+    # Emergency Override
+    #player_data$type[player_data$feed_id == 290199] <- 'nonscoring' # Daw
+    #player_data$type[player_data$feed_id == 1007881]  <- 'scoring'  # Powell
+    
     # Merge supercoach with live stats
     live_data <- player_data %>%
       mutate(name = paste0(substr(first_name,1,1),'.',last_name)) %>%
-      select(feed_id, name, team_abbrev,team, coach, picked, type, position, projected_points, points) %>%
+      dplyr::select(feed_id, name, team_abbrev,team, coach, picked, type, position, projected_points, points) %>%
       left_join(ff_live_scores, by=c('feed_id'))  %>%
       left_join(afl_fixture[c('team1_abbrev','kickoff','status')], by=c('team_abbrev'='team1_abbrev')) %>%
-      arrange(coach, desc(type), desc(picked)) %>%
       group_by(coach) %>%
-      mutate(row_num = row_number()) %>%
-      filter(row_num <= 18) %>%
       mutate(proj = case_when(status == 'post'                ~ points,
                               status == 'pre'                 ~ projected_points,
                               live_points >= projected_points ~ live_projection,
                               max_tog >= 50                   ~ live_projection,
                               TRUE                            ~ projected_points)) %>%
-      mutate(pnts = case_when(status == 'now'                 ~ live_points,
+      mutate(pnts = case_when(status == 'now'                 ~ ifelse(!is.na(live_points),live_points,0),
                               TRUE                            ~ points)) %>%
+      arrange(coach, desc(type), desc(picked)) %>%
+      mutate(row_num = row_number()) %>%
+      filter(row_num <= 18) %>%
       arrange(coach, match(status, c('now','pre','post')), kickoff, team_abbrev, desc(proj)) %>%
       ungroup() %>%
-      select(coach, team, name, team_abbrev, position, proj, pnts) %>%
+      dplyr::select(coach, team, name, team_abbrev, position, proj, pnts) %>%
       rename(projected_points = proj) %>%
       rename(points = pnts)
 
@@ -259,11 +264,11 @@ server <- function(input, output, session) {
     
     homeTeam <- live_data %>%
       filter(coach == game_data$coach[1]) %>%
-      select(name, team_abbrev, position, projected_points, points)
+      dplyr::select(name, team_abbrev, position, projected_points, points)
     
     awayTeam <- live_data %>%
       filter(coach == game_data$opponent_coach[1]) %>%
-      select(name, team_abbrev, position, projected_points, points)
+      dplyr::select(name, team_abbrev, position, projected_points, points)
 
 
     homeHeader <- teamHeader(game_data$coach[1], game_data$team[1], sum(homeTeam$points), sum(homeTeam$projected_points))
