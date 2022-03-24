@@ -38,6 +38,16 @@ get_sc_auth <- function(cid, tkn){
   
   return(sc_auth)
 }
+get_sc_data <- function(sc_auth, url){
+  log('get_sc_data')
+  
+  sc_data <- content(GET(
+    url = url,
+    config = sc_auth
+  ))
+  
+  return(sc_data)
+}
 get_sc_settings <- function(sc_auth){
   log('get_sc_settings')
   
@@ -129,6 +139,58 @@ get_sc_team <- function(sc_auth, team_id, round=0){
   
   return(sc_team)
 }
+get_sc_teamtrades <- function(sc_auth,league_id){
+  log('get_sc_teamtrades')
+  
+  year <- year(Sys.Date())
+  url <- paste0('https://supercoach.heraldsun.com.au/', year, '/api/afl/draft/v1/leagues/',league_id,'/teamtrades')
+  
+  sc_trades <- content(GET(
+    url = url,
+    config = sc_auth
+  ))
+  
+  return(sc_trades)
+}
+get_sc_trades <- function(sc_auth,league_id){
+  log('get_sc_trades')
+  
+  year <- year(Sys.Date())
+  url <- paste0('https://supercoach.heraldsun.com.au/', year, '/api/afl/draft/v1/leagues/',league_id,'/trades')
+  
+  sc_trades <- content(GET(
+    url = url,
+    config = sc_auth
+  ))
+  
+  return(sc_trades)
+}
+get_sc_processedWaivers <- function(sc_auth,league_id){
+  log('get_sc_processedWaivers')
+  
+  year <- year(Sys.Date())
+  url <- paste0('https://supercoach.heraldsun.com.au/', year, '/api/afl/draft/v1/leagues/',league_id,'/processedWaivers')
+  
+  sc_processedWaivers <- content(GET(
+    url = url,
+    config = sc_auth
+  ))
+  
+  return(sc_processedWaivers)
+}
+get_sc_draft <- function(sc_auth,league_id,user_id=2016){
+  log('get_sc_draft')
+  
+  year <- year(Sys.Date())
+  url <- paste0('https://supercoach.heraldsun.com.au/', year, '/api/afl/draft/v1/leagues/',league_id,'/userteam/',user_id,'/livedraft')
+  
+  sc_trades <- content(GET(
+    url = url,
+    config = sc_auth
+  ))
+  
+  return(sc_trades)
+}
 get_afl_fixture <- function(sc_auth, round){
   log('get_afl_fixture')
   
@@ -143,6 +205,9 @@ get_afl_fixture <- function(sc_auth, round){
   return(afl_fixture)
 }
 
+
+
+
 ## Data Cleansing Scripts
 get_sc_player_data <- function(sc_players){
   log('get_sc_player_data')
@@ -156,7 +221,6 @@ get_sc_player_data <- function(sc_players){
     pos_1            = sapply(sc_players, function(x) x[['positions']][[1]][['position']]),
     pos_2            = sapply(sc_players, function(x) ifelse(length(x[['positions']])>1, x[['positions']][[2]][['position']],NA)),
     round            = as.numeric(sapply(sc_players, function(x) x[['player_stats']][[1]][['round']])),
-    status           = sapply(sc_players, function(x) x[['played_status']][['status']]),
     projected_points = as.numeric(sapply(sc_players, function(x) ifelse(is.null(x[['player_stats']][[1]][['ppts']]), NA,x[['player_stats']][[1]][['ppts']]))),
     points           = as.numeric(sapply(sc_players, function(x) ifelse(length(x[['player_match_stats']])==0,        NA,x[['player_match_stats']][[1]][['points']]))),
     avg              = as.numeric(sapply(sc_players, function(x) ifelse(is.null(x[['player_stats']][[1]][['avg']]),  NA,x[['player_stats']][[1]][['avg']]))),
@@ -488,6 +552,49 @@ get_league_data <- function(sc, round=NA){
   return(leauge_data)
 }
 
+sc_download_all <- function(cid, tkn){
+  
+  yr <- year(Sys.Date())
+  path <- paste0('./data/2021/raw')
+  
+  sc_auth <- get_sc_auth(cid, tkn)
+  
+  sc_settings <- get_sc_settings(sc_auth)
+  saveRDS(sc_settings, paste0(path,'/sc_settings.rds'))
+  
+  sc_me <- get_sc_me(sc_auth)
+  saveRDS(sc_me, paste0(path,'/sc_me.rds'))
+  
+  sc_user <- get_sc_user(sc_auth, sc_me$id)
+  saveRDS(sc_user, paste0(path,'/sc_user.rds'))
+  
+  rnd <- 23
+  league_id <- sc_user$draft[[1]]$leagues[[1]]$id
+  for(i in 1:rnd) {
+    sc_players <- get_sc_players(sc_auth, i)
+    saveRDS(sc_players, paste0(path,'/sc_players_',i,'.rds'))
+    
+    sc_league <- get_sc_league(sc_auth, league_id, i)
+    saveRDS(sc_league, paste0(path,'/sc_league_',i,'.rds'))
+    
+    afl_fixture <- get_afl_fixture(sc_auth, i)
+    saveRDS(afl_fixture, paste0(path,'/afl_fixture_',i,'.rds'))
+  }
+  
+  sc_teamtrades <- get_sc_teamtrades(sc_auth,league_id)
+  saveRDS(sc_teamtrades, paste0(path,'/sc_teamtrades.rds'))
+  
+  sc_trades <- get_sc_trades(sc_auth,league_id)
+  saveRDS(sc_trades, paste0(path,'/sc_trades.rds'))
+  
+  sc_processedWaivers <- get_sc_processedWaivers(sc_auth,league_id)
+  saveRDS(sc_processedWaivers, paste0(path,'/sc_processedWaivers.rds'))
+  
+  sc_draft <- get_sc_draft(sc_auth,league_id)
+  saveRDS(sc_draft, paste0(path,'/sc_draft.rds'))
+  
+}
+
 ## Other Handy Functions
 get_sc_logo <- function(logoSize=38, shirttype, shortcolor, basecolor, secondcolor){
   
@@ -615,7 +722,7 @@ team_colours <- list(
 # https://supercoach.heraldsun.com.au/2021/api/afl/draft/v1/leagues/575/trades
 # https://supercoach.heraldsun.com.au/2021/api/afl/draft/v1/leagues/575/processedWaivers
 
-# url <- paste0('https://supercoach.heraldsun.com.au/2021/api/afl/draft/v1/leagues/575/userteam/2016/claimWaiverPlayer/302/droppedWaiverPlayer/698')
+# url <- paste0('https://supercoach.heraldsun.com.au/2021/api/afl/draft/v1/leagues/575/trades')
 # 
 # test <- content(GET(
 #   url = url,

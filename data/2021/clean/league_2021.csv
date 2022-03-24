@@ -1,0 +1,175 @@
+"round","fixture","team_id","team","coach","team_score","opponent_team_id","opponent_team","opponent_coach","opponent_score","differential","win","draw","loss","position","points","wins","draws","losses","points_for","points_against","pcnt"
+1,1,2016,"At Witts End","Paul",1477,2018,"Surviving J.Kelly","Mark",1657,-180,0,0,1,7,0,0,0,1,1477,1657,89.14
+1,2,6510,"The Big Short","Luke",1470,20240,"MakingTheirMarcus","James",1558,-88,0,0,1,5,0,0,0,1,1470,1558,94.35
+1,3,20323,"La MacRaena","Anthony",1691,22859,"Ariana Grundy","Lester",1563,128,1,0,0,3,4,1,0,0,1691,1563,108.19
+1,4,23345,"Pink Lloyd","Jordan",1657,23413,"The West Wingard","Simon",1235,422,1,0,0,1,4,1,0,0,1657,1235,134.17
+1,1,2018,"Surviving J.Kelly","Mark",1657,2016,"At Witts End","Paul",1477,180,1,0,0,2,4,1,0,0,1657,1477,112.19
+1,2,20240,"MakingTheirMarcus","James",1558,6510,"The Big Short","Luke",1470,88,1,0,0,4,4,1,0,0,1558,1470,105.99
+1,3,22859,"Ariana Grundy","Lester",1563,20323,"La MacRaena","Anthony",1691,-128,0,0,1,6,0,0,0,1,1563,1691,92.43
+1,4,23413,"The West Wingard","Simon",1235,23345,"Pink Lloyd","Jordan",1657,-422,0,0,1,8,0,0,0,1,1235,1657,74.53
+2,1,2016,"At Witts End","Paul",1693,6510,"The Big Short","Luke",1651,42,1,0,0,6,4,1,0,1,3170,3308,95.83
+2,2,20323,"La MacRaena","Anthony",1665,2018,"Surviving J.Kelly","Mark",1464,201,1,0,0,1,8,2,0,0,3356,3027,110.87
+2,3,23345,"Pink Lloyd","Jordan",1537,20240,"MakingTheirMarcus","James",1629,-92,0,0,1,3,4,1,0,1,3194,2864,111.52
+2,4,23413,"The West Wingard","Simon",1574,22859,"Ariana Grundy","Lester",1642,-68,0,0,1,8,0,0,0,2,2809,3299,85.15
+2,1,6510,"The Big Short","Luke",1651,2016,"At Witts End","Paul",1693,-42,0,0,1,7,0,0,0,2,3121,3251,96
+2,2,2018,"Surviving J.Kelly","Mark",1464,20323,"La MacRaena","Anthony",1665,-201,0,0,1,4,4,1,0,1,3121,3142,99.33
+2,3,20240,"MakingTheirMarcus","James",1629,23345,"Pink Lloyd","Jordan",1537,92,1,0,0,2,8,2,0,0,3187,3007,105.99
+2,4,22859,"Ariana Grundy","Lester",1642,23413,"The West Wingard","Simon",1574,68,1,0,0,5,4,1,0,1,3205,3265,98.16
+3,1,2016,"At Witts End","Paul",1469,20323,"La MacRaena","Anthony",1679,-210,0,0,1,7,4,1,0,2,4639,4987,93.02
+3,2,23345,"Pink Lloyd","Jordan",1488,6510,"The Big Short","Luke",1586,-98,0,0,1,5,4,1,0,2,4682,4450,105.21
+3,3,23413,"The West Wingard","Simon",1376,2018,"Surviving J.Kelly","Mark",1550,-174,0,0,1,8,0,0,0,3,4185,4849,86.31
+3,4,22859,"Ariana Grundy","Lester",1805,20240,"MakingTheirMarcus","James",1700,105,1,0,0,4,8,2,0,1,5010,4965,100.91
+3,1,20323,"La MacRaena","Anthony",1679,2016,"At Witts End","Paul",1469,210,1,0,0,1,12,3,0,0,5035,4496,111.99
+3,2,6510,"The Big Short","Luke",1586,23345,"Pink Lloyd","Jordan",1488,98,1,0,0,6,4,1,0,2,4707,4739,99.32
+3,3,2018,"Surviving J.Kelly","Mark",1550,23413,"The West Wingard","Simon",1376,174,1,0,0,2,8,2,0,1,4671,4518,103.39
+3,4,20240,"MakingTheirMarcus","James",1700,22859,"Ariana Grundy","Lester",1805,-105,0,0,1,3,8,2,0,1,4887,4812,101.56
+4,1,2016,"At Witts End","Paul",1496,23345,"Pink Lloyd","Jordan",1559,-63,0,0,1,7,4,1,0,3,6135,6546,93.72
+4,2,23413,"The West Wingard","Simon",1651,20323,"La MacRaena","Anthony",1627,24,1,0,0,8,4,1,0,3,5836,6476,90.12
+4,3,22859,"Ariana Grundy","Lester",1415,6510,"The Big Short","Luke",1552,-137,0,0,1,6,8,2,0,2,6425,6517,98.59
+4,4,20240,"MakingTheirMarcus","James",1688,2018,"Surviving J.Kelly","Mark",1706,-18,0,0,1,5,8,2,0,2,6575,6518,100.87
+4,1,23345,"Pink Lloyd","Jordan",1559,2016,"At Witts End","Paul",1496,63,1,0,0,3,8,2,0,2,6241,5946,104.96
+4,2,20323,"La MacRaena","Anthony",1627,23413,"The West Wingard","Simon",1651,-24,0,0,1,1,12,3,0,1,6662,6147,108.38
+4,3,6510,"The Big Short","Luke",1552,22859,"Ariana Grundy","Lester",1415,137,1,0,0,4,8,2,0,2,6259,6154,101.71
+4,4,2018,"Surviving J.Kelly","Mark",1706,20240,"MakingTheirMarcus","James",1688,18,1,0,0,2,12,3,0,1,6377,6206,102.76
+5,1,2016,"At Witts End","Paul",1669,23413,"The West Wingard","Simon",1515,154,1,0,0,7,8,2,0,3,7804,8061,96.81
+5,2,22859,"Ariana Grundy","Lester",1481,23345,"Pink Lloyd","Jordan",1615,-134,0,0,1,6,8,2,0,3,7906,8132,97.22
+5,3,20240,"MakingTheirMarcus","James",1665,20323,"La MacRaena","Anthony",1673,-8,0,0,1,5,8,2,0,3,8240,8191,100.6
+5,4,2018,"Surviving J.Kelly","Mark",1613,6510,"The Big Short","Luke",1899,-286,0,0,1,4,12,3,0,2,7990,8105,98.58
+5,1,23413,"The West Wingard","Simon",1515,2016,"At Witts End","Paul",1669,-154,0,0,1,8,4,1,0,4,7351,8145,90.25
+5,2,23345,"Pink Lloyd","Jordan",1615,22859,"Ariana Grundy","Lester",1481,134,1,0,0,2,12,3,0,2,7856,7427,105.78
+5,3,20323,"La MacRaena","Anthony",1673,20240,"MakingTheirMarcus","James",1665,8,1,0,0,1,16,4,0,1,8335,7812,106.69
+5,4,6510,"The Big Short","Luke",1899,2018,"Surviving J.Kelly","Mark",1613,286,1,0,0,3,12,3,0,2,8158,7767,105.03
+6,1,2016,"At Witts End","Paul",1732,22859,"Ariana Grundy","Lester",2005,-273,0,0,1,7,8,2,0,4,9536,10066,94.73
+6,2,20240,"MakingTheirMarcus","James",1881,23413,"The West Wingard","Simon",1528,353,1,0,0,3,12,3,0,3,10121,9719,104.14
+6,3,2018,"Surviving J.Kelly","Mark",1680,23345,"Pink Lloyd","Jordan",1483,197,1,0,0,2,16,4,0,2,9670,9588,100.86
+6,4,6510,"The Big Short","Luke",1530,20323,"La MacRaena","Anthony",1641,-111,0,0,1,4,12,3,0,3,9688,9408,102.98
+6,1,22859,"Ariana Grundy","Lester",2005,2016,"At Witts End","Paul",1732,273,1,0,0,6,12,3,0,3,9911,9864,100.48
+6,2,23413,"The West Wingard","Simon",1528,20240,"MakingTheirMarcus","James",1881,-353,0,0,1,8,4,1,0,5,8879,10026,88.56
+6,3,23345,"Pink Lloyd","Jordan",1483,2018,"Surviving J.Kelly","Mark",1680,-197,0,0,1,5,12,3,0,3,9339,9107,102.55
+6,4,20323,"La MacRaena","Anthony",1641,6510,"The Big Short","Luke",1530,111,1,0,0,1,20,5,0,1,9976,9342,106.79
+7,1,2016,"At Witts End","Paul",1640,20240,"MakingTheirMarcus","James",1587,53,1,0,0,7,12,3,0,4,11176,11653,95.91
+7,2,2018,"Surviving J.Kelly","Mark",1551,22859,"Ariana Grundy","Lester",1717,-166,0,0,1,5,16,4,0,3,11221,11305,99.26
+7,3,6510,"The Big Short","Luke",1829,23413,"The West Wingard","Simon",1376,453,1,0,0,2,16,4,0,3,11517,10784,106.8
+7,4,20323,"La MacRaena","Anthony",1524,23345,"Pink Lloyd","Jordan",1617,-93,0,0,1,1,20,5,0,2,11500,10959,104.94
+7,1,20240,"MakingTheirMarcus","James",1587,2016,"At Witts End","Paul",1640,-53,0,0,1,6,12,3,0,4,11708,11359,103.07
+7,2,22859,"Ariana Grundy","Lester",1717,2018,"Surviving J.Kelly","Mark",1551,166,1,0,0,4,16,4,0,3,11628,11415,101.87
+7,3,23413,"The West Wingard","Simon",1376,6510,"The Big Short","Luke",1829,-453,0,0,1,8,4,1,0,6,10255,11855,86.5
+7,4,23345,"Pink Lloyd","Jordan",1617,20323,"La MacRaena","Anthony",1524,93,1,0,0,3,16,4,0,3,10956,10631,103.06
+8,1,2016,"At Witts End","Paul",1624,2018,"Surviving J.Kelly","Mark",1570,54,1,0,0,7,16,4,0,4,12800,13223,96.8
+8,2,6510,"The Big Short","Luke",1674,20240,"MakingTheirMarcus","James",1753,-79,0,0,1,4,16,4,0,4,13191,12537,105.22
+8,3,20323,"La MacRaena","Anthony",1629,22859,"Ariana Grundy","Lester",1800,-171,0,0,1,3,20,5,0,3,13129,12759,102.9
+8,4,23345,"Pink Lloyd","Jordan",1674,23413,"The West Wingard","Simon",1529,145,1,0,0,1,20,5,0,3,12630,12160,103.87
+8,1,2018,"Surviving J.Kelly","Mark",1570,2016,"At Witts End","Paul",1624,-54,0,0,1,6,16,4,0,4,12791,12929,98.93
+8,2,20240,"MakingTheirMarcus","James",1753,6510,"The Big Short","Luke",1674,79,1,0,0,5,16,4,0,4,13461,13033,103.28
+8,3,22859,"Ariana Grundy","Lester",1800,20323,"La MacRaena","Anthony",1629,171,1,0,0,2,20,5,0,3,13428,13044,102.94
+8,4,23413,"The West Wingard","Simon",1529,23345,"Pink Lloyd","Jordan",1674,-145,0,0,1,8,4,1,0,7,11784,13529,87.1
+9,1,2016,"At Witts End","Paul",1659,6510,"The Big Short","Luke",1802,-143,0,0,1,7,16,4,0,5,14459,15025,96.23
+9,2,20323,"La MacRaena","Anthony",1812,2018,"Surviving J.Kelly","Mark",1525,287,1,0,0,2,24,6,0,3,14941,14284,104.6
+9,3,23345,"Pink Lloyd","Jordan",1726,20240,"MakingTheirMarcus","James",1653,73,1,0,0,3,24,6,0,3,14356,13813,103.93
+9,4,23413,"The West Wingard","Simon",1460,22859,"Ariana Grundy","Lester",1762,-302,0,0,1,8,4,1,0,8,13244,15291,86.61
+9,1,6510,"The Big Short","Luke",1802,2016,"At Witts End","Paul",1659,143,1,0,0,4,20,5,0,4,14993,14196,105.61
+9,2,2018,"Surviving J.Kelly","Mark",1525,20323,"La MacRaena","Anthony",1812,-287,0,0,1,6,16,4,0,5,14316,14741,97.12
+9,3,20240,"MakingTheirMarcus","James",1653,23345,"Pink Lloyd","Jordan",1726,-73,0,0,1,5,16,4,0,5,15114,14759,102.41
+9,4,22859,"Ariana Grundy","Lester",1762,23413,"The West Wingard","Simon",1460,302,1,0,0,1,24,6,0,3,15190,14504,104.73
+10,1,2016,"At Witts End","Paul",1801,20323,"La MacRaena","Anthony",1736,65,1,0,0,6,20,5,0,5,16260,16761,97.01
+10,2,23345,"Pink Lloyd","Jordan",1291,6510,"The Big Short","Luke",1791,-500,0,0,1,4,24,6,0,4,15647,15604,100.28
+10,3,23413,"The West Wingard","Simon",1703,2018,"Surviving J.Kelly","Mark",1657,46,1,0,0,8,8,2,0,8,14947,16948,88.19
+10,4,22859,"Ariana Grundy","Lester",1506,20240,"MakingTheirMarcus","James",1741,-235,0,0,1,3,24,6,0,4,16696,16245,102.78
+10,1,20323,"La MacRaena","Anthony",1736,2016,"At Witts End","Paul",1801,-65,0,0,1,2,24,6,0,4,16677,16085,103.68
+10,2,6510,"The Big Short","Luke",1791,23345,"Pink Lloyd","Jordan",1291,500,1,0,0,1,24,6,0,4,16784,15487,108.37
+10,3,2018,"Surviving J.Kelly","Mark",1657,23413,"The West Wingard","Simon",1703,-46,0,0,1,7,16,4,0,6,15973,16444,97.14
+10,4,20240,"MakingTheirMarcus","James",1741,22859,"Ariana Grundy","Lester",1506,235,1,0,0,5,20,5,0,5,16855,16265,103.63
+11,1,2016,"At Witts End","Paul",1812,23345,"Pink Lloyd","Jordan",1716,96,1,0,0,5,24,6,0,5,18072,18477,97.81
+11,2,23413,"The West Wingard","Simon",1475,20323,"La MacRaena","Anthony",1757,-282,0,0,1,8,8,2,0,9,16422,18705,87.79
+11,3,22859,"Ariana Grundy","Lester",1502,6510,"The Big Short","Luke",1702,-200,0,0,1,3,24,6,0,5,18198,17947,101.4
+11,4,20240,"MakingTheirMarcus","James",1480,2018,"Surviving J.Kelly","Mark",1737,-257,0,0,1,6,20,5,0,6,18335,18002,101.85
+11,1,23345,"Pink Lloyd","Jordan",1716,2016,"At Witts End","Paul",1812,-96,0,0,1,4,24,6,0,5,17363,17416,99.7
+11,2,20323,"La MacRaena","Anthony",1757,23413,"The West Wingard","Simon",1475,282,1,0,0,2,28,7,0,4,18434,17560,104.98
+11,3,6510,"The Big Short","Luke",1702,22859,"Ariana Grundy","Lester",1502,200,1,0,0,1,28,7,0,4,18486,16989,108.81
+11,4,2018,"Surviving J.Kelly","Mark",1737,20240,"MakingTheirMarcus","James",1480,257,1,0,0,7,20,5,0,6,17710,17924,98.81
+12,1,2016,"At Witts End","Paul",875,23413,"The West Wingard","Simon",1334,-459,0,0,1,5,24,6,0,6,18947,19811,95.64
+12,2,22859,"Ariana Grundy","Lester",1157,23345,"Pink Lloyd","Jordan",1619,-462,0,0,1,4,24,6,0,6,19355,19566,98.92
+12,3,20240,"MakingTheirMarcus","James",1348,20323,"La MacRaena","Anthony",1512,-164,0,0,1,6,20,5,0,7,19683,19514,100.87
+12,4,2018,"Surviving J.Kelly","Mark",964,6510,"The Big Short","Luke",1829,-865,0,0,1,7,20,5,0,7,18674,19753,94.54
+12,1,23413,"The West Wingard","Simon",1334,2016,"At Witts End","Paul",875,459,1,0,0,8,12,3,0,9,17756,19580,90.68
+12,2,23345,"Pink Lloyd","Jordan",1619,22859,"Ariana Grundy","Lester",1157,462,1,0,0,3,28,7,0,5,18982,18573,102.2
+12,3,20323,"La MacRaena","Anthony",1512,20240,"MakingTheirMarcus","James",1348,164,1,0,0,2,32,8,0,4,19946,18908,105.49
+12,4,6510,"The Big Short","Luke",1829,2018,"Surviving J.Kelly","Mark",964,865,1,0,0,1,32,8,0,4,20315,17953,113.16
+13,1,2016,"At Witts End","Paul",1581,22859,"Ariana Grundy","Lester",1356,225,1,0,0,4,28,7,0,6,20528,21167,96.98
+13,2,20240,"MakingTheirMarcus","James",1426,23413,"The West Wingard","Simon",1235,191,1,0,0,5,24,6,0,7,21109,20749,101.74
+13,3,2018,"Surviving J.Kelly","Mark",1840,23345,"Pink Lloyd","Jordan",1472,368,1,0,0,7,24,6,0,7,20514,21225,96.65
+13,4,6510,"The Big Short","Luke",1237,20323,"La MacRaena","Anthony",1716,-479,0,0,1,2,32,8,0,5,21552,19669,109.57
+13,1,22859,"Ariana Grundy","Lester",1356,2016,"At Witts End","Paul",1581,-225,0,0,1,6,24,6,0,7,20711,21147,97.94
+13,2,23413,"The West Wingard","Simon",1235,20240,"MakingTheirMarcus","James",1426,-191,0,0,1,8,12,3,0,10,18991,21006,90.41
+13,3,23345,"Pink Lloyd","Jordan",1472,2018,"Surviving J.Kelly","Mark",1840,-368,0,0,1,3,28,7,0,6,20454,20413,100.2
+13,4,20323,"La MacRaena","Anthony",1716,6510,"The Big Short","Luke",1237,479,1,0,0,1,36,9,0,4,21662,20145,107.53
+14,1,2016,"At Witts End","Paul",1498,20240,"MakingTheirMarcus","James",1218,280,1,0,0,3,32,8,0,6,22026,22385,98.4
+14,2,2018,"Surviving J.Kelly","Mark",1533,22859,"Ariana Grundy","Lester",1559,-26,0,0,1,7,24,6,0,8,22047,22784,96.77
+14,3,6510,"The Big Short","Luke",1143,23413,"The West Wingard","Simon",1436,-293,0,0,1,2,32,8,0,6,22695,21105,107.53
+14,4,20323,"La MacRaena","Anthony",890,23345,"Pink Lloyd","Jordan",797,93,1,0,0,1,40,10,0,4,22552,20942,107.69
+14,1,20240,"MakingTheirMarcus","James",1218,2016,"At Witts End","Paul",1498,-280,0,0,1,6,24,6,0,8,22327,22247,100.36
+14,2,22859,"Ariana Grundy","Lester",1559,2018,"Surviving J.Kelly","Mark",1533,26,1,0,0,5,28,7,0,7,22270,22680,98.19
+14,3,23413,"The West Wingard","Simon",1436,6510,"The Big Short","Luke",1143,293,1,0,0,8,16,4,0,10,20427,22149,92.23
+14,4,23345,"Pink Lloyd","Jordan",797,20323,"La MacRaena","Anthony",890,-93,0,0,1,4,28,7,0,7,21251,21303,99.76
+15,1,2016,"At Witts End","Paul",1855,2018,"Surviving J.Kelly","Mark",1671,184,1,0,0,2,36,9,0,6,23881,24056,99.27
+15,2,6510,"The Big Short","Luke",1627,20240,"MakingTheirMarcus","James",1731,-104,0,0,1,3,32,8,0,7,24322,22836,106.51
+15,3,20323,"La MacRaena","Anthony",1697,22859,"Ariana Grundy","Lester",1653,44,1,0,0,1,44,11,0,4,24249,22595,107.32
+15,4,23345,"Pink Lloyd","Jordan",1568,23413,"The West Wingard","Simon",1663,-95,0,0,1,5,28,7,0,8,22819,22966,99.36
+15,1,2018,"Surviving J.Kelly","Mark",1671,2016,"At Witts End","Paul",1855,-184,0,0,1,7,24,6,0,9,23718,24639,96.26
+15,2,20240,"MakingTheirMarcus","James",1731,6510,"The Big Short","Luke",1627,104,1,0,0,4,28,7,0,8,24058,23874,100.77
+15,3,22859,"Ariana Grundy","Lester",1653,20323,"La MacRaena","Anthony",1697,-44,0,0,1,6,28,7,0,8,23923,24377,98.14
+15,4,23413,"The West Wingard","Simon",1663,23345,"Pink Lloyd","Jordan",1568,95,1,0,0,8,20,5,0,10,22090,23717,93.14
+16,1,2016,"At Witts End","Paul",1997,6510,"The Big Short","Luke",1652,345,1,0,0,2,40,10,0,6,25878,25708,100.66
+16,2,20323,"La MacRaena","Anthony",1779,2018,"Surviving J.Kelly","Mark",1498,281,1,0,0,1,48,12,0,4,26028,24093,108.03
+16,3,23345,"Pink Lloyd","Jordan",1514,20240,"MakingTheirMarcus","James",1617,-103,0,0,1,6,28,7,0,9,24333,24583,98.98
+16,4,23413,"The West Wingard","Simon",1362,22859,"Ariana Grundy","Lester",1764,-402,0,0,1,8,20,5,0,11,23452,25481,92.04
+16,1,6510,"The Big Short","Luke",1652,2016,"At Witts End","Paul",1997,-345,0,0,1,3,32,8,0,8,25974,24833,104.59
+16,2,2018,"Surviving J.Kelly","Mark",1498,20323,"La MacRaena","Anthony",1779,-281,0,0,1,7,24,6,0,10,25216,26418,95.45
+16,3,20240,"MakingTheirMarcus","James",1617,23345,"Pink Lloyd","Jordan",1514,103,1,0,0,4,32,8,0,8,25675,25388,101.13
+16,4,22859,"Ariana Grundy","Lester",1764,23413,"The West Wingard","Simon",1362,402,1,0,0,5,32,8,0,8,25687,25739,99.8
+17,1,2016,"At Witts End","Paul",1893,20323,"La MacRaena","Anthony",1555,338,1,0,0,2,44,11,0,6,27771,27263,101.86
+17,2,23345,"Pink Lloyd","Jordan",1689,6510,"The Big Short","Luke",1630,59,1,0,0,5,32,8,0,9,26022,26213,99.27
+17,3,23413,"The West Wingard","Simon",1702,2018,"Surviving J.Kelly","Mark",1620,82,1,0,0,8,24,6,0,11,25154,27101,92.82
+17,4,22859,"Ariana Grundy","Lester",1708,20240,"MakingTheirMarcus","James",1859,-151,0,0,1,6,32,8,0,9,27395,27598,99.26
+17,1,20323,"La MacRaena","Anthony",1555,2016,"At Witts End","Paul",1893,-338,0,0,1,1,48,12,0,5,27583,25986,106.15
+17,2,6510,"The Big Short","Luke",1630,23345,"Pink Lloyd","Jordan",1689,-59,0,0,1,4,32,8,0,9,27604,26522,104.08
+17,3,2018,"Surviving J.Kelly","Mark",1620,23413,"The West Wingard","Simon",1702,-82,0,0,1,7,24,6,0,11,26836,28120,95.43
+17,4,20240,"MakingTheirMarcus","James",1859,22859,"Ariana Grundy","Lester",1708,151,1,0,0,3,36,9,0,8,27534,27096,101.62
+18,1,2016,"At Witts End","Paul",1839,23345,"Pink Lloyd","Jordan",1571,268,1,0,0,2,48,12,0,6,29610,28834,102.69
+18,2,23413,"The West Wingard","Simon",1518,20323,"La MacRaena","Anthony",1760,-242,0,0,1,8,24,6,0,12,26672,28861,92.42
+18,3,22859,"Ariana Grundy","Lester",1704,6510,"The Big Short","Luke",1600,104,1,0,0,4,36,9,0,9,29099,29198,99.66
+18,4,20240,"MakingTheirMarcus","James",1598,2018,"Surviving J.Kelly","Mark",1327,271,1,0,0,3,40,10,0,8,29132,28423,102.49
+18,1,23345,"Pink Lloyd","Jordan",1571,2016,"At Witts End","Paul",1839,-268,0,0,1,6,32,8,0,10,27593,28052,98.36
+18,2,20323,"La MacRaena","Anthony",1760,23413,"The West Wingard","Simon",1518,242,1,0,0,1,52,13,0,5,29343,27504,106.69
+18,3,6510,"The Big Short","Luke",1600,22859,"Ariana Grundy","Lester",1704,-104,0,0,1,5,32,8,0,10,29204,28226,103.46
+18,4,2018,"Surviving J.Kelly","Mark",1327,20240,"MakingTheirMarcus","James",1598,-271,0,0,1,7,24,6,0,12,28163,29718,94.77
+19,1,2016,"At Witts End","Paul",1747,23413,"The West Wingard","Simon",1424,323,1,0,0,2,52,13,0,6,31357,30258,103.63
+19,2,22859,"Ariana Grundy","Lester",1656,23345,"Pink Lloyd","Jordan",1689,-33,0,0,1,5,36,9,0,10,30755,30887,99.57
+19,3,20240,"MakingTheirMarcus","James",1408,20323,"La MacRaena","Anthony",1779,-371,0,0,1,3,40,10,0,9,30540,30202,101.12
+19,4,2018,"Surviving J.Kelly","Mark",1491,6510,"The Big Short","Luke",1777,-286,0,0,1,7,24,6,0,13,29654,31495,94.15
+19,1,23413,"The West Wingard","Simon",1424,2016,"At Witts End","Paul",1747,-323,0,0,1,8,24,6,0,13,28096,30608,91.79
+19,2,23345,"Pink Lloyd","Jordan",1689,22859,"Ariana Grundy","Lester",1656,33,1,0,0,6,36,9,0,10,29282,29708,98.57
+19,3,20323,"La MacRaena","Anthony",1779,20240,"MakingTheirMarcus","James",1408,371,1,0,0,1,56,14,0,5,31122,28912,107.64
+19,4,6510,"The Big Short","Luke",1777,2018,"Surviving J.Kelly","Mark",1491,286,1,0,0,4,36,9,0,10,30981,29717,104.25
+20,1,2016,"At Witts End","Paul",1879,22859,"Ariana Grundy","Lester",1932,-53,0,0,1,2,52,13,0,7,33236,32190,103.25
+20,2,20240,"MakingTheirMarcus","James",1427,23413,"The West Wingard","Simon",1629,-202,0,0,1,4,40,10,0,10,31967,31831,100.43
+20,3,2018,"Surviving J.Kelly","Mark",1645,23345,"Pink Lloyd","Jordan",1600,45,1,0,0,7,28,7,0,13,31299,33095,94.57
+20,4,6510,"The Big Short","Luke",1811,20323,"La MacRaena","Anthony",1555,256,1,0,0,3,40,10,0,10,32792,31272,104.86
+20,1,22859,"Ariana Grundy","Lester",1932,2016,"At Witts End","Paul",1879,53,1,0,0,5,40,10,0,10,32687,32766,99.76
+20,2,23413,"The West Wingard","Simon",1629,20240,"MakingTheirMarcus","James",1427,202,1,0,0,8,28,7,0,13,29725,32035,92.79
+20,3,23345,"Pink Lloyd","Jordan",1600,2018,"Surviving J.Kelly","Mark",1645,-45,0,0,1,6,36,9,0,11,30882,31353,98.5
+20,4,20323,"La MacRaena","Anthony",1555,6510,"The Big Short","Luke",1811,-256,0,0,1,1,56,14,0,6,32677,30723,106.36
+21,1,2016,"At Witts End","Paul",1662,20240,"MakingTheirMarcus","James",1631,31,1,0,0,2,56,14,0,7,34898,33821,103.18
+21,2,2018,"Surviving J.Kelly","Mark",1736,22859,"Ariana Grundy","Lester",1671,65,1,0,0,7,32,8,0,13,33035,34766,95.02
+21,3,6510,"The Big Short","Luke",1706,23413,"The West Wingard","Simon",1754,-48,0,0,1,3,40,10,0,11,34498,33026,104.46
+21,4,20323,"La MacRaena","Anthony",1612,23345,"Pink Lloyd","Jordan",1673,-61,0,0,1,1,56,14,0,7,34289,32396,105.84
+21,1,20240,"MakingTheirMarcus","James",1631,2016,"At Witts End","Paul",1662,-31,0,0,1,4,40,10,0,11,33598,33493,100.31
+21,2,22859,"Ariana Grundy","Lester",1671,2018,"Surviving J.Kelly","Mark",1736,-65,0,0,1,5,40,10,0,11,34358,34502,99.58
+21,3,23413,"The West Wingard","Simon",1754,6510,"The Big Short","Luke",1706,48,1,0,0,8,32,8,0,13,31479,33741,93.3
+21,4,23345,"Pink Lloyd","Jordan",1673,20323,"La MacRaena","Anthony",1612,61,1,0,0,6,40,10,0,11,32555,32965,98.76
+22,1,20323,"La MacRaena","Anthony",1561,20240,"MakingTheirMarcus","James",1696,-135,0,0,1,3,,,,,,,
+22,2,2016,"At Witts End","Paul",1938,6510,"The Big Short","Luke",1789,149,1,0,0,1,,,,,,,
+22,1,20240,"MakingTheirMarcus","James",1696,20323,"La MacRaena","Anthony",1561,135,1,0,0,2,,,,,,,
+22,2,6510,"The Big Short","Luke",1789,2016,"At Witts End","Paul",1938,-149,0,0,1,4,,,,,,,
+23,1,20240,"MakingTheirMarcus","James",1693,2016,"At Witts End","Paul",1897,-204,0,0,1,2,,,,,,,
+23,1,2016,"At Witts End","Paul",1897,20240,"MakingTheirMarcus","James",1693,204,1,0,0,1,,,,,,,

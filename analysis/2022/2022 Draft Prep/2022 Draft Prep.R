@@ -121,73 +121,12 @@ player_data2 <- player_data %>%
   mutate(scr_wgt = pos_scr*weight + scr*(1-weight)) %>%
   arrange(desc(scr_wgt))
 
+player_data3 <- player_data2 %>%
+  left_join(game_data2, by='feed_id')
+
+write.csv(player_data3,'./analysis/2022/2022 Draft Prep/player_list.csv', row.names = F, na='')
 
 
-
-
-
-
-
-
-
-
-stnd_data <- tibble()
-d1_all <- tibble()
-for(i in 1:nrow(pos_list)){
-  
-  p <- pos_list$p[i]
-  n <- pos_list$n[i]
-  
-  d <- player_data %>%
-    arrange(desc(priced_avg)) %>%
-    filter(games >= 3)
-  
-  if(p %in% c('MID')){
-    d1 <- d %>%
-      filter(pos1 == p & is.na(pos2))
-  } else {
-    d1 <- d %>%
-      filter(pos1 == p | pos2 == p)
-  }
-  
-  d1_all <- bind_rows(d1_all, d1[1:(n*8),] %>% select(feed_id,priced_avg))
-  
-  mean <- mean(d1$priced_avg[1:(n*8)])
-  sd <- sd(d1$priced_avg[1:(n*8)])
-  
-  d2 <- d1 %>%
-    mutate(stnd = round((priced_avg - mean)/sd,3)) %>%
-    arrange(desc(stnd)) %>%
-    select(feed_id,stnd)
-  
-  stnd_data <- bind_rows(stnd_data, d2)
-  
-}
-
-stnd_data <- stnd_data %>%
-  group_by(feed_id) %>%
-  summarise(
-    stnd = max(stnd),
-    .groups = 'drop'
-  ) %>%
-  arrange(desc(stnd))
-
-d1_all2 <- unique(d1_all)
-mean <- mean(d1_all2$priced_avg)
-sd <- sd(d1_all2$priced_avg)
-d1_all3 <- d1_all2 %>%
-  mutate(stnd = round((priced_avg - mean)/sd,3)) %>%
-  arrange(desc(stnd)) 
-
-  
-  
-player_data <- player_data %>%
-  left_join(stnd_data, by = 'feed_id') %>%
-  arrange(desc(adj_scr)) %>%
-  rename(pos_scr = adj_scr)
-
-
-write.csv(player_data,'./analysis/2022/2022 Draft Prep/player_list.csv', row.names = F, na='')
 
 
 
@@ -254,7 +193,7 @@ write.csv(player_data, paste0(filepath,'player_list.csv'))
 
 library(fitzRoy)
 
-data_2021 <- fetch_player_stats_fryzigg(2021)
+data_2021 <- fetch_player_stats_fryzigg(2022)
 data_2020 <- fetch_player_stats_fryzigg(2020)
 data_2019 <- fetch_player_stats_fryzigg(2019)
 

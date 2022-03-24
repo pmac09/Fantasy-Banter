@@ -1,14 +1,19 @@
 # Load supercoach functions
 source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.R')
 
-fixture_data <- get_fixture_data(cid,tkn)
+library(janitor)
+
+sc <- get_sc(cid,tkn)
+fixture_data <- get_league_data(sc)
 
 
 
 fData <- fixture_data %>%
   filter(team_score > 0 & !is.na(team_score)) %>%
-  select(round, fixture, coach, team_score, opponent_coach, opponent_score) %>%
-  filter(round != 12 & round != 13 & round != 14)
+  select(round, fixture, coach, team_score, opponent_coach, opponent_score) 
+
+# %>%
+#   filter(round != 12 & round != 13 & round != 14)
 
 coaches <- sort(unique(fData$coach))
 

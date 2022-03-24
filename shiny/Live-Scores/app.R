@@ -152,8 +152,10 @@ server <- function(input, output, session) {
     
     
     # Emergency Override
-    #player_data$type[player_data$feed_id == 290199] <- 'nonscoring' # Daw
-    #player_data$type[player_data$feed_id == 1007881]  <- 'scoring'  # Powell
+    #player_data$type[player_data$feed_id == 990882] <- 'nonscoring' # Young
+    #player_data$type[player_data$feed_id == 240399]  <- 'scoring'  # Franklin
+    
+
     
     # Merge supercoach with live stats
     live_data <- player_data %>%

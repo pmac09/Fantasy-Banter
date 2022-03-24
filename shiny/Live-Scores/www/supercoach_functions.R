@@ -105,7 +105,7 @@ get_sc_playerStatus <- function(sc_auth, league_id){
 }
 get_sc_league <- function(sc_auth, league_id, round=0){
   log('get_sc_league')
-  
+  league_id<-575
   year <- year(Sys.Date())
   url <- paste0('https://supercoach.heraldsun.com.au/', year, '/api/afl/draft/v1/leagues/',league_id,'/ladderAndFixtures?round=', round,'&scores=true')
   
