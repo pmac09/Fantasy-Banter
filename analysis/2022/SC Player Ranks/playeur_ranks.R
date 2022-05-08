@@ -63,7 +63,9 @@ ranks <- players %>%
   mutate(median_adj = rollapply(pts_adj, 11, median, align='right', partial=T)) %>%
   mutate(median_fnl = ifelse(is.na(pts),median_adj,median)) %>%
   arrange(feed_id, desc(season), desc(round)) %>%
-  mutate(n = row_number()) %>%
+  mutate(n = row_number()) 
+
+%>%
   #filter(feed_id == 990704)
   filter(n == 1) %>%
   ungroup() %>%
