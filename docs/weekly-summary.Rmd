@@ -18,6 +18,8 @@ library(DT)
 library(kableExtra)
 library(RColorBrewer)
 library(rlist)
+library(reactable)
+library(htmltools)
 
 ```
 ```{r, import_data, include=FALSE}
@@ -49,6 +51,33 @@ sml_team_colours_hc <- team_colours %>%
   group_by(name,color) %>%
   mutate(logo = paste0('url(data:image/png;base64,', logo,')')) %>%
   do(marker = list.flatten(list_parse(data.frame('symbol'=.$logo,'height'=16,'width'=16))))
+
+```
+
+
+```{r, finals_chances}
+
+# summary <- read.csv("/Users/paulmcgrath/Github/Fantasy-Banter/analysis/2022/Simulations/simulation_R8_summary.csv")
+# 
+# summary <- summary %>%
+#   select(coach, pcnt_finals, pcnt_gfinal, pcnt_champ)
+# 
+# # https://glin.github.io/reactable/articles/womens-world-cup/womens-world-cup.html
+# # 
+# tbl <- reactable(
+#   summary,
+#   pagination = FALSE,
+#   defaultSorted = "pcnt_champ",
+#   defaultSortOrder = "desc",
+#   defaultColGroup = colGroup(headerClass = "group-header"),
+#   columnGroups = list(
+#     colGroup(name = "Finals Chances", columns = c('pcnt_finals', 'pcnt_gfinal', 'pcnt_champ'))
+#   ),
+#   defaultColDef = colDef(class = "cell", headerClass = "header")
+#   
+# )
+# 
+# tbl
 
 ```
 
