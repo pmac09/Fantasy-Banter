@@ -1,6 +1,7 @@
 
 library(zoo)
 
+
 source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.R')
 
 savePath <- './analysis/2022/Simulations/'
@@ -168,17 +169,32 @@ summary <- results %>%
     FINALS = sum(finals),
     GFINAL = sum(grand_final),
     CHAMP = sum(champ),
+    SPOON = sum(ifelse(position==8,1,0)),
     sim = n_distinct(simulation)
   ) %>%
   arrange(RANK.MEAN) %>%
   mutate(pcnt_finals = round(FINALS/sim,3)) %>%
   mutate(pcnt_gfinal = round(GFINAL/sim,3)) %>%
   mutate(pcnt_champ = round(CHAMP/sim,3)) %>%
+  mutate(pcnt_spoon = round(SPOON/sim,3)) %>%
   arrange(desc(pcnt_champ))
 
 summary
-
 write.csv(summary, paste0(savePath,'simulation_R',sc$var$current_round,'_summary.csv'), na='', row.names = F)
+
+
+pos_pcnt <- results %>%
+  group_by(coach, position) %>%
+  summarise(n=n(),
+            .groups='drop') %>%
+  ungroup() %>%
+  group_by(coach) %>%
+  mutate(pcnt = round(n/sum(n)*100)) 
+
+pos_pcnt %>%
+  select(-n) %>%
+  pivot_wider(names_from=position, names_prefix='pos_',values_from='pcnt') %>%
+  arrange(desc(pos_1),desc(pos_2),desc(pos_3),desc(pos_4),desc(pos_5),desc(pos_6),desc(pos_7),desc(pos_8))
 
 
 

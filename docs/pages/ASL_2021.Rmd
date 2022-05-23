@@ -1,0 +1,365 @@
+---
+title: "ASL IX"
+subtitle: 2021
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, setup, echo=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+options(stringsAsFactors = FALSE)
+
+library(tidyverse)
+library(zoo)
+library(reactable)
+library(htmltools)
+
+#setwd('./docs/pages')
+```
+
+```{r, import_data, include=FALSE}
+source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.R')
+
+sc <- get_sc(cid,tkn)
+# player_data <- get_player_data(sc)
+# league_data <- get_league_data(sc)
+# saveRDS(player_data, './data/2022/player_data.RDS')
+# saveRDS(league_data, './data/2022/league_data.RDS')
+
+player_data <- readRDS('../../data/2022/player_data.RDS')
+league_data <- readRDS('../../data/2022/league_data.RDS')
+
+vRound <- sc$var$current_round
+
+```
+
+```{r rating_data}
+
+rtg_league <- league_data %>%
+  filter(!is.na(team_score)) %>%
+  filter(round == max(round)) %>%
+  mutate(played = wins + draws + losses) %>%
+  select(coach, position, played, points, wins, draws, losses, points_for, points_against, pcnt) %>%
+  mutate(points_for = round(points_for/played)) %>%
+  mutate(points_against = round(points_against/played)) %>%
+  mutate(pcnt = round(pcnt,1)) %>%
+  mutate(pts = points + (points_for/10000))
+
+
+
+sim_data <- read.csv(paste0('../../analysis/2022/Simulations/simulation_R',vRound,'_summary.csv')) %>%
+  select(coach, pcnt_finals, pcnt_gfinal, pcnt_champ, pcnt_spoon)
+
+rtg_pos <- player_data %>%
+  select(coach, type, feed_id, last_name, position, round, points) %>%
+  filter(!is.na(coach)) %>%
+  filter(type=='scoring') %>%
+  group_by(coach,position,round) %>%
+  summarise(
+    n=n(),
+    pts = sum(points),
+    .groups='drop'
+  ) %>%
+  arrange(coach,position,round) %>%
+  group_by(coach, position) %>%
+  mutate(n7 = rollapply(n, min(vRound,7),sum,align='right',fill=NA)) %>%
+  mutate(pts7 = rollapply(pts, min(vRound,7),sum,align='right',fill=NA)) %>%
+  ungroup() %>%
+  filter(!is.na(pts7)) %>%
+  mutate(avg7 = round(pts7/n7,1)) %>%
+  group_by(position) %>%
+  mutate(max = max(avg7)) %>%
+  mutate(min = min(avg7)) %>%
+  ungroup() %>%
+  mutate(rtg = round((avg7-min)/(max-min)*10,3)) %>%
+  filter(round == vRound) %>%
+  select(coach, position, rtg) %>%
+  pivot_wider(names_from=position, values_from=rtg)
+  
+
+rtg_all <- player_data %>%
+  select(coach, type, feed_id, last_name, position, round, points) %>%
+  filter(!is.na(coach)) %>%
+  filter(type=='scoring') %>%
+  group_by(coach,round) %>%
+  summarise(
+    n=n(),
+    pts = sum(points),
+    .groups='drop'
+  ) %>%
+  arrange(coach,round) %>%
+  group_by(coach) %>%
+  mutate(n7 = rollapply(n, min(vRound,7),sum,align='right',fill=NA)) %>%
+  mutate(pts7 = rollapply(pts, min(vRound,7),sum,align='right',fill=NA)) %>%
+  ungroup() %>%
+  filter(!is.na(pts7)) %>%
+  mutate(avg7 = round(pts7/n7,1)) %>%
+  mutate(max = max(avg7)) %>%
+  mutate(min = min(avg7)) %>%
+  ungroup() %>%
+  mutate(ALL = round((avg7-min)/(max-min)*10,1)) %>%
+  filter(round == vRound) %>%
+  select(coach, ALL) 
+
+
+rtg_tbl <- rtg_league %>%
+  left_join(rtg_all, by='coach') %>%
+  left_join(rtg_pos[,c('coach','DEF','MID','RUC','FWD')], by='coach') %>%
+  left_join(sim_data, by='coach') %>%
+  arrange(desc(wins), desc(draws), desc(points_for))
+  
+          
+```
+```{r rating_table, echo=FALSE}
+
+ladder_cols <- c('pts','wins','draws','losses','points_for','points_against','pcnt')
+rating_cols <- c("ALL","DEF","MID","RUC","FWD")
+knockout_cols <- c("pcnt_finals","pcnt_gfinal","pcnt_champ","pcnt_spoon")
+
+rtg_tbl <- rtg_tbl[,c('coach',ladder_cols,rating_cols,knockout_cols)] %>%
+  arrange(desc(wins),desc(draws),desc(points_for))
+
+rating_column <- function(maxWidth = 55, class = NULL, ...) {
+  colDef(maxWidth = maxWidth, align = "center", class = paste("cell number", class), ...)
+}
+knockout_column <- function(maxWidth = 70, class = NULL, ...) {
+  colDef(
+    cell = format_pct,
+    maxWidth = maxWidth,
+    class = paste("cell number", class),
+    style = function(value) {
+      # Lighter color for <1%
+      if (value < 0.01) {
+        list(color = "#aaa")
+      } else {
+        list(color = "#111", background = knockout_pct_color(value))
+      }
+    },
+    ...
+  )
+}
+format_pct <- function(value) {
+  if (value == 0) "  \u2013 "    # en dash for 0%
+  else if (value == 1) "\u2713"  # checkmark for 100%
+  else if (value < 0.01) " <1%"
+  else if (value > 0.99) ">99%"
+  else formatC(paste0(round(value * 100), "%"), width = 4)
+}
+make_color_pal <- function(colors, bias = 1) {
+  get_color <- colorRamp(colors, bias = bias)
+  function(x) rgb(get_color(x), maxColorValue = 255)
+}
+off_rating_color <- make_color_pal(c("#ff2700", "#f8fcf8", "#44ab43"), bias = 1.3)
+def_rating_color <- make_color_pal(c("#ff2700", "#f8fcf8", "#44ab43"), bias = 0.6)
+knockout_pct_color <- make_color_pal(c("#ffffff", "#f2fbd2", "#c9ecb4", "#93d3ab", "#35b0ab"), bias = 2)
+tbl <- reactable(
+  rtg_tbl,
+  pagination = FALSE,
+  #defaultSorted = c('wins','draws','points_for'),
+  #defaultSortOrder = "desc",
+  defaultColGroup = colGroup(headerClass = "group-header"),
+  columnGroups = list(
+    colGroup(name = "Standings", columns = ladder_cols),
+    colGroup(name = "Team Ratings", columns = rating_cols),
+    colGroup(name = "Championship Chances", columns = knockout_cols)
+  ),
+  defaultColDef = colDef(class = "cell", headerClass = "header"),
+  columns = list(
+    coach = colDef(
+      defaultSortOrder = "asc",
+      minWidth = 200,
+      headerStyle = list(fontWeight = 700), 
+      cell = function(value, index) {
+        div(
+          class = "team",
+          img(class = "flag", alt = paste(value), src = sprintf("images/%s_2022.png", value)),
+          div(class = "team-name", value)
+          #div(class = "record", sprintf("%s pts.", forecasts[index, "points"]))
+        )
+      }
+    ),
+    pts = rating_column(name = "PTS",class = "border-left", cell=function(value){format(floor(value), nsmall = 0)}),
+    
+    wins = rating_column(name = "W - D - L",  maxWidth = 70,
+                         cell = function(value, index) {paste0(value,"-",rtg_tbl[index,'draws'],"-",rtg_tbl[index,'losses'])}),
+    draws = colDef(show = FALSE),
+    losses = colDef(show = FALSE),
+    points_for = rating_column(name = "Average Score",maxWidth = 70,class='small-font'),
+    points_against = rating_column(name = "Average Against",maxWidth = 70,class='small-font'),
+    pcnt = rating_column(name = "%",class='small-font', cell=function(value){format(round(value, 1), nsmall = 1)}),
+    
+    
+    # group = colDef(defaultSortOrder = "asc", align = "center", maxWidth = 75,
+    #                class = "cell group", headerStyle = list(fontWeight = 700)),
+    ALL = rating_column(format = colFormat(digits = 1), class = "border-left"),
+    DEF = rating_column(
+      name = "DEF",
+      cell = function(value) {
+        scaled <- value/10
+        color <- off_rating_color(scaled)
+        value <- format(round(value, 1), nsmall = 1)
+        div(class = "spi-rating", style = list(background = color), value)
+      }
+    ),
+    MID = rating_column(
+      name = "MID",
+      cell = function(value) {
+        scaled <- value/10
+        color <- off_rating_color(scaled)
+        value <- format(round(value, 1), nsmall = 1)
+        div(class = "spi-rating", style = list(background = color), value)
+      }
+    ),
+    RUC = rating_column(
+      name = "RUC",
+      cell = function(value) {
+        scaled <- value/10
+        color <- off_rating_color(scaled)
+        value <- format(round(value, 1), nsmall = 1)
+        div(class = "spi-rating", style = list(background = color), value)
+      }
+    ),
+    FWD = rating_column(
+      name = "FWD",
+      cell = function(value) {
+        scaled <- value/10
+        color <- off_rating_color(scaled)
+        value <- format(round(value, 1), nsmall = 1)
+        div(class = "spi-rating", style = list(background = color), value)
+      }
+    ),
+    pcnt_finals = knockout_column(name = "Make Finals", class = "border-left"),
+    pcnt_gfinal = knockout_column(name = "Make Grand Final"),
+    pcnt_champ = knockout_column(name = "Win Dawn breaker"),
+    pcnt_spoon = knockout_column(name = "Win Spoon")
+  ),
+  # Emphasize borders between groups when sorting by group
+  rowClass = JS("
+    function(rowInfo, state) {
+      const firstSorted = state.sorted[0]
+      if (firstSorted && firstSorted.id === 'group') {
+        const nextRow = state.pageRows[rowInfo.viewIndex + 1]
+        if (nextRow && rowInfo.row.group !== nextRow.group) {
+          return 'group-last'
+        }
+      }
+    }"
+  ),
+  showSortIcon = FALSE,
+  borderless = TRUE,
+  class = "standings-table"
+)
+div(class = "standings",
+  div(class = "title",
+    h2("2019 Women's World Cup Predictions"),
+    "Soccer Power Index (SPI) ratings and chances of advancing for every team"
+  ),
+  tbl,
+  "Forecast from before 3rd group matches"
+)
+```
+```{r}
+tags$link(href = "https://fonts.googleapis.com/css?family=Karla:400,700|Fira+Mono&display=fallback", rel = "stylesheet")
+```
+```{css}
+.standings {
+  font-family: Karla, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+.title {
+  margin: 18px 0;
+  font-size: 16px;
+}
+.title h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+.standings-table {
+  margin-bottom: 20px;
+}
+/* Align header text to the bottom */
+.header,
+.group-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.header {
+  border-bottom-color: #555;
+  font-size: 13px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+/* Highlight headers when sorting */
+.header:hover,
+.header[aria-sort="ascending"],
+.header[aria-sort="descending"] {
+  background-color: #eee;
+}
+.border-left {
+  border-left: 2px solid #555;
+}
+/* Use box-shadow to create row borders that appear behind vertical borders */
+.cell {
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+.group-last .cell {
+  box-shadow: inset 0 -2px 0 #555;
+}
+.team {
+  display: flex;
+  align-items: center;
+}
+.record {
+  margin-left: 5px;
+  color: #999;
+  font-size: 13px;
+}
+.team-name {
+  font-size: 18px;
+  font-weight: 700;
+}
+.flag {
+  margin-right: 8px;
+  height: 30px;
+}
+.group {
+  font-size: 19px;
+}
+.number {
+  font-family: "Fira Mono", Consolas, Monaco, monospace;
+  font-size: 16px;
+  line-height: 30px;
+  white-space: pre;
+}
+.spi-rating {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  border-radius: 50%;
+  color: #000;
+  font-size: 13px;
+  letter-spacing: -2px;
+  align: "center";
+}
+
+.small-font {
+  font-size: 13px;
+}
+```
+```{css echo=FALSE}
+/* rmarkdown html documents */
+.main-container {
+  max-width: 1054px !important;
+}
+h1.title {
+  display: none;
+}
+/* pkgdown articles */
+.contents {
+  width: 1054px;
+}
+.page-header {
+  display: none;
+}
+```

@@ -2,12 +2,20 @@ name: "Fantasy-Banter"
 navbar:
   title: "Fantasy Banter"
   left:
-  - text: "Home"
-    href: index.html
-  - text: "About"
-    href: about.html
-  - text: "Weekly Summary"
-    href: weekly-summary.html
-  - text: "Live Scores"
-    href: https://pmac.shinyapps.io/ASL-Live-Scores/
+  - text: "Season Stats"
+    menu:
+        - text: "2022: ASL X"
+          href: index.html
+        - text: "2021: ASL IX"
+          href: ASL_2021.html
+        # - text: "2020: ASL VIII"
+        # - text: "2019: ASL VII"
+        # - text: "2018: ASL VI"
+        # - text: "2017: ASL V"
+        # - text: "2016: ASL IV"
+        # - text: "2015: ASL III"
+        # - text: "2014: ASL II"
+        # - text: "2013: ASL I"
+  - text: "League Records"
+    href: ASL_records.html
 output_dir: "."

@@ -1,6 +1,1318 @@
 ---
-title: "My Website"
+title: "2022 Season Summary"
+editor_options: 
+  chunk_output_type: console
 ---
 
-Hello, Website!
-testing
+```{r, setup, echo=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+options(stringsAsFactors = FALSE)
+
+library(tidyverse)
+library(highcharter)
+library(zoo)
+library(janitor)
+library(shiny)
+library(DT)
+library(kableExtra)
+library(RColorBrewer)
+library(rlist)
+library(reactable)
+library(htmltools)
+
+```
+```{r, import_data, include=FALSE}
+source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.R')
+
+sc <- get_sc(cid,tkn)
+# player_data <- get_player_data(sc)
+# league_data <- get_league_data(sc)
+# saveRDS(player_data, './data/2022/player_data.RDS')
+# saveRDS(league_data, './data/2022/league_data.RDS')
+
+player_data <- readRDS('../data/2022/player_data.RDS')
+league_data <- readRDS('../data/2022/league_data.RDS')
+
+vRound <- sc$var$current_round
+
+```
+```{r, team_colours_hc}
+
+team_colours <- lapply(team_colours, unlist)
+team_colours <- bind_rows(lapply(team_colours, as.data.frame.list))
+
+team_colours_hc <- team_colours %>%
+  group_by(name,color) %>%
+  mutate(logo = paste0('url(data:image/png;base64,', logo,')')) %>%
+  do(marker = list.flatten(list_parse(data.frame('symbol'=.$logo,'height'=24,'width'=24))))
+
+sml_team_colours_hc <- team_colours %>%
+  group_by(name,color) %>%
+  mutate(logo = paste0('url(data:image/png;base64,', logo,')')) %>%
+  do(marker = list.flatten(list_parse(data.frame('symbol'=.$logo,'height'=16,'width'=16))))
+
+```
+
+## 2022 Standings
+```{r rating_data}
+
+rtg_league <- league_data %>%
+  filter(!is.na(team_score)) %>%
+  filter(round == max(round)) %>%
+  mutate(played = wins + draws + losses) %>%
+  select(coach, position, played, points, wins, draws, losses, points_for, points_against, pcnt) %>%
+  mutate(points_for = round(points_for/played)) %>%
+  mutate(points_against = round(points_against/played)) %>%
+  mutate(pcnt = round(pcnt,1)) %>%
+  mutate(pts = points + (points_for/10000))
+
+
+
+sim_data <- read.csv(paste0('../analysis/2022/Simulations/simulation_R',vRound,'_summary.csv')) %>%
+  select(coach, pcnt_finals, pcnt_gfinal, pcnt_champ, pcnt_spoon)
+
+rtg_pos <- player_data %>%
+  select(coach, type, feed_id, last_name, position, round, points) %>%
+  filter(!is.na(coach)) %>%
+  filter(type=='scoring') %>%
+  group_by(coach,position,round) %>%
+  summarise(
+    n=n(),
+    pts = sum(points),
+    .groups='drop'
+  ) %>%
+  arrange(coach,position,round) %>%
+  group_by(coach, position) %>%
+  mutate(n7 = rollapply(n, min(vRound,7),sum,align='right',fill=NA)) %>%
+  mutate(pts7 = rollapply(pts, min(vRound,7),sum,align='right',fill=NA)) %>%
+  ungroup() %>%
+  filter(!is.na(pts7)) %>%
+  mutate(avg7 = round(pts7/n7,1)) %>%
+  group_by(position) %>%
+  mutate(max = max(avg7)) %>%
+  mutate(min = min(avg7)) %>%
+  ungroup() %>%
+  mutate(rtg = round((avg7-min)/(max-min)*10,3)) %>%
+  filter(round == vRound) %>%
+  select(coach, position, rtg) %>%
+  pivot_wider(names_from=position, values_from=rtg)
+  
+
+rtg_all <- player_data %>%
+  select(coach, type, feed_id, last_name, position, round, points) %>%
+  filter(!is.na(coach)) %>%
+  filter(type=='scoring') %>%
+  group_by(coach,round) %>%
+  summarise(
+    n=n(),
+    pts = sum(points),
+    .groups='drop'
+  ) %>%
+  arrange(coach,round) %>%
+  group_by(coach) %>%
+  mutate(n7 = rollapply(n, min(vRound,7),sum,align='right',fill=NA)) %>%
+  mutate(pts7 = rollapply(pts, min(vRound,7),sum,align='right',fill=NA)) %>%
+  ungroup() %>%
+  filter(!is.na(pts7)) %>%
+  mutate(avg7 = round(pts7/n7,1)) %>%
+  mutate(max = max(avg7)) %>%
+  mutate(min = min(avg7)) %>%
+  ungroup() %>%
+  mutate(ALL = round((avg7-min)/(max-min)*10,1)) %>%
+  filter(round == vRound) %>%
+  select(coach, ALL) 
+
+
+rtg_tbl <- rtg_league %>%
+  left_join(rtg_all, by='coach') %>%
+  left_join(rtg_pos[,c('coach','DEF','MID','RUC','FWD')], by='coach') %>%
+  left_join(sim_data, by='coach') %>%
+  arrange(desc(wins), desc(draws), desc(points_for))
+  
+          
+```
+```{r rating_table, echo=FALSE}
+
+ladder_cols <- c('pts','wins','draws','losses','points_for','points_against','pcnt')
+rating_cols <- c("ALL","DEF","MID","RUC","FWD")
+knockout_cols <- c("pcnt_finals","pcnt_gfinal","pcnt_champ","pcnt_spoon")
+
+rtg_tbl <- rtg_tbl[,c('coach',ladder_cols,rating_cols,knockout_cols)] %>%
+  arrange(desc(wins),desc(draws),desc(points_for))
+
+rating_column <- function(maxWidth = 55, class = NULL, ...) {
+  colDef(maxWidth = maxWidth, align = "center", class = paste("cell number", class), ...)
+}
+knockout_column <- function(maxWidth = 70, class = NULL, ...) {
+  colDef(
+    cell = format_pct,
+    maxWidth = maxWidth,
+    class = paste("cell number", class),
+    style = function(value) {
+      # Lighter color for <1%
+      if (value < 0.01) {
+        list(color = "#aaa")
+      } else {
+        list(color = "#111", background = knockout_pct_color(value))
+      }
+    },
+    ...
+  )
+}
+format_pct <- function(value) {
+  if (value == 0) "  \u2013 "    # en dash for 0%
+  else if (value == 1) "\u2713"  # checkmark for 100%
+  else if (value < 0.01) " <1%"
+  else if (value > 0.99) ">99%"
+  else formatC(paste0(round(value * 100), "%"), width = 4)
+}
+make_color_pal <- function(colors, bias = 1) {
+  get_color <- colorRamp(colors, bias = bias)
+  function(x) rgb(get_color(x), maxColorValue = 255)
+}
+off_rating_color <- make_color_pal(c("#ff2700", "#f8fcf8", "#44ab43"), bias = 1.3)
+def_rating_color <- make_color_pal(c("#ff2700", "#f8fcf8", "#44ab43"), bias = 0.6)
+knockout_pct_color <- make_color_pal(c("#ffffff", "#f2fbd2", "#c9ecb4", "#93d3ab", "#35b0ab"), bias = 2)
+tbl <- reactable(
+  rtg_tbl,
+  pagination = FALSE,
+  #defaultSorted = c('wins','draws','points_for'),
+  #defaultSortOrder = "desc",
+  defaultColGroup = colGroup(headerClass = "group-header"),
+  columnGroups = list(
+    colGroup(name = "Standings", columns = ladder_cols),
+    colGroup(name = "Team Ratings", columns = rating_cols),
+    colGroup(name = "Championship Chances", columns = knockout_cols)
+  ),
+  defaultColDef = colDef(class = "cell", headerClass = "header"),
+  columns = list(
+    coach = colDef(
+      defaultSortOrder = "asc",
+      #minWidth = 200,
+      headerStyle = list(fontWeight = 700), 
+      cell = function(value, index) {
+        div(
+          class = "team",
+          img(class = "flag", alt = paste(value), src = sprintf("pages/images/%s_2022.png", value)),
+          div(class = "team-name", value)
+          #div(class = "record", sprintf("%s pts.", forecasts[index, "points"]))
+        )
+      }
+    ),
+    pts = rating_column(name = "PTS",class = "border-left", cell=function(value){format(floor(value), nsmall = 0)}),
+    
+    wins = rating_column(name = "W - D - L",  maxWidth = 70,
+                         cell = function(value, index) {paste0(value,"-",rtg_tbl[index,'draws'],"-",rtg_tbl[index,'losses'])}),
+    draws = colDef(show = FALSE),
+    losses = colDef(show = FALSE),
+    points_for = rating_column(name = "Average Score",maxWidth = 70,class='small-font'),
+    points_against = rating_column(name = "Average Against",maxWidth = 70,class='small-font'),
+    pcnt = rating_column(name = "%",class='small-font', cell=function(value){format(round(value, 1), nsmall = 1)}),
+    
+    
+    # group = colDef(defaultSortOrder = "asc", align = "center", maxWidth = 75,
+    #                class = "cell group", headerStyle = list(fontWeight = 700)),
+    ALL = rating_column(format = colFormat(digits = 1), class = "border-left"),
+    DEF = rating_column(
+      name = "DEF",
+      cell = function(value) {
+        scaled <- value/10
+        color <- off_rating_color(scaled)
+        value <- format(round(value, 1), nsmall = 1)
+        div(class = "spi-rating", style = list(background = color), value)
+      }
+    ),
+    MID = rating_column(
+      name = "MID",
+      cell = function(value) {
+        scaled <- value/10
+        color <- off_rating_color(scaled)
+        value <- format(round(value, 1), nsmall = 1)
+        div(class = "spi-rating", style = list(background = color), value)
+      }
+    ),
+    RUC = rating_column(
+      name = "RUC",
+      cell = function(value) {
+        scaled <- value/10
+        color <- off_rating_color(scaled)
+        value <- format(round(value, 1), nsmall = 1)
+        div(class = "spi-rating", style = list(background = color), value)
+      }
+    ),
+    FWD = rating_column(
+      name = "FWD",
+      cell = function(value) {
+        scaled <- value/10
+        color <- off_rating_color(scaled)
+        value <- format(round(value, 1), nsmall = 1)
+        div(class = "spi-rating", style = list(background = color), value)
+      }
+    ),
+    pcnt_finals = knockout_column(name = "Make Finals", class = "border-left"),
+    pcnt_gfinal = knockout_column(name = "Make Grand Final"),
+    pcnt_champ = knockout_column(name = "Win Dawn breaker"),
+    pcnt_spoon = knockout_column(name = "Win Spoon")
+  ),
+  # Emphasize borders between groups when sorting by group
+  rowClass = JS("
+    function(rowInfo, state) {
+      const firstSorted = state.sorted[0]
+      if (firstSorted && firstSorted.id === 'group') {
+        const nextRow = state.pageRows[rowInfo.viewIndex + 1]
+        if (nextRow && rowInfo.row.group !== nextRow.group) {
+          return 'group-last'
+        }
+      }
+    }"
+  ),
+  showSortIcon = FALSE,
+  borderless = TRUE,
+  class = "standings-table"
+)
+div(class = "standings",
+  tbl
+)
+```
+```{r}
+tags$link(href = "https://fonts.googleapis.com/css?family=Karla:400,700|Fira+Mono&display=fallback", rel = "stylesheet")
+```
+```{css}
+.standings {
+  font-family: Karla, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+.title {
+  margin: 18px 0;
+  font-size: 16px;
+}
+.title h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+.standings-table {
+  margin-bottom: 20px;
+}
+/* Align header text to the bottom */
+.header,
+.group-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.header {
+  border-bottom-color: #555;
+  font-size: 13px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+/* Highlight headers when sorting */
+.header:hover,
+.header[aria-sort="ascending"],
+.header[aria-sort="descending"] {
+  background-color: #eee;
+}
+.border-left {
+  border-left: 2px solid #555;
+}
+/* Use box-shadow to create row borders that appear behind vertical borders */
+.cell {
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+.group-last .cell {
+  box-shadow: inset 0 -2px 0 #555;
+}
+.team {
+  display: flex;
+  align-items: center;
+}
+.record {
+  margin-left: 5px;
+  color: #999;
+  font-size: 13px;
+}
+.team-name {
+  font-size: 18px;
+  font-weight: 700;
+}
+.flag {
+  margin-right: 8px;
+  height: 30px;
+}
+.group {
+  font-size: 19px;
+}
+.number {
+  font-family: "Fira Mono", Consolas, Monaco, monospace;
+  font-size: 16px;
+  line-height: 30px;
+  white-space: pre;
+}
+.spi-rating {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  border-radius: 50%;
+  color: #000;
+  font-size: 13px;
+  letter-spacing: -2px;
+  align: "center";
+}
+
+.small-font {
+  font-size: 13px;
+}
+```
+```{css echo=FALSE}
+/* rmarkdown html documents */
+.main-container {
+  max-width: 1054px !important;
+}
+h1.title {
+  display: none;
+}
+/* pkgdown articles */
+.contents {
+  width: 1054px;
+}
+.page-header {
+  display: none;
+}
+```
+
+## Season Summary
+```{r, ladder_journey}
+
+ladder_journey <- league_data %>%
+  filter(!is.na(team_score)) %>%
+  group_by(round) %>%
+  arrange(round, position) %>%
+  ungroup() 
+
+ladder_journey_hc <- ladder_journey %>%
+  select(round, position, coach) %>%
+  group_by(coach) %>%
+  do(data = list_parse2(data.frame(.$round, .$position))) %>%
+  ungroup() %>%
+  rename(name = coach) %>%
+  left_join(team_colours_hc, by=c('name')) 
+
+highchart() %>%
+  hc_chart(type='line',
+           scrollablePlotArea= list(minWidth=700)) %>%
+  hc_title(text='Ladder Journey') %>%
+  hc_tooltip(enabled=FALSE) %>%
+  hc_xAxis(opposite=TRUE, tickInterval=1) %>%
+  hc_yAxis(min=1,max=8, reversed=TRUE, categories=c(NA,1:8),
+           title=list(text='Ladder Position')) %>%
+  hc_add_series_list(ladder_journey_hc)
+
+```
+```{r, season_boxplot}
+
+boxplot_data <- league_data %>%
+  filter(!is.na(team_score)) %>%
+  filter(round <= vRound) %>%
+  select(round, coach, team_score)
+  
+box_summary <- boxplot(team_score ~ coach, data = boxplot_data, range=5, plot=FALSE)
+box_data <- t(box_summary$stats)
+colnames(box_data) <- c('low','q1','median','q3','high')
+
+boxplot_hc <- as_tibble(box_data) %>%
+  mutate(name= box_summary$names) %>%
+  left_join(team_colours_hc, by=c('name')) %>%
+  select(-marker) %>%
+  arrange(desc(median))
+
+highchart() %>%
+  hc_chart(type = 'boxplot') %>%
+  hc_title(text='Score Summary') %>%
+  hc_subtitle(text='Ordered by Median') %>%
+  hc_exporting(enabled=TRUE) %>%
+  hc_xAxis(categories = boxplot_hc$name) %>%
+  hc_legend(enabled = FALSE) %>%
+  hc_add_series(name='2021',
+                data=boxplot_hc) 
+  
+
+```
+```{r, score_scatter}
+score_scatter <- league_data %>%
+  filter(round <= vRound) %>%
+  group_by(coach) %>%
+  summarise(
+    team_score = round(mean(team_score)),
+    opponent_score = round(mean(opponent_score))
+  ) 
+
+score_scatter_hc <- score_scatter %>%
+  group_by(coach) %>%
+  do(data = list_parse2(data.frame(.$opponent_score, .$team_score))) %>%
+  ungroup() %>%
+  rename(name = coach) %>%
+  left_join(team_colours_hc, by=c('name'))
+  
+highchart() %>%
+  hc_chart(type='scatter') %>%
+  hc_title(text='Score Scatter') %>%
+  hc_exporting(enabled=TRUE) %>%
+  hc_xAxis(title=list(text='Average Points Against'),
+           min=min(score_scatter$opponent_score)-20,
+           max=max(score_scatter$opponent_score)+20) %>%
+  hc_yAxis(title=list(text='Average Points For'),
+           min=min(score_scatter$team_score)-20,
+           max=max(score_scatter$team_score)+20) %>%
+  hc_tooltip(pointFormat='PF: <b>{point.y}</b><br/>PA: <b>{point.x}</b><br/>') %>%
+  hc_add_series_list(score_scatter_hc) %>%
+  hc_add_series(name='100%',
+                data=list(list(1000,1000),list(2000,2000)),
+                lineWidth=2,
+                color='red',
+                dashStyle='Dash',
+                showInLegend=FALSE)
+
+```
+
+## Power Rankings {.tabset}
+
+### OVERALL
+
+```{r, power_rankings}
+
+power_rankings <- function(player_data, sml_team_colours_hc, vPos=NULL){
+  
+  pRanks <- player_data
+  
+  if(!is.null(vPos)){
+    pRanks <- pRanks %>%
+      filter(position == vPos)
+  }
+  
+  pRanks <- pRanks %>%
+    filter(!is.na(coach)) %>%
+    filter(type == 'scoring') %>%
+    group_by(round, coach) %>%
+    summarise(
+      n=n(),
+      score = sum(points),
+      .groups='drop'
+    ) %>%
+    ungroup() %>%
+    mutate(avg = round(score/n)) %>%
+    arrange(coach, round) %>%
+    group_by(coach) %>%
+    mutate(avg3 = round(rollapply(score,width=3,sum,align='right',partial=TRUE)/
+                        rollapply(n,3,sum,align='right', partial=TRUE),1)) %>%
+    ungroup()
+  
+  # Data for chart
+  pRanks_hc <- pRanks %>%
+    select(coach, round, avg3) %>%
+    group_by(coach) %>%
+    do(data = list_parse2(data.frame(.$round, .$avg3))) %>%
+    ungroup() %>%
+    rename(name = coach) %>%
+    left_join(sml_team_colours_hc, by=c('name'))
+  
+  # Power ranking chart
+  chart <- highchart() %>%
+    hc_title(text=paste0('Power Rankings', ifelse(!is.null(vPos),paste0(' (',vPos,')'),''))) %>%
+    hc_subtitle(text='3 Round Average per Player') %>%
+    hc_chart(type = 'spline') %>%
+    hc_add_series_list(pRanks_hc) 
+  
+  # Data for heat map
+  pRanks_wide <- pRanks %>%
+    select(coach, round, avg) %>%
+    spread(round, avg)
+  
+  pRanks_avg3 <- pRanks %>%
+    filter(round >= (max(round)-2)) %>%
+    group_by(coach) %>%
+    summarise(
+      avg3 = round(sum(score)/sum(n),1),
+      .groups='drop'
+    ) 
+  
+  pRanks_tbl <- pRanks %>%
+    group_by(coach) %>%
+    summarise(
+      avg = round(sum(score)/sum(n),1),
+      .groups='drop'
+    ) %>%
+    left_join(pRanks_avg3, by=c('coach')) %>%
+    left_join(pRanks_wide[,rev(names(pRanks_wide))], by=c('coach')) %>%
+    arrange(desc(avg3))
+  
+  # Conditional formatting
+  brks <- c(75,80,85,90,95,100,105)-0.01
+  clrs <- brewer.pal(8, 'RdYlGn')
+  
+  # Power rankings table
+  table <- datatable(
+    pRanks_tbl,
+    rownames=FALSE,
+    class = 'row-border stripe',
+    colnames = c('Coach' = 'coach', 'Avg' = 'avg', '3Rd Avg' = 'avg3'),
+    extensions = 'FixedColumns',
+    options = list(
+      dom = 't',
+      scrollX = TRUE,
+      fixedColumns = list(leftColumns = 3),
+      columnDefs = list(list(className = 'dt-center', targets = 0:(ncol(pRanks_tbl)-1)))
+    )
+  ) %>% 
+    formatStyle(names(pRanks_tbl[,c(4:ncol(pRanks_tbl))]), 
+                backgroundColor = styleInterval(brks, clrs))
+  
+  # Return object
+  return(
+    list(chart = chart,
+         table = table)
+  )
+
+}
+
+pRank_all <- power_rankings(player_data, sml_team_colours_hc)
+pRank_def <- power_rankings(player_data, sml_team_colours_hc, 'DEF')
+pRank_mid <- power_rankings(player_data, sml_team_colours_hc, 'MID')
+pRank_ruc <- power_rankings(player_data, sml_team_colours_hc, 'RUC')
+pRank_fwd <- power_rankings(player_data, sml_team_colours_hc, 'FWD')
+
+pRank_all$chart
+pRank_all$table
+```
+
+### DEF
+
+```{r, pRanks_def}
+pRank_def$chart
+pRank_def$table
+```
+
+### MID
+
+```{r, pRanks_mid}
+pRank_mid$chart
+pRank_mid$table
+```
+
+### RUC
+
+```{r, pRanks_ruc}
+pRank_ruc$chart
+pRank_ruc$table
+```
+
+### FWD
+
+```{r, pRanks_fwd}
+pRank_fwd$chart
+pRank_fwd$table
+```
+
+## {-}
+
+## ASL Team of the Week
+```{r, team_of_the_week, echo=FALSE}
+
+totw_data <- player_data %>%
+  filter(!is.na(team)) %>%
+  filter(type == 'scoring') %>%
+  arrange(round, position, desc(points), desc(avg)) %>%
+  group_by(round, position) %>%
+  mutate(rank = rank(-points, ties.method='first')) %>%
+  filter((position == 'DEF' & rank <= 5)|
+         (position == 'MID' & rank <= 7)|
+         (position == 'RUC' & rank <= 1)|
+         (position == 'FWD' & rank <= 5)) %>%
+  ungroup()
+           
+totw_summary <- totw_data %>%
+  group_by(coach, position) %>%
+  summarise(
+    n = n(),
+    .groups='drop'
+  ) %>%
+  spread(coach, n) %>%
+  adorn_totals('row')
+
+totw <- totw_data %>%
+  filter(round == max(round)) %>%
+  mutate(name=paste0(substr(first_name,1,1),'.',last_name))
+
+totw <- bind_rows(totw[totw$position!='FWD',], totw[totw$position=='FWD',]) 
+```
+```{css, echo=FALSE}
+
+.field-container {
+  margin: auto;
+  width: 100%;
+  max-width: 650px;
+  background-image: linear-gradient(180deg, #b7e66e, #5bacb1);
+  justify-content: center;
+  display: flex;
+}
+
+.field-image {
+  background-image: url('images/afl_field.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.position-container{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  max-width: 500px;
+}
+
+.position-header{
+  display: flex;
+  justify-content: center;
+  background-color: black;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  height: 21px;
+  width: 100px;
+  text-transform: capitalize;
+  overflow: hidden;
+  padding: 3px;
+  white-space: nowrap;
+  color: #fff;
+  text-align: center;
+}
+
+.position-row{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.player-cell{
+  margin:5px;
+  height:50px;
+  width:124px;
+  background: blue;
+  overflow: hidden;
+  border-radius: 6px;
+  position:relative;
+  background-color: rgba(60, 179, 113,0.7);
+}
+
+.player-img{
+  float:right;
+}
+
+.player-img img{
+  height:50px;
+}
+
+.player-name{
+  height:35%;
+  width:100%;
+  font-size:12px;
+  font-weight: 700;
+  white-space: nowrap;
+  background-color: #09913f;
+  color:#fff;
+  padding:1px 4px;
+}
+
+.player-score{
+  height:65%;
+  width: 60%;
+  font-size:20px;
+  padding:0px 4px;
+  font-weight: 500;
+}
+
+.field-spacer{
+  height: 21px;
+}
+```
+
+### Round `r max(totw$round)` Score: `r sum(totw$points)`
+```{r, totw_field, echo=FALSE}
+div(
+  div(class='field-container',
+    div(class='field-image',
+        
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','DEFENDERS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[1],'.png'))),
+            div(class='player-name', totw$name[1]),
+            div(class='player-score', totw$points[1]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[2],'.png'))),
+            div(class='player-name', totw$name[2]),
+            div(class='player-score', totw$points[2]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[3],'.png'))),
+            div(class='player-name', totw$name[3]),
+            div(class='player-score', totw$points[3]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[4],'.png'))),
+            div(class='player-name', totw$name[4]),
+            div(class='player-score', totw$points[5]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[5],'.png'))),
+            div(class='player-name', totw$name[5]),
+            div(class='player-score', totw$points[5]),
+          )
+        )
+      ),
+      
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','MIDFIELDERS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[6],'.png'))),
+            div(class='player-name', totw$name[6]),
+            div(class='player-score', totw$points[6]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[7],'.png'))),
+            div(class='player-name', totw$name[7]),
+            div(class='player-score', totw$points[7]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[8],'.png'))),
+            div(class='player-name', totw$name[8]),
+            div(class='player-score', totw$points[8]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[9],'.png'))),
+            div(class='player-name', totw$name[9]),
+            div(class='player-score', totw$points[9]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[10],'.png'))),
+            div(class='player-name', totw$name[10]),
+            div(class='player-score', totw$points[10]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[11],'.png'))),
+            div(class='player-name', totw$name[11]),
+            div(class='player-score', totw$points[11]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[12],'.png'))),
+            div(class='player-name', totw$name[12]),
+            div(class='player-score', totw$points[12]),
+          )
+        )
+      ),
+      
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','RUCKS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[13],'.png'))),
+            div(class='player-name', totw$name[13]),
+            div(class='player-score', totw$points[13]),
+          )
+        )
+      ),
+      
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','FORWARDS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[14],'.png'))),
+            div(class='player-name', totw$name[14]),
+            div(class='player-score', totw$points[14]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[15],'.png'))),
+            div(class='player-name', totw$name[15]),
+            div(class='player-score', totw$points[15]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[16],'.png'))),
+            div(class='player-name', totw$name[16]),
+            div(class='player-score', totw$points[16]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[17],'.png'))),
+            div(class='player-name', totw$name[17]),
+            div(class='player-score', totw$points[17]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',totw$feed_id[18],'.png'))),
+            div(class='player-name', totw$name[18]),
+            div(class='player-score', totw$points[18]),
+          )
+        )
+      ),
+      
+      div(class='field-spacer')
+    )
+  ),
+  div(class='field-spacer')
+)
+```
+```{r, totw_round, echo=FALSE}
+
+totw_round <- totw_data %>%
+  group_by(coach, round) %>%
+  summarise(
+    n = n(),
+    .groups='drop'
+  ) %>%
+  spread(round, n) %>%
+  adorn_totals(where='col') %>%
+  arrange(desc(Total))
+
+totw_round[is.na(totw_round)] <- 0
+
+totw_round_hc <- totw_round %>%
+  select(-Total) %>%
+  pivot_longer(cols = -coach, names_to = "round", values_to = "n") %>%
+  group_by(round) %>%
+  do(data = list_parse2(data.frame(.$coach, .$n))) %>%
+  ungroup() %>%
+  mutate(round = as.numeric(round)) %>%
+  arrange(round) %>%
+  rename(name = round)
+
+highchart() %>%
+  hc_chart(type = 'bar') %>%
+  hc_title(text = 'Nominations by Round') %>%
+  hc_subtitle(text= 'Team of the Week') %>%
+  hc_plotOptions(series=list(stacking='normal')) %>%
+  hc_xAxis(categories=totw_round$coach) %>%
+  hc_add_series_list(totw_round_hc)
+  
+```
+```{r, totw_pos, echo=FALSE}
+
+totw_pos <- totw_data %>%
+  group_by(coach,position) %>%
+  summarise(
+    n = n(),
+    .groups='drop'
+  ) %>%
+  spread(position, n) %>%
+  adorn_totals(where='col') %>%
+  arrange(desc(Total))
+
+totw_pos[is.na(totw_pos)] <- 0
+
+totw_pos_hc <- totw_pos  %>%
+  select(-Total) %>%
+  pivot_longer(cols = -coach, names_to = "position", values_to = "n") %>%
+  group_by(position) %>%
+  do(data = list_parse2(data.frame(.$coach, .$n))) %>%
+  ungroup() %>%
+  rename(name = position)
+
+highchart() %>%
+  hc_chart(type = 'bar') %>%
+  hc_title(text = 'Nominations by Position') %>%
+  hc_subtitle(text= 'Team of the Week') %>%
+  hc_plotOptions(series=list(stacking='normal')) %>%
+  hc_xAxis(categories=totw_round$coach) %>%
+  hc_add_series_list(totw_pos_hc)
+
+```
+
+## Magoos of the Week
+```{r, magoos_of_the_week, echo=FALSE}
+
+motw_data <- player_data %>%
+  mutate(name = paste0(substr(first_name,1,1),'.',last_name)) %>%
+  mutate(last_round = round-1) %>%
+  select(feed_id, name, pos_1, team, round, points, price, last_round) %>%
+  left_join(player_data[,c('feed_id','round','avg', 'avg3', 'avg5')], by=c('feed_id', 'last_round'='round')) %>%
+  filter(is.na(team)) %>%
+  filter(!is.na(points))
+           
+motw_avg <- motw_data %>%
+  arrange(round, pos_1, desc(avg), desc(price), desc(points)) %>%
+  group_by(round, pos_1) %>%
+  mutate(rank = rank(-avg, ties.method = 'first')) %>%
+  ungroup() %>%
+  filter((pos_1 == 'DEF' & rank <= 5)|
+         (pos_1 == 'MID' & rank <= 7)|
+         (pos_1 == 'RUC' & rank <= 1)|
+         (pos_1 == 'FWD' & rank <= 5)) %>%
+  arrange(round, match(pos_1, c("DEF", "MID", "RUC", 'FWD'))) %>%
+  mutate(type = 'avg') %>%
+  select(type, round, feed_id, name, pos_1, points)
+
+motw_avg3 <- motw_data %>%
+  arrange(round, pos_1, desc(avg3), desc(price), desc(points)) %>%
+  group_by(round, pos_1) %>%
+  mutate(rank = rank(-avg3, ties.method = 'first')) %>%
+  ungroup() %>%
+  filter((pos_1 == 'DEF' & rank <= 5)|
+         (pos_1 == 'MID' & rank <= 7)|
+         (pos_1 == 'RUC' & rank <= 1)|
+         (pos_1 == 'FWD' & rank <= 5)) %>%
+  arrange(round, match(pos_1, c("DEF", "MID", "RUC", 'FWD'))) %>%
+  mutate(type = 'avg3') %>%
+  select(type, round, feed_id, name, pos_1, points)
+
+motw_avg5 <- motw_data %>%
+  arrange(round, pos_1, desc(avg5), desc(price), desc(points)) %>%
+  group_by(round, pos_1) %>%
+  mutate(rank = rank(-avg5, ties.method = 'first')) %>%
+  ungroup() %>%
+  filter((pos_1 == 'DEF' & rank <= 5)|
+         (pos_1 == 'MID' & rank <= 7)|
+         (pos_1 == 'RUC' & rank <= 1)|
+         (pos_1 == 'FWD' & rank <= 5)) %>%
+  arrange(round, match(pos_1, c("DEF", "MID", "RUC", 'FWD'))) %>%
+  mutate(type = 'avg5') %>%
+  select(type, round, feed_id, name, pos_1, points)
+
+motw_summary <- bind_rows(motw_avg, motw_avg3) %>%
+  bind_rows(motw_avg5) %>%
+  group_by(type, round) %>%
+  summarise(
+    score = sum(points),
+    .groups='drop'
+  ) %>%
+  spread(type, score) %>%
+  adorn_totals()
+
+motw <- motw_avg5 %>%
+  filter(round == max(round))
+
+```
+The Magoos are the players with the highest 5 round average from last round from last week that were available on the waiver. These spuds are doing their best to fight their way onto an ASL list. Similar to the Herald Sun's "Kiss of Death", you wouldn't want to be outscored by this team.
+
+### Round `r max(motw$round)` Score: `r sum(motw$points)`
+```{r, motw_field, echo=FALSE}
+div(
+  div(class='field-container',
+    div(class='field-image',
+        
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','DEFENDERS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[1],'.png'))),
+            div(class='player-name', motw$name[1]),
+            div(class='player-score', motw$points[1]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[2],'.png'))),
+            div(class='player-name', motw$name[2]),
+            div(class='player-score', motw$points[2]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[3],'.png'))),
+            div(class='player-name', motw$name[3]),
+            div(class='player-score', motw$points[3]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[4],'.png'))),
+            div(class='player-name', motw$name[4]),
+            div(class='player-score', motw$points[5]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[5],'.png'))),
+            div(class='player-name', motw$name[5]),
+            div(class='player-score', motw$points[5]),
+          )
+        )
+      ),
+      
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','MIDFIELDERS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[6],'.png'))),
+            div(class='player-name', motw$name[6]),
+            div(class='player-score', motw$points[6]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[7],'.png'))),
+            div(class='player-name', motw$name[7]),
+            div(class='player-score', motw$points[7]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[8],'.png'))),
+            div(class='player-name', motw$name[8]),
+            div(class='player-score', motw$points[8]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[9],'.png'))),
+            div(class='player-name', motw$name[9]),
+            div(class='player-score', motw$points[9]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[10],'.png'))),
+            div(class='player-name', motw$name[10]),
+            div(class='player-score', motw$points[10]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[11],'.png'))),
+            div(class='player-name', motw$name[11]),
+            div(class='player-score', motw$points[11]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[12],'.png'))),
+            div(class='player-name', motw$name[12]),
+            div(class='player-score', motw$points[12]),
+          )
+        )
+      ),
+      
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','RUCKS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[13],'.png'))),
+            div(class='player-name', motw$name[13]),
+            div(class='player-score', motw$points[13]),
+          )
+        )
+      ),
+      
+      div(class='field-spacer'),
+      div(class='position-container',
+        div(class='position-row', div(class='position-header','FORWARDS')),
+        div(class='position-row',
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[14],'.png'))),
+            div(class='player-name', motw$name[14]),
+            div(class='player-score', motw$points[14]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[15],'.png'))),
+            div(class='player-name', motw$name[15]),
+            div(class='player-score', motw$points[15]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[16],'.png'))),
+            div(class='player-name', motw$name[16]),
+            div(class='player-score', motw$points[16]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[17],'.png'))),
+            div(class='player-name', motw$name[17]),
+            div(class='player-score', motw$points[17]),
+          ),
+          div(class='player-cell',
+            div(class='player-img', img(src = paste0('https://s.afl.com.au/staticfile/AFL%20Tenant/AFL/Players/ChampIDImages/XLarge2021/',motw$feed_id[18],'.png'))),
+            div(class='player-name', motw$name[18]),
+            div(class='player-score', motw$points[18]),
+          )
+        )
+      ),
+      
+      div(class='field-spacer')
+    )
+  ),
+  div(class='field-spacer')
+)
+```
+```{r, motw_types, echo=FALSE}
+
+ motw_type_hc <- motw_summary  %>%
+  pivot_longer(cols = -round, names_to = "type", values_to = "n") %>%
+  filter(round != 'Total') %>%
+  group_by(type) %>%
+  do(data = list_parse2(data.frame(.$round, .$n))) %>%
+  ungroup() %>%
+  rename(name = type)
+
+# highchart() %>%
+#   hc_chart(type = 'column') %>%
+#   hc_title(text = 'Performance by Selection Criteria') %>%
+#   hc_subtitle(text= 'magoos of the Week') %>%
+#   hc_xAxis(categories=motw_summary$round) %>%
+#   hc_add_series_list(motw_type_hc) 
+
+```
+
+
+## Fixture Strength
+```{r, fixture_strength, echo=FALSE}
+
+fs <- league_data %>%
+  filter(!is.na(team_score)) %>%
+  filter(round <= vRound) %>%
+  group_by(round) %>%
+  mutate(score_rank = rank(-team_score)) %>%
+  mutate(opp_score_rank = rank(-opponent_score)) %>%
+  ungroup() %>%
+  group_by(coach) %>%
+  summarise(
+    avg_rank = round(mean(score_rank),2),
+    avg_opp_rank = round(mean(opp_score_rank),2)
+  ) %>%
+  arrange(avg_rank) 
+
+highchart() %>%
+  hc_chart(type = 'bar') %>%
+  hc_title(text = 'Season Performance') %>%
+  hc_subtitle(text= 'Average Rank of Weekly Scores') %>%
+  hc_legend(enabled=FALSE) %>%
+  hc_xAxis(categories=fs$coach) %>%
+  hc_yAxis(min=1,
+           max=8,
+           tickInterval = 1,
+           plotLines = list(list(label=list(text='Average'),value=4.5, color='black', dashStyle='shortdash'))) %>%
+  hc_add_series(data=fs$avg_rank, color='green')
+
+fs <- fs %>%
+  arrange(avg_opp_rank)
+
+highchart() %>%
+  hc_chart(type = 'bar') %>%
+  hc_title(text = 'Fixture Difficulty') %>%
+  hc_subtitle(text= "Average Rank of Opponent's Weekly Scores") %>%
+  hc_legend(enabled=FALSE) %>%
+  hc_xAxis(categories=fs$coach) %>%
+  hc_yAxis(min=1,
+           max=8,
+           tickInterval = 1,
+           plotLines = list(list(label=list(text='Average'),value=4.5, color='black', dashStyle='shortdash'))) %>%
+  hc_add_series(data=fs$avg_opp_rank, color='red')
+
+```
+
+
+```{r, emergency_use}
+# emrg_data <- player_data %>%
+#   filter(picked == FALSE) %>%
+#   filter(type == 'scoring')
+# 
+# emrg_box <- boxplot(points ~ coach, data = emrg_data, range=3, plot=FALSE)
+# emrg_box_order <- rev(order(emrg_box$stats[3,]))
+# emrg_box_data <- t(emrg_box$stats[,emrg_box_order])
+# rownames(emrg_box_data) <- emrg_box$names[emrg_box_order]
+# 
+# emrg_n <- emrg_data %>%
+#   group_by(coach) %>%
+#   summarise(
+#     n = n()
+#   ) %>%
+#   arrange(match(coach, rownames(emrg_box_data))) 
+# 
+# highchart() %>%
+#   hc_chart(type = 'boxplot') %>%
+#   hc_title(text='Emergency Utilisation') %>%
+#   hc_subtitle(text='Volume and spread of emergencies') %>%
+#   hc_legend(enabled=FALSE) %>%
+#   hc_tooltip(shared=TRUE) %>%
+#   hc_xAxis(categories = rownames(emrg_box_data)) %>%
+#   hc_add_series(name='Emergencies', data=emrg_n$n, type='column') %>%
+#   hc_add_series(name='Scoring Spread', data=emrg_box_data) 
+
+```
+
+
+## The one that got away
+Difference in averages by coach
+```{r}
+
+a <- player_data %>%
+  group_by(feed_id) %>%
+  mutate(avg = round(mean(points, na.rm=T))) %>%
+  filter(type=='scoring') %>%
+  group_by(feed_id, last_name, avg, coach) %>%
+  summarise(
+    coach_avg = round(mean(points, na.rm=T)),
+    .groups='drop'
+  ) %>%
+  ungroup() %>%
+  mutate(avg_diff = coach_avg - avg)
+
+b <- a %>%
+  group_by(feed_id) %>%
+  summarise(
+    n = n(),
+    min = min(coach_avg),
+    max = max(coach_avg),
+    .groups='drop'
+  ) %>%
+  mutate(coach_diff = round(max-min)) %>%
+  select(feed_id, coach_diff, n)
+
+c <- a %>%
+  left_join(b, by=c('feed_id')) %>%
+  arrange(desc(avg_diff)) %>%
+  select(last_name, avg, n, coach_diff, coach, avg_diff) %>%
+  spread(coach, avg_diff) %>%
+  arrange(desc(coach_diff))
+
+
+brks <- c(-30,-15,0,15,30)
+clrs <- brewer.pal(6, 'RdYlGn')
+
+datatable(
+  c,
+  rownames=FALSE,
+  class = 'row-border stripe',
+  colnames = c('Player'='last_name', 'Avg'='avg', 'Delta'='coach_diff', 'N'='n'),
+  extensions = 'FixedColumns',
+  options = list(
+    filter=FALSE,
+    pageLength = 10, 
+    lengthChange = FALSE,
+    paging=TRUE,
+    scrollX = TRUE,
+    fixedColumns = list(leftColumns = 2),
+    columnDefs = list(list(className = 'dt-center', targets = 1:(ncol(c)-1)))
+  )
+) %>% 
+  formatStyle(names(c[,c(5:ncol(c))]), 
+              backgroundColor = styleInterval(brks, clrs))
+
+```
+
+
+## Wish list
+- injury assessment
+- trade tracker
+- draft heat map
+- simulations/to make finals
+- ladder predictor
+- ladder journey
+- records
+- H2H matchups 
+- B&F
+- players picked up by another team and improved
+- Benchwarmers
+
+
+
+```{r, win_loss_scatter, echo=FALSE}
+# 
+# scatter <- fixture_data %>%
+#   filter(!is.na(team_score)) %>%
+#   filter(team_score > 0) 
+# 
+# highchart() %>%
+#   hc_chart(type='scatter')
+# 
+# scatter %>%
+#   hchart('scatter', hcaes(x = opponent_score, y = team_score , group = coach))
+
+
+```
+```
