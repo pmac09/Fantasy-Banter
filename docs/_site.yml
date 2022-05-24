@@ -16,6 +16,6 @@ navbar:
         # - text: "2015: ASL III"
         # - text: "2014: ASL II"
         # - text: "2013: ASL I"
-  - text: "League Records"
+  - text: "ASL Records"
     href: ASL_records.html
 output_dir: "."

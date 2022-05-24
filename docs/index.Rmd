@@ -189,8 +189,9 @@ tbl <- reactable(
   columns = list(
     coach = colDef(
       defaultSortOrder = "asc",
-      #minWidth = 200,
+      minWidth = 100,
       headerStyle = list(fontWeight = 700), 
+      style= list(position='sticky'),
       cell = function(value, index) {
         div(
           class = "team",
