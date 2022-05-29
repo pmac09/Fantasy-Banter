@@ -16,6 +16,13 @@ library(reactable)
 library(htmltools)
 ```
 
+```{r league_data}
+
+league_master <- read.csv('../data/master/league_master.csv')
+league_data <- readRDS('../data/2022/league_data.RDS')
+
+```
+
 
 ```{r honour_data}
 
@@ -53,10 +60,26 @@ honour_smy <- honour_data %>%
   mutate(pcnt_finals = round(finals/seasons,2)) %>%
   mutate(pcnt_spoon = round(spoon/seasons,2)) 
   
-  
-honour_smy <- honour_smy[,c('coach','trophy_case','seasons','champ','gfinal','finals','spoon')]
-```
+overall_ladder <- league_data %>%
+  filter(!is.na(team_score)) %>%
+  bind_rows(league_master) %>%
+  group_by(coach) %>%
+  summarise(
+    played = n(),
+    wins = sum(win),
+    draws = sum(draw),
+    losses = sum(loss),
+    win_pcnt = round(sum(win)/n(),3),
+    avg_score= round(sum(team_score)/n()),
+    avg_against= round(sum(opponent_score)/n()),
+    pcnt = round(sum(team_score)/sum(opponent_score)*100,1),
+    .groups='drop'
+  ) %>%
+  arrange(desc(win_pcnt))
 
+
+honour_smy <- honour_smy[,c('coach','trophy_case','seasons','champ','gfinal','finals','spoon')] 
+```
 ```{r honour_table, echo=FALSE}
 
 rating_column <- function(maxWidth = 55, class = NULL, ...) {
@@ -93,11 +116,19 @@ make_color_pal <- function(colors, bias = 1) {
 }
 knockout_pct_color <- make_color_pal(c("#ffffff", "#f2fbd2", "#c9ecb4", "#93d3ab", "#35b0ab"), bias = 2)
 
+award_cols <- c('champ','gfinal','finals','spoon')
+ladder_cols <- c("played","wins","draws","losses","win_pcnt","avg_score","avg_against","pcnt")
+
+
 
 tbl <- reactable(
   honour_smy,
   pagination = FALSE,
   defaultColDef = colDef(class = "cell", headerClass = "header"),
+  defaultColGroup = colGroup(headerClass = "header"),
+  columnGroups = list(
+    colGroup(name = "Achievements", columns = award_cols)
+  ),
   columns = list(
     coach = colDef(
       defaultSortOrder = "asc",
@@ -151,7 +182,6 @@ tbl <- reactable(
     gfinal = knockout_column(name = "Grand Finals"),
     finals = knockout_column(name = "Finals"),
     spoon = knockout_column(name = "Spoons")
-    
   ),
   # Emphasize borders between groups when sorting by group
   rowClass = JS("
@@ -273,3 +303,28 @@ h1.title {
 }
 ```
 
+
+
+
+```{r h2h}
+# 
+# h2h_data <- league_master %>%
+#   group_by(coach, opponent_coach) %>%
+#   summarise(
+#     wins = sum(win),
+#     losses = sum(loss),
+#     .groups='drop'
+#   ) %>%
+#   arrange(opponent_coach) %>%
+#   mutate(win_loss = paste0(wins," - ",losses)) %>%
+#   select(-wins, -losses)
+# 
+# 
+# x <-h2h_data %>%
+#   pivot_wider(names_from=opponent_coach,values_from = win_loss) %>%
+#   arrange(coach)
+
+
+
+
+```
