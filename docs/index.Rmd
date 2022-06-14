@@ -75,11 +75,10 @@ sim_data <- read.csv(paste0('../analysis/2022/Simulations/simulation_R',vRound,'
 rtg_pos <- player_data %>%
   select(coach, type, feed_id, last_name, position, round, points) %>%
   filter(!is.na(coach)) %>%
-  filter(type=='scoring') %>%
   group_by(coach,position,round) %>%
   summarise(
     n=n(),
-    pts = sum(points),
+    pts = sum(ifelse(type=='scoring',points,0), na.rm=T),
     .groups='drop'
   ) %>%
   arrange(coach,position,round) %>%
@@ -102,11 +101,10 @@ rtg_pos <- player_data %>%
 rtg_all <- player_data %>%
   select(coach, type, feed_id, last_name, position, round, points) %>%
   filter(!is.na(coach)) %>%
-  filter(type=='scoring') %>%
   group_by(coach,round) %>%
   summarise(
     n=n(),
-    pts = sum(points),
+    pts = sum(ifelse(type=='scoring',points,0), na.rm=T),
     .groups='drop'
   ) %>%
   arrange(coach,round) %>%
