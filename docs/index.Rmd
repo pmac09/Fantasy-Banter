@@ -614,6 +614,78 @@ pRank_fwd$table
 
 ## {-}
 
+
+```{r, trade_tracker}
+## Trade Tracker
+# 
+# sc_trades <- get_sc_data(sc$auth, sc[["url"]][["teamTrades"]])
+# 
+# trade_details <- tibble(
+#     trade_id           = as.numeric(sapply(sc_trades, function(x) x[['id']])),
+#     round              = as.numeric(sapply(sc_trades, function(x) x[['round']])),
+#     status_id          = as.numeric(sapply(sc_trades, function(x) x[['status_id']])),
+#     user_team_id       = as.numeric(sapply(sc_trades, function(x) x[['user_team_id']])),
+#     trade_user_team_id = as.numeric(sapply(sc_trades, function(x) x[['trade_user_team_id']]))
+# )
+# 
+# trade_players <- tibble()
+# for(i in 1:length(x)){
+#   t <- rbindlist(x[[i]][["team_trade_players"]])
+#   trade_players <- bind_rows(trade_players,t)
+# }
+# 
+# c <- league_data %>%
+#   select(team_id, coach) %>%
+#   distinct()
+# 
+# trade_data <- trade_details %>%
+#   filter(status_id == 7) %>%
+#   left_join(trade_players, by=c('trade_id')) %>%
+#   left_join(c, by=c('trade_user_team_id'='team_id')) %>%
+#   rename(trade_coach = coach) %>%
+#   left_join(c, by=c('user_team_id'='team_id')) 
+#   
+# trade_data %>%
+#   select(trade_id, round, coach, trade_coach) %>%
+#   distinct()
+# 
+# trade_data1 <- bind_rows(trade_data[,c('trade_id','round','coach','trade_player_id')],
+#       trade_data[,c('trade_id','round','trade_coach','player_id')] %>%
+#         rename(coach = trade_coach) %>%
+#         rename(trade_player_id = player_id)) %>%
+#   rename(player_id = trade_player_id) %>%
+#   filter(player_id != 0) 
+# 
+# trade_data2 <- trade_data1 %>%
+#   left_join(player_data %>% select(player_id,last_name,round,avg), by=c('player_id','round')) %>%
+#   left_join(player_data %>% 
+#               filter(type=='scoring') %>% 
+#               group_by(player_id, coach) %>% 
+#               summarise(trade_avg = mean(points)), by=c('player_id','coach')) %>%
+#   mutate(trade_id = ifelse(trade_id==75773,75731,trade_id)) %>%
+#   mutate(diff = round(trade_avg - avg,1)) %>%
+#   arrange(trade_id, coach, desc(avg))
+# 
+# 
+# hc_trade <- trade_data2 %>%
+#   filter(trade_id == unique(trade_data2$trade_id)[1])
+# 
+# highchart() %>%
+#   hc_chart(type='column') %>%
+#   hc_xAxis(categories= hc_trade$last_name,
+#            plotBands=list(list(from=-0.5,to=0.5, label=list(text='Lester')),
+#                           list(from= 0.5,to=2.5, color='#FFFFEF',label=list(text='Simon')))) %>%
+#   hc_tooltip(shared=TRUE) %>%
+#   hc_legend(enabled=FALSE) %>%
+#   hc_add_series(data=hc_trade$avg, pointPlacement=0.1) %>%
+#   hc_add_series(data=hc_trade$trade_avg, pointPlacement=-0.1) 
+#   
+
+```
+
+
+
+
 ## ASL Team of the Week
 ```{r, team_of_the_week, echo=FALSE}
 
