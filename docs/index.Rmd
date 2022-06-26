@@ -187,9 +187,10 @@ tbl <- reactable(
   columns = list(
     coach = colDef(
       defaultSortOrder = "asc",
-      minWidth = 120,
+      minWidth = 125,
       headerStyle = list(fontWeight = 700, position = "sticky", left = 0, background = "#fff", zIndex = 1), 
       style= list(position = "sticky", left = 0, background = "#fff", zIndex = 1),
+      class='cell border-right',
       cell = function(value, index) {
         div(
           class = "team",
@@ -199,8 +200,7 @@ tbl <- reactable(
         )
       }
     ),
-    pts = rating_column(name = "PTS",class = "border-left", cell=function(value){format(floor(value), nsmall = 0)}),
-    
+    pts = rating_column(name = "PTS", cell=function(value){format(floor(value), nsmall = 0)}),
     wins = rating_column(name = "W - D - L",  maxWidth = 70,
                          cell = function(value, index) {paste0(value,"-",rtg_tbl[index,'draws'],"-",rtg_tbl[index,'losses'])}),
     draws = colDef(show = FALSE),
@@ -314,6 +314,10 @@ tags$link(href = "https://fonts.googleapis.com/css?family=Karla:400,700|Fira+Mon
 }
 .border-left {
   border-left: 2px solid #555;
+}
+
+.border-right {
+  border-right: 2px solid #555;
 }
 /* Use box-shadow to create row borders that appear behind vertical borders */
 .cell {

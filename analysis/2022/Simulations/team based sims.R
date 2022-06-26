@@ -198,6 +198,15 @@ pos_pcnt %>%
 
 
 
-
+x <- results %>%
+  group_by(position, wins) %>%
+  summarise(n=n(),
+            .groups='drop') %>%
+  ungroup() %>%
+  group_by(wins) %>%
+  arrange(desc(wins)) %>%
+  mutate(pcnt = round(n/sum(n)*100)) %>%
+  select(-n) %>%
+  pivot_wider(names_from=wins, names_prefix='wins_',values_from='pcnt')
 
 
