@@ -208,5 +208,5 @@ x <- results %>%
   mutate(pcnt = round(n/sum(n)*100)) %>%
   select(-n) %>%
   pivot_wider(names_from=wins, names_prefix='wins_',values_from='pcnt')
-
+x
 

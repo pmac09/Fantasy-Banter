@@ -234,6 +234,7 @@ get_sc_player_data <- function(sc_players){
     round            = as.numeric(sapply(sc_players, function(x) x[['player_stats']][[1]][['round']])),
     projected_points = as.numeric(sapply(sc_players, function(x) ifelse(is.null(x[['player_stats']][[1]][['ppts']]), NA,x[['player_stats']][[1]][['ppts']]))),
     points           = as.numeric(sapply(sc_players, function(x) ifelse(length(x[['player_match_stats']])==0,        NA,x[['player_match_stats']][[1]][['points']]))),
+    played           = as.numeric(sapply(sc_players, function(x) ifelse(is.null(x[['player_stats']][[1]][['total_games']]),  NA,x[['player_stats']][[1]][['total_games']]))),
     avg              = as.numeric(sapply(sc_players, function(x) ifelse(is.null(x[['player_stats']][[1]][['avg']]),  NA,x[['player_stats']][[1]][['avg']]))),
     avg3             = as.numeric(sapply(sc_players, function(x) ifelse(is.null(x[['player_stats']][[1]][['avg3']]), NA,x[['player_stats']][[1]][['avg3']]))),
     avg5             = as.numeric(sapply(sc_players, function(x) ifelse(is.null(x[['player_stats']][[1]][['avg5']]), NA,x[['player_stats']][[1]][['avg5']]))),
@@ -520,7 +521,7 @@ get_sc <- function(cid, tkn){
   sc$url$teamTrades       <- paste0(base,year,draft,'leagues/',sc$var$league_id,'/teamtrades')
   sc$url$trades           <- paste0(base,year,draft,'leagues/',sc$var$league_id,'/trades')
   sc$url$processedWaivers <- paste0(base,year,draft,'leagues/',sc$var$league_id,'/processedWaivers')
-  sc$url$draft            <- paste0(base,year,draft,'leagues/',sc$var$league_id,'/userteam/',sc$var$user_id,'/livedraft')
+  sc$url$draft            <- paste0(base,year,draft,'leagues/',sc$var$league_id,'/recap')
   sc$url$aflFixture       <- paste0(base,year,draft,'real_fixture')
   
   return(sc)
