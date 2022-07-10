@@ -506,8 +506,8 @@ power_rankings <- function(player_data, sml_team_colours_hc, vPos=NULL){
     mutate(avg = round(score/n)) %>%
     arrange(coach, round) %>%
     group_by(coach) %>%
-    mutate(avg3 = round(rollapply(score,width=3,sum,align='right',partial=TRUE)/
-                        rollapply(n,3,sum,align='right', partial=TRUE),1)) %>%
+    mutate(avg3 = round(rollapply(score,width=7,sum,align='right',partial=TRUE)/
+                        rollapply(n,7,sum,align='right', partial=TRUE),1)) %>%
     ungroup()
   
   # Data for chart
@@ -618,73 +618,106 @@ pRank_fwd$table
 
 ## {-}
 
-
-```{r, trade_tracker, include=FALSE}
 ## Trade Tracker
-# 
-# sc_trades <- get_sc_data(sc$auth, sc[["url"]][["teamTrades"]])
-# 
-# trade_details <- tibble(
-#     trade_id           = as.numeric(sapply(sc_trades, function(x) x[['id']])),
-#     round              = as.numeric(sapply(sc_trades, function(x) x[['round']])),
-#     status_id          = as.numeric(sapply(sc_trades, function(x) x[['status_id']])),
-#     user_team_id       = as.numeric(sapply(sc_trades, function(x) x[['user_team_id']])),
-#     trade_user_team_id = as.numeric(sapply(sc_trades, function(x) x[['trade_user_team_id']])),
-#     action_time        = sapply(sc_trades, function(x) x[['action_time']])
-# )
-# 
-# trade_players <- tibble()
-# for(i in 1:length(x)){
-#   t <- rbindlist(x[[i]][["team_trade_players"]])
-#   trade_players <- bind_rows(trade_players,t)
-# }
-# 
-# c <- league_data %>%
-#   select(team_id, coach) %>%
-#   distinct()
-# 
-# trade_data <- trade_details %>%
-#   filter(status_id == 7) %>%
-#   left_join(trade_players, by=c('trade_id')) %>%
-#   left_join(c, by=c('trade_user_team_id'='team_id')) %>%
-#   rename(trade_coach = coach) %>%
-#   left_join(c, by=c('user_team_id'='team_id'))
-# 
+```{r, trade_tracker}
+## Trade Tracker
+
+sc_trades <- get_sc_data(sc$auth, sc[["url"]][["teamTrades"]])
+
+trade_details <- tibble(
+    trade_id           = as.numeric(sapply(sc_trades, function(x) x[['id']])),
+    round              = as.numeric(sapply(sc_trades, function(x) x[['round']])),
+    status_id          = as.numeric(sapply(sc_trades, function(x) x[['status_id']])),
+    user_team_id       = as.numeric(sapply(sc_trades, function(x) x[['user_team_id']])),
+    trade_user_team_id = as.numeric(sapply(sc_trades, function(x) x[['trade_user_team_id']])),
+    action_time        = sapply(sc_trades, function(x) x[['action_time']])
+)
+
+trade_players <- tibble()
+for(i in 1:length(sc_trades)){
+  t <- rbindlist(sc_trades[[i]][["team_trade_players"]])
+  trade_players <- bind_rows(trade_players,t)
+}
+
+c <- league_data %>%
+  select(team_id, coach) %>%
+  distinct()
+
+trade_data <- trade_details %>%
+  filter(status_id == 7) %>%
+  left_join(trade_players, by=c('trade_id')) %>%
+  left_join(c, by=c('trade_user_team_id'='team_id')) %>%
+  rename(trade_coach = coach) %>%
+  left_join(c, by=c('user_team_id'='team_id'))
+
 # trade_data %>%
 #   select(trade_id, round, coach, trade_coach) %>%
 #   distinct()
-# 
-# trade_data1 <- bind_rows(trade_data[,c('trade_id','round','coach','trade_player_id')],
-#       trade_data[,c('trade_id','round','trade_coach','player_id')] %>%
-#         rename(coach = trade_coach) %>%
-#         rename(trade_player_id = player_id)) %>%
-#   rename(player_id = trade_player_id) %>%
-#   filter(player_id != 0)
-# 
-# trade_data2 <- trade_data1 %>%
-#   left_join(player_data %>% select(player_id,last_name,round,avg), by=c('player_id','round')) %>%
-#   left_join(player_data %>%
-#               filter(type=='scoring') %>%
-#               group_by(player_id, coach) %>%
-#               summarise(trade_avg = mean(points)), by=c('player_id','coach')) %>%
-#   mutate(trade_id = ifelse(trade_id==75773,75731,trade_id)) %>%
-#   mutate(diff = round(trade_avg - avg,1)) %>%
-#   arrange(trade_id, coach, desc(avg))
-# 
-# 
-# hc_trade <- trade_data2 %>%
-#   filter(trade_id == unique(trade_data2$trade_id)[1])
-# 
-# highchart() %>%
-#   hc_chart(type='column') %>%
-#   hc_xAxis(categories= hc_trade$last_name,
-#            plotBands=list(list(from=-0.5,to=0.5, label=list(text='Lester')),
-#                           list(from= 0.5,to=2.5, color='#FFFFEF',label=list(text='Simon')))) %>%
-#   hc_tooltip(shared=TRUE) %>%
-#   hc_legend(enabled=FALSE) %>%
-#   hc_add_series(data=hc_trade$avg, pointPlacement=0.1) %>%
-#   hc_add_series(data=hc_trade$trade_avg, pointPlacement=-0.1) 
-#   
+
+trade_data1 <- bind_rows(trade_data[,c('trade_id','round','coach','trade_player_id')],
+      trade_data[,c('trade_id','round','trade_coach','player_id')] %>%
+        rename(coach = trade_coach) %>%
+        rename(trade_player_id = player_id)) %>%
+  rename(player_id = trade_player_id) %>%
+  filter(player_id != 0)
+
+trade_data2 <- trade_data1 %>%
+  left_join(player_data %>% select(player_id,last_name,round,avg), by=c('player_id','round')) %>%
+  left_join(player_data %>%
+              group_by(player_id, coach) %>%
+              summarise(trade_avg = round(mean(points, na.rm=T),1),
+                        played = sum(ifelse(type=='scoring',1,0))), by=c('player_id','coach')) %>%
+  mutate(trade_id = ifelse(trade_id==75773,75731,trade_id)) %>%
+  mutate(diff = round(trade_avg - avg,1)) %>%
+  arrange(trade_id, coach, desc(avg))
+
+trades <- unique(trade_data2$trade_id)  
+hc_trades <- list()
+for(tid in 1:length(trades)){
+  hc_trade <- trade_data2 %>% filter(trade_id == trades[tid])
+  
+  hc_trade_smy <- hc_trade %>%
+    group_by(coach) %>%
+    summarise(n=n())
+  
+  hc_trades[[tid]] <- highchart() %>%
+    hc_chart(type='column') %>%
+    hc_xAxis(categories= hc_trade$last_name,
+             plotBands=list(list(from=-0.5,
+                                 to=hc_trade_smy$n[1]-0.5, 
+                                 label=list(text=hc_trade_smy$coach[1])),
+                            list(from= hc_trade_smy$n[1]-0.5,
+                                 to=sum(hc_trade_smy$n)-0.5, color='#FFFFEF',
+                                 label=list(text=hc_trade_smy$coach[2])))) %>%
+     hc_yAxis_multiples(
+      list(title=list(text='Average')),
+      list(title=list(text='Games on Field'), opposite = TRUE, min=0, tickInterval=1)
+    ) %>% 
+    hc_tooltip(shared=TRUE) %>%
+    hc_legend(enabled=FALSE) %>%
+    hc_add_series(name='Pre-Trade Average', data=round(hc_trade$avg,1), pointPlacement=0.1) %>%
+    hc_add_series(name='Post-Trade Average', data=round(hc_trade$trade_avg,1), pointPlacement=-0.1) %>%
+    hc_add_series(name='Gomes on Field', data=hc_trade$played, yAxis=1, type='spline', lineWidth=0)
+  
+  
+  
+}
+
+hc_trades[[1]]
+hc_trades[[2]]
+hc_trades[[3]]
+hc_trades[[4]]
+hc_trades[[5]]
+hc_trades[[6]]
+hc_trades[[7]]
+hc_trades[[8]]
+hc_trades[[9]]
+hc_trades[[10]]
+hc_trades[[11]]
+hc_trades[[12]]
+hc_trades[[13]]
+hc_trades[[14]]
+
 
 ```
 
