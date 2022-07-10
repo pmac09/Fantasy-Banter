@@ -506,8 +506,8 @@ power_rankings <- function(player_data, sml_team_colours_hc, vPos=NULL){
     mutate(avg = round(score/n)) %>%
     arrange(coach, round) %>%
     group_by(coach) %>%
-    mutate(avg3 = round(rollapply(score,width=7,sum,align='right',partial=TRUE)/
-                        rollapply(n,7,sum,align='right', partial=TRUE),1)) %>%
+    mutate(avg3 = round(rollapply(score,width=3,sum,align='right',partial=TRUE)/
+                        rollapply(n,3,sum,align='right', partial=TRUE),1)) %>%
     ungroup()
   
   # Data for chart
