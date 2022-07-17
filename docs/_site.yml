@@ -18,4 +18,7 @@ navbar:
         # - text: "2013: ASL I"
   - text: "ASL Records"
     href: ASL_records.html
+# output:
+#   html_document:
+#     theme: cosmo
 output_dir: "."

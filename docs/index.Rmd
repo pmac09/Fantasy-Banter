@@ -697,7 +697,7 @@ for(tid in 1:length(trades)){
     hc_legend(enabled=FALSE) %>%
     hc_add_series(name='Pre-Trade Average', data=round(hc_trade$avg,1), pointPlacement=0.1) %>%
     hc_add_series(name='Post-Trade Average', data=round(hc_trade$trade_avg,1), pointPlacement=-0.1) %>%
-    hc_add_series(name='Gomes on Field', data=hc_trade$played, yAxis=1, type='spline', lineWidth=0)
+    hc_add_series(name='Games on Field', data=hc_trade$played, yAxis=1, type='spline', lineWidth=0)
   
   
   
