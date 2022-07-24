@@ -193,6 +193,7 @@ pos_pcnt <- results %>%
 
 pos_pcnt %>%
   select(-n) %>%
+  arrange(position) %>%
   pivot_wider(names_from=position, names_prefix='pos_',values_from='pcnt') %>%
   arrange(desc(pos_1),desc(pos_2),desc(pos_3),desc(pos_4),desc(pos_5),desc(pos_6),desc(pos_7),desc(pos_8))
 
@@ -208,5 +209,27 @@ x <- results %>%
   mutate(pcnt = round(n/sum(n)*100)) %>%
   select(-n) %>%
   pivot_wider(names_from=wins, names_prefix='wins_',values_from='pcnt')
+
 x
+
+
+results %>%
+  filter(position<=4) %>%
+  select(coach,position, simulation) %>%
+  pivot_wider(names_from = position, values_from = coach) %>%
+  mutate(G1 = ifelse(`1`<`4`,paste0(`1`,' v ',`4`),paste0(`4`,' v ',`1`))) %>%
+  mutate(G2 = ifelse(`2`<`3`,paste0(`2`,' v ',`3`),paste0(`3`,' v ',`2`))) %>%
+  select(simulation, G1,G2) %>%
+  pivot_longer(cols=starts_with('G')) %>%
+  group_by(value) %>%
+  summarise(
+    n=n()
+  ) %>%
+  ungroup() %>%
+  mutate(pcnt = round(n/sum(n)*100,1)) %>%
+  arrange(desc(pcnt))
+
+
+
+
 
