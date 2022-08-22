@@ -17,9 +17,9 @@ library(htmltools)
 ```
 
 ```{r league_data}
-
-league_master <- read.csv('../data/master/league_master.csv')
-league_data <- readRDS('../data/2022/league_data.RDS')
+# 
+# league_master <- read.csv('../data/master/league_master.csv')
+# league_data <- readRDS('../data/2022/league_data.RDS')
 
 ```
 
@@ -36,7 +36,8 @@ honour_data <- tibble(
   '2018' = c('Luke','Simon','Anthony','Jordan','Lester','James','Paul','Mark'),
   '2019' = c('Luke','Paul','Anthony','Jordan','Lester','James','Mark','Simon'),
   '2020' = c('Mark','Simon','Lester','Jordan','Luke','Paul','James','Anthony'),
-  '2021' = c('Paul','James','Anthony','Luke','Lester','Jordan','Mark','Simon')
+  '2021' = c('Paul','James','Anthony','Luke','Lester','Jordan','Mark','Simon'),
+  '2022' = c('Paul','Mark','Lester','Luke','Anthony','James','Jordan','Simon')
 ) %>%
   pivot_longer(starts_with('20'), names_to='season',values_to='coach') %>%
   mutate(season = as.numeric(season))
@@ -59,23 +60,23 @@ honour_smy <- honour_data %>%
   mutate(pcnt_gfinal = round(gfinal/seasons,2)) %>%
   mutate(pcnt_finals = round(finals/seasons,2)) %>%
   mutate(pcnt_spoon = round(spoon/seasons,2)) 
-  
-overall_ladder <- league_data %>%
-  filter(!is.na(team_score)) %>%
-  bind_rows(league_master) %>%
-  group_by(coach) %>%
-  summarise(
-    played = n(),
-    wins = sum(win),
-    draws = sum(draw),
-    losses = sum(loss),
-    win_pcnt = round(sum(win)/n(),3),
-    avg_score= round(sum(team_score)/n()),
-    avg_against= round(sum(opponent_score)/n()),
-    pcnt = round(sum(team_score)/sum(opponent_score)*100,1),
-    .groups='drop'
-  ) %>%
-  arrange(desc(win_pcnt))
+#   
+# overall_ladder <- league_data %>%
+#   filter(!is.na(team_score)) %>%
+#   bind_rows(league_master) %>%
+#   group_by(coach) %>%
+#   summarise(
+#     played = n(),
+#     wins = sum(win),
+#     draws = sum(draw),
+#     losses = sum(loss),
+#     win_pcnt = round(sum(win)/n(),3),
+#     avg_score= round(sum(team_score)/n()),
+#     avg_against= round(sum(opponent_score)/n()),
+#     pcnt = round(sum(team_score)/sum(opponent_score)*100,1),
+#     .groups='drop'
+#   ) %>%
+#   arrange(desc(win_pcnt))
 
 
 honour_smy <- honour_smy[,c('coach','trophy_case','seasons','champ','gfinal','finals','spoon')] 
@@ -323,6 +324,24 @@ h1.title {
 # x <-h2h_data %>%
 #   pivot_wider(names_from=opponent_coach,values_from = win_loss) %>%
 #   arrange(coach)
+
+# 
+# x <- league_master %>%
+#   group_by(season) %>%
+#   filter(round >= max(round)-1) %>%
+#   group_by(coach) %>%
+#   summarise(
+#     played = n(),
+#     wins = sum(win),
+#     draws = sum(draw),
+#     losses = sum(loss),
+#     win_pcnt = round(sum(win)/n(),3),
+#     avg_score= round(sum(team_score)/n()),
+#     avg_against= round(sum(opponent_score)/n()),
+#     pcnt = round(sum(team_score)/sum(opponent_score)*100,1),
+#     .groups='drop'
+#   ) %>%
+#   arrange(desc(win_pcnt))
 
 
 
