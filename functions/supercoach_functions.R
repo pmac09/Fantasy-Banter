@@ -56,8 +56,6 @@ get_sc_data <- function(sc_auth, url){
 }
 
 
-
-
 get_sc_settings <- function(sc_auth){
   log('get_sc_settings')
   
@@ -502,7 +500,7 @@ get_sc <- function(cid, tkn){
   sc$var$league_id <- sc$api$user$classic$leagues[[1]]$id
   sc$var$current_round <- sc$api$settings$competition$current_round
   sc$var$first_round <- sc$api$user$classic$leagues[[1]]$options$round_leagues_start
-  sc$var$last_round <- sc$api$user$classic$leagues[[1]]$options$round_leagues_end
+  sc$var$last_round <- sc$api$user$classic$leagues[[1]]$options$game_finals_round-1
   
   # Generate API URLs
   sc$url$players      <- paste0(base,year,draft,'players-cf?embed=notes%2Codds%2Cplayer_stats%2Cpositions%2Cplayer_match_stats&round=',c(1:sc$var$current_round))
@@ -613,45 +611,23 @@ get_league_data <- function(sc, round=NA){
 
 sc_download_all <- function(cid, tkn){
   
+  sc <- get_sc(cid,tkn)
+  
   yr <- year(Sys.Date())
-  path <- paste0('./data/2021/raw')
+  path <- paste0('./data/',yr,'/raw')
+  dir.create(path, showWarnings = FALSE)
   
-  sc_auth <- get_sc_auth(cid, tkn)
-  
-  sc_settings <- get_sc_settings(sc_auth)
-  saveRDS(sc_settings, paste0(path,'/sc_settings.rds'))
-  
-  sc_me <- get_sc_me(sc_auth)
-  saveRDS(sc_me, paste0(path,'/sc_me.rds'))
-  
-  sc_user <- get_sc_user(sc_auth, sc_me$id)
-  saveRDS(sc_user, paste0(path,'/sc_user.rds'))
-  
-  rnd <- 23
-  league_id <- sc_user$draft[[1]]$leagues[[1]]$id
-  for(i in 1:rnd) {
-    sc_players <- get_sc_players(sc_auth, i)
-    saveRDS(sc_players, paste0(path,'/sc_players_',i,'.rds'))
+  urls <- unname(unlist(sc$url))
+  for (i in 1:length(urls)){
     
-    sc_league <- get_sc_league(sc_auth, league_id, i)
-    saveRDS(sc_league, paste0(path,'/sc_league_',i,'.rds'))
+    print(i)
     
-    afl_fixture <- get_afl_fixture(sc_auth, i)
-    saveRDS(afl_fixture, paste0(path,'/afl_fixture_',i,'.rds'))
+    sc_data <- get_sc_data(sc$auth, urls[i])
+    nme <- gsub('/','_',str_extract(urls[i],'(?<=/v1/).+'))
+    saveRDS(sc_data, paste0(path,'/',nme,'.rds'))
+    
   }
-  
-  sc_teamtrades <- get_sc_teamtrades(sc_auth,league_id)
-  saveRDS(sc_teamtrades, paste0(path,'/sc_teamtrades.rds'))
-  
-  sc_trades <- get_sc_trades(sc_auth,league_id)
-  saveRDS(sc_trades, paste0(path,'/sc_trades.rds'))
-  
-  sc_processedWaivers <- get_sc_processedWaivers(sc_auth,league_id)
-  saveRDS(sc_processedWaivers, paste0(path,'/sc_processedWaivers.rds'))
-  
-  sc_draft <- get_sc_draft(sc_auth,league_id)
-  saveRDS(sc_draft, paste0(path,'/sc_draft.rds'))
-  
+
 }
 
 ## Other Handy Functions

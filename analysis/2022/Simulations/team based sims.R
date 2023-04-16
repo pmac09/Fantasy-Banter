@@ -1,10 +1,9 @@
 
 library(zoo)
 
-
 source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.R')
 
-savePath <- './analysis/2022/Simulations/'
+savePath <- './data/2023/simulations/'
 
 sc <- get_sc(cid, tkn)
 
@@ -12,35 +11,35 @@ league_data <- get_league_data(sc)
 player_data <- get_player_data(sc, round=sc$var$current_round)
 
 # Bye Rounds
-bye_rounds <- c(12,13,14)
-bye_url_end <- paste0('?round=',bye_rounds)
-bye_url <- paste0(sc$url$aflFixture, bye_url_end)
-
-bye_data <- tibble()
-for(url in bye_url){
-  sc_data <- get_sc_data(sc$auth, url)
-  data <- get_afl_fixture_data(sc_data)
-  bye_data <- bind_rows(bye_data,data)
-}
-
-bye_teams <- bye_data %>%
-  select(team1_abbrev, round) %>%
-  rename(team=team1_abbrev) %>%
-  pivot_wider(names_from=round, names_prefix = 'R', values_from=round) %>%
-  mutate(bye_round = ifelse(is.na(R12),12,ifelse(is.na(R13),13,14))) %>%
-  select(team,bye_round)
-
-bye_players <- player_data %>%
-  filter(!is.na(coach)) %>%
-  left_join(bye_teams, by=c('team_abbrev'='team')) %>%
-  group_by(coach, bye_round) %>%
-  count() %>%
-  mutate(pcnt = round((19-max(n-4,0))/19,2))
+# bye_rounds <- c(12,13,14)
+# bye_url_end <- paste0('?round=',bye_rounds)
+# bye_url <- paste0(sc$url$aflFixture, bye_url_end)
+# 
+# bye_data <- tibble()
+# for(url in bye_url){
+#   sc_data <- get_sc_data(sc$auth, url)
+#   data <- get_afl_fixture_data(sc_data)
+#   bye_data <- bind_rows(bye_data,data)
+# }
+# 
+# bye_teams <- bye_data %>%
+#   select(team1_abbrev, round) %>%
+#   rename(team=team1_abbrev) %>%
+#   pivot_wider(names_from=round, names_prefix = 'R', values_from=round) %>%
+#   mutate(bye_round = ifelse(is.na(R12),12,ifelse(is.na(R13),13,14))) %>%
+#   select(team,bye_round)
+# 
+# bye_players <- player_data %>%
+#   filter(!is.na(coach)) %>%
+#   left_join(bye_teams, by=c('team_abbrev'='team')) %>%
+#   group_by(coach, bye_round) %>%
+#   count() %>%
+#   mutate(pcnt = round((19-max(n-4,0))/19,2))
 
 
 sim_league_data <- league_data %>%
-  select(-pcnt) %>%
-  left_join(bye_players, by=c('coach','round'='bye_round')) %>%
+  # select(-pcnt) %>%
+  # left_join(bye_players, by=c('coach','round'='bye_round')) %>%
   mutate(pcnt=ifelse(is.na(pcnt),1,pcnt)) 
 
 scores <- sim_league_data %>%
@@ -156,7 +155,7 @@ for( sim in 1:noOfSims){
   setTxtProgressBar(pb, sim)
 }
 
-write.csv(results, paste0(savePath,'simulation_R',sc$var$current_round,'.csv'), na='', row.names = F)
+write.csv(results, paste0(savePath,'R',sc$var$current_round,'_sim.csv'), na='', row.names = F)
 
 
 summary <- results %>%
@@ -180,7 +179,7 @@ summary <- results %>%
   arrange(desc(pcnt_champ))
 
 summary
-write.csv(summary, paste0(savePath,'simulation_R',sc$var$current_round,'_summary.csv'), na='', row.names = F)
+write.csv(summary, paste0(savePath,'R',sc$var$current_round,'_sim_smy.csv'), na='', row.names = F)
 
 
 pos_pcnt <- results %>%
