@@ -419,7 +419,7 @@ boxplot_data <- league_data %>%
   filter(round <= vRound) %>%
   select(round, coach, team_score)
   
-box_summary <- boxplot(team_score ~ coach, data = boxplot_data, range=10, plot=FALSE)
+box_summary <- boxplot(team_score ~ coach, data = boxplot_data, range=999999, plot=FALSE)
 box_data <- t(box_summary$stats)
 colnames(box_data) <- c('low','q1','median','q3','high')
 
