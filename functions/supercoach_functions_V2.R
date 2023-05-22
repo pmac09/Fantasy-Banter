@@ -169,7 +169,7 @@ cleanPlayerData <- function(player_data_raw, season=year(Sys.Date())){
     avg              = round(as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$avg)),2),
     avg3             = round(as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$avg3)),2),
     avg5             = round(as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$avg5)),2),
-    price            = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$price)),
+    price            = as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$price),NA,x$player_stats[[1]]$price))),
     points           = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$points)),
     played           = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$games)),
     minutes_played   = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$minutes_played)),
@@ -187,6 +187,11 @@ cleanPlayerData <- function(player_data_raw, season=year(Sys.Date())){
   
   return(player_data)
 }
+
+
+x <- rbind(player_data_raw)
+
+x<-plyr::ldply(player_data_raw, rbind)
 
 savePlayerData <-function(player_data){
   
@@ -206,22 +211,30 @@ getPlayerData <- function(){
 
 updatePlayerData <- function(player_data_new){
 
-   
+  player_data <- getPlayerData()
+  
   x <- player_data_new %>%
     select(season, round) %>%
-    distinct()
+    distinct() %>%
+    mutate(filter = 1)
   
+  player_data <- player_data %>%
+    left_join(x, by=c('season','round')) %>%
+    filter(is.na(filter)) %>%
+    select(-filter) %>%
+    bind_rows(player_data_new) %>%
+    arrange(desc(season), desc(round), desc(avg))
   
+  savePlayerData(player_data)
   
-  for(i in 1:nrow(x)) %>%
-    
-  
+  return(player_data)
+
 }
 
-player_data_raw <- rawPlayerDataSC(sc, 7)
+player_data_raw <- rawPlayerDataSC(sc, 6)
 player_data_new <- cleanPlayerData(player_data_raw)
 
-
+player_data <- updatePlayerData(player_data_new)
 
 
 
