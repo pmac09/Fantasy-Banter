@@ -11,6 +11,8 @@ suppressMessages(library(lubridate))
 suppressMessages(library(data.table))
 suppressMessages(library(fireData))
 
+library(highcharter)
+
 source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/secrets.R') # import supercoach authentication variables
 
 log <- function(...){
@@ -134,7 +136,119 @@ get_sc <- function(cid, tkn){
   return(sc)
 }
 
+cleanPlayerData <- function(data_players, season=year(Sys.Date())){
+  log('cleanPlayerData')
+  
+  player_data <- tibble(
+    season           = season, 
+    feed_id          = as.numeric(sapply(data_players, function(x) x$feed_id)),
+    player_id        = as.numeric(sapply(data_players, function(x) x$id)),
+    first_name       = sapply(data_players, function(x) x$first_name),
+    last_name        = sapply(data_players, function(x) x$last_name),
+    player_name      = NA,
+    team_id          = as.numeric(sapply(data_players, function(x) x$team$id)),
+    team_name        = sapply(data_players, function(x) x$team$name),
+    team_abbrev      = sapply(data_players, function(x) x$team$abbrev),
+    position         = sapply(data_players, function(x) paste(sort(unlist(lapply(x$positions, function(x) x$position))), collapse = ' ')),
+    round            = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$round)),
+    avg              = round(as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$avg),NA,x$player_stats[[1]]$avg))),2),
+    avg3             = round(as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$avg3),NA,x$player_stats[[1]]$avg3))),2),
+    avg5             = round(as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$avg5),NA,x$player_stats[[1]]$avg5))),2),
+    price            = as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$price),NA,x$player_stats[[1]]$price))),
+    points           = as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$points),NA,x$player_stats[[1]]$points))),
+    played           = as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$games),NA,x$player_stats[[1]]$games))),
+    minutes_played   = as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$minutes_played),NA,x$player_stats[[1]]$minutes_played))),
+    kicks            = as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$kicks),NA,x$player_stats[[1]]$kicks))),
+    handballs        = as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$handballs),NA,x$player_stats[[1]]$handballs))),
+    marks            = as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$marks),NA,x$player_stats[[1]]$marks))),
+    tackles          = as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$tackles),NA,x$player_stats[[1]]$tackles))),
+    frees_for        = as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$freekicks_for),NA,x$player_stats[[1]]$freekicks_for))),
+    frees_against    = as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$freekicks_against),NA,x$player_stats[[1]]$freekicks_against))),
+    hitouts          = as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$hitouts),NA,x$player_stats[[1]]$hitouts))),
+    goals            = as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$goals),NA,x$player_stats[[1]]$goals))),
+    behinds          = as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$behinds),NA,x$player_stats[[1]]$behinds)))
+  ) %>%
+    mutate(player_name = paste0(substr(first_name,1,1),'.',last_name))
+  
+  return(player_data)
+}
+
+
+
+
+
+
+
+
+
 sc <- get_sc(cid, tkn)
+
+# Download data
+for (i in 8:sc$var$current_round){
+  players_url <- paste0(sc$url$players, i)
+  player_data_raw <- get_sc_data(sc$auth, players_url)
+  filename <- paste0('PLAYER_DATA_2023_',formatC(i, width = 2, format = "d", flag = "0"))
+  saveRDS(player_data_raw, paste0('./data/Master/raw/',filename,'.RDS'))
+}
+
+
+
+#
+path <- './data/Master/raw/'
+files <- list.files(path)
+files <- rev(sort(files))
+
+master_data <- tibble()
+for (i in 1:length(files)){
+  
+  file <- files[i]
+  season <- substr(file, 13, 16)
+  
+  player_list <- readRDS(paste0(path,file))
+  player_data <- cleanPlayerData(player_list, season)
+  
+  master_data <- bind_rows(master_data, player_data)
+}
+
+
+
+
+url <- 'https://supercoach.heraldsun.com.au/2023/api/afl/draft/v1/completeStatspack?player_id=18'
+
+playerStats <- get_sc_data(sc$auth, url)
+playerStats1 <- playerStats$playerStats
+
+
+
+y <- bind_rows(lapply(playerStats1, function(x) data.frame(as.list(unlist(x))))) %>%
+  mutate_if(numeric_col,as.numeric) 
+  
+
+
+
+numeric_col <- function(x) {!any(is.na(suppressWarnings(as.numeric(na.omit(x))))) & is.character(x)}
+
+a <- z %>% 
+  mutate_if(numeric_col,as.numeric) 
+
+
+y <- stack(x)
+
+y <- as_tibble(x, .name_repair = 'universal')
+
+
+
+y <- bind_rows(x)
+
+z <- flatten(x)
+
+y <- lapply(x, unlist, use.names=FALSE)
+
+
+
+
+x <- as.data.frame(do.call("cbind", lapply(player_list, ts)))
+
 
 
 
@@ -149,45 +263,6 @@ rawPlayerDataSC <- function(sc, vRound=NA){
   
   return(player_data_raw)
 }
-cleanPlayerData <- function(player_data_raw, season=year(Sys.Date())){
-  log('cleanPlayerData')
-  
-  data_players <- player_data_raw 
-  
-  player_data <- tibble(
-    season           = season, 
-    feed_id          = as.numeric(sapply(data_players, function(x) x$feed_id)),
-    player_id        = as.numeric(sapply(data_players, function(x) x$id)),
-    first_name       = sapply(data_players, function(x) x$first_name),
-    last_name        = sapply(data_players, function(x) x$last_name),
-    player_name      = NA,
-    team_id          = as.numeric(sapply(data_players, function(x) x$team$id)),
-    team_name        = sapply(data_players, function(x) x$team$name),
-    team_abbrev      = sapply(data_players, function(x) x$team$abbrev),
-    position         = sapply(data_players, function(x) paste(sort(unlist(lapply(x$positions, function(x) x$position))), collapse = ' ')),
-    round            = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$round)),
-    avg              = round(as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$avg)),2),
-    avg3             = round(as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$avg3)),2),
-    avg5             = round(as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$avg5)),2),
-    price            = as.numeric(sapply(data_players, function(x) ifelse(is.null(x$player_stats[[1]]$price),NA,x$player_stats[[1]]$price))),
-    points           = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$points)),
-    played           = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$games)),
-    minutes_played   = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$minutes_played)),
-    kicks            = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$kicks)),
-    handballs        = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$handballs)),
-    marks            = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$marks)),
-    tackles          = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$tackles)),
-    frees_for        = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$freekicks_for)),
-    frees_against    = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$freekicks_against)),
-    hitouts          = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$hitouts)),
-    goals            = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$goals)),
-    behinds          = as.numeric(sapply(data_players, function(x) x$player_stats[[1]]$behinds))
-  ) %>%
-    mutate(player_name = paste0(substr(first_name,1,1),'.',last_name))
-  
-  return(player_data)
-}
-
 
 x <- rbind(player_data_raw)
 
@@ -267,9 +342,9 @@ player_data <- updatePlayerData(sc, player_data, 2023, 7)
 files <- list.files('./data/Master/raw/')
 
 
-for(i in 1:7){
+for(i in 8:10){
   data <- readRDS(paste0('./data/2022/raw/players-cf?embed=notes%2Codds%2Cplayer_stats%2Cpositions%2Cplayer_match_stats&round=',i,'.rds'))
-  filename <- paste0('PLAYER_DATA_2022_',formatC(i, width = 2, format = "d", flag = "0"))
+  filename <- paste0('PLAYER_DATA_2023_',formatC(i, width = 2, format = "d", flag = "0"))
   saveRDS(data, paste0('./data/Master/raw/',filename,'.RDS'))
 }
 
