@@ -10,7 +10,6 @@ numeric_col <- function(x) {!any(is.na(suppressWarnings(as.numeric(na.omit(x))))
 
 ## START ----
 
-
 sc <- get_sc(cid,tkn)
 
 # Raw Player List data

@@ -20,6 +20,8 @@ log <- function(...){
   msg <- paste0(time,': ', ...)
   message(msg)
 }
+numeric_col <- function(x) {!any(is.na(suppressWarnings(as.numeric(na.omit(x))))) & is.character(x)}
+
 
 firebaseDownload <- function(projectURL, path = NULL){
   data <- suppressWarnings(download(projectURL, paste0('Fantasy-Banter/',path)))
@@ -107,11 +109,9 @@ get_sc <- function(cid, tkn){
   sc$api$user <- get_sc_data(sc$auth, sc$url$user)
   
   # Save common variables
-  sc$var$season <- sc$api$settings$game$competitions[[1]]$season
+  sc$var$season <- sc$api$settings$content$season
   sc$var$league_id <- sc$api$user$classic$leagues[[1]]$id
   sc$var$current_round <- sc$api$settings$competition$current_round
-  sc$var$first_round <- sc$api$user$classic$leagues[[1]]$options$round_leagues_start
-  sc$var$last_round <- sc$api$user$classic$leagues[[1]]$options$game_finals_round-1
   
   # Generate API URLs
   sc$url$players      <- paste0(base,year,draft,'players-cf?embed=notes%2Codds%2Cplayer_stats%2Cpositions%2Cplayer_match_stats&round=')
@@ -135,6 +135,80 @@ get_sc <- function(cid, tkn){
   
   return(sc)
 }
+
+
+# Connect to SC
+sc <- get_sc(cid, tkn)
+sc_season <- sc$var$season
+sc_round <- sc$var$current_round
+
+# Download Supercoach Data
+player_data_url <- paste0(sc$url$players, sc_round)
+player_data_raw <- get_sc_data(sc$auth, player_data_url)
+names(player_data_raw) <- unlist(lapply(player_data_raw, function(x) paste0(gsub('\\*\\*\\* ','',x$last_name),'|',x$feed_id)))
+
+# Save to firebase
+fbRawPath <- paste0('players/raw/',sc_season,'/',sc_round)
+firebaseSave(projectURL, fbRawPath, player_data_raw)
+
+# Clean data
+data_raw <- firebaseDownload(projectURL, fbRawPath)
+
+data_raw1 <- lapply(data_raw, function(x){
+  x$positions <- apply(x$positions, 1, function(x) as.list(x))
+  x$positions <- paste(sort(unlist(lapply(x$positions, function(x) x$position))), collapse = ' ')
+  return(x)
+}) 
+
+data_raw2 <- bind_rows(lapply(data_raw1, function(x) data.frame(as.list(unlist(x))))) %>%
+  mutate_if(numeric_col,as.numeric) 
+
+data <- data_raw2 %>%
+  filter(active == TRUE) %>%
+  mutate(season = sc_season) %>%
+  rename(player_id = id) %>%
+  mutate(player_name = paste0(substr(first_name,1,1),'.',last_name)) %>%
+  rename(team_abbrev = team.abbrev) %>%
+  rename(position = positions) %>%
+  select(
+    season,
+    feed_id,
+    player_id,
+    first_name,
+    last_name,
+    player_name, 
+    team_abbrev,
+    position,
+    player_stats.round,
+    player_stats.games,
+    player_stats.points,
+    player_stats.price,
+    player_stats.total_games,
+    player_stats.avg,
+    player_stats.avg3,
+    player_stats.avg5
+  )
+  
+names(data) <- gsub('player_stats.','',names(data))
+
+fbDataPath <- gsub('raw','data',fbRawPath)
+firebaseSave(projectURL, fbDataPath, data)
+firebaseSave(projectURL, 'players/settings', list(col_order = names(data)))
+
+
+
+
+col <- firebaseDownload(projectURL, 'players/settings/col_order')
+x <- firebaseDownload(projectURL, fbDataPath)
+x1 <- x[,col]
+
+
+
+
+
+x <- firebaseDownload(projectURL, 'players/settings')
+
+x$col_order
 
 cleanPlayerData <- function(data_players, season=year(Sys.Date())){
   log('cleanPlayerData')
@@ -178,10 +252,6 @@ cleanPlayerData <- function(data_players, season=year(Sys.Date())){
 
 
 
-
-
-
-sc <- get_sc(cid, tkn)
 
 # Download data
 for (i in 8:sc$var$current_round){
