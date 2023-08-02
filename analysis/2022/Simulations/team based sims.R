@@ -230,6 +230,10 @@ results %>%
   arrange(desc(pcnt))
 
 
+results %>%
+  filter(position <= 4) %>%
+  filter(coach == 'Paul')
 
-
+results %>%
+  filter(simulation == 51)
 
