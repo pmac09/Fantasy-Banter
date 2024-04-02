@@ -1,0 +1,227 @@
+---
+title: "Draft Notes"
+output: html_document
+date: "`r Sys.Date()`"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# import supercoach API functions
+source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions_V2.R') 
+```
+
+```{r import_sc, include=FALSE}
+sc <- get_sc(cid,tkn)
+playerList <- get_playerList(sc)
+
+adp_raw <- lapply(playerList$id, function(id){
+  url <- sprintf(sc$url$player, id)
+  get_sc_data(sc$auth, url)
+})
+
+adp_data <- tibble(
+  id = unlist(lapply(adp_raw, function(x) x$id)),
+  feed_id = unlist(lapply(adp_raw, function(x) x$feed_id)),
+  first_name = unlist(lapply(adp_raw, function(x) x$first_name)),
+  last_name = unlist(lapply(adp_raw, function(x) x$last_name)),
+  team = unlist(lapply(adp_raw, function(x) x$team$abbrev)),
+  pos = unlist(lapply(adp_raw, function(x) {
+    paste0(lapply(x$positions, function(p) p$position), collapse = '/')
+  })),
+  avg = unlist(lapply(adp_raw, function(x) x$previous_average)),
+  adp = unlist(lapply(adp_raw, function(x){
+    adp <- x$player_stats[[1]]$adp
+    if(is.null(adp)){adp <- NA} 
+    adp
+  })),
+  rank = unlist(lapply(adp_raw, function(x){
+    adp <- x$player_stats[[1]]$adp_rank
+    if(is.null(adp)){adp <- NA} 
+    adp
+  })),
+) %>%
+  arrange(adp)
+
+adp_data <- adp_data[-grep('^\\*',adp_data$last_name),]
+
+write.csv(adp_data, paste0('./data/adp ',Sys.Date(),'.csv'), na='', row.names=FALSE)
+```
+
+## ADP vs Previous Average
+
+```{r adp_all}
+
+base <- adp_data %>%
+  filter(adp <= 200)
+
+plot(base$adp, 
+     base$avg, 
+     col = case_when(grepl('FWD',base$pos) ~ 'red',
+                     grepl('DEF',base$pos) ~ 'blue',
+                     grepl('RUC',base$pos) ~ 'green',
+                     TRUE                  ~ 'black'), 
+     main="ADP to Average",
+     xlab="Average Draft Position", 
+     ylab="Previous Average", 
+     pch=20)                                    # Plot the data points
+
+legend("bottomleft",   # Change the position as per your preference
+       legend = c('FWD','DEF','RUC','MID'),  # Assumes base$pos is categorical
+       col = c("red", "blue", "green", "black"),  # Colors corresponding to the categories
+       pch = 20,  # The same point shape used in the plot
+       title = "Position")  # Title for the legend
+
+```
+
+```{r adp_mid}
+
+proj_model <- function(data, pos){
+  
+  data1 <- data %>%
+    filter(adp <= 200)
+  
+  data2 <- data1[grepl(pos, data1$pos),]
+  
+  data3 <- data2 %>%
+    filter(avg > 0)
+  
+  degree <- 2                                     # Define the degree of the polynomial
+  model <- lm(data3$avg ~ poly(data3$adp, degree, raw = TRUE))    # Fit the polynomial regression model
+  
+  residuals <- residuals(model)                   # Get the residuals
+  residuals_mean <- mean(residuals)               # Calculate the mean and standard deviation of residuals
+  residuals_sd <- sd(residuals)
+  threshold <- 2 * residuals_sd                   # Set a threshold for outliers 
+  outliers <- which(abs(residuals) > threshold)   # Identify outliers based on the threshold
+
+  x_clean <- data3$adp[-outliers]                         # Remove outliers from the dataset
+  y_clean <- data3$avg[-outliers]
+  model_clean <- lm(y_clean ~ poly(x_clean, degree, raw = TRUE))    # Fit model to the cleaned dataset
+  predicted_clean <- predict(model_clean)                           # Generate predicted Y values
+
+  plot(data2$adp, 
+       data2$avg, 
+       main=pos,
+       xlab="Average Draft Position", 
+       ylab="Previous Average", 
+       pch=20,
+       col='red')   
+
+  points(data2$adp[data2$feed_id %in% data3$feed_id[-outliers]],
+         data2$avg[data2$feed_id %in% data3$feed_id[-outliers]], col='black',pch=20)
+
+  lines(sort(x_clean), predicted_clean[order(x_clean)], col="red", lwd=2)
+  
+  #predicted_y <- predict(model_clean, newdata = data.frame(x_clean = new_x))
+  
+  return(model_clean)
+}
+
+pos <- c('MID','DEF','RUC','FWD')
+
+model <- lapply(pos, function(p) proj_model(adp_data, p))
+names(model) <- pos
+
+proj <- lapply(model, function(m){
+  round(predict(m, newdata = data.frame(x_clean = adp_data$adp)),1)
+})
+names(proj) <- pos
+
+adp_data2 <- adp_data %>%
+  mutate(draft_pos = NA) %>%
+  mutate(draft_proj = NA) %>%
+  mutate(draft_tier = NA)
+
+adp_data2$draft_pos[grepl('MID', adp_data2$pos)] <- 'MID'
+adp_data2$draft_proj[grepl('MID', adp_data2$pos)] <- proj[['MID']][grepl('MID', adp_data2$pos)]
+
+adp_data2$draft_pos[grepl('RUC', adp_data2$pos)] <- 'RUC'
+adp_data2$draft_proj[grepl('RUC', adp_data2$pos)] <- proj[['RUC']][grepl('RUC', adp_data2$pos)]
+
+adp_data2$draft_pos[grepl('DEF', adp_data2$pos)] <- 'DEF'
+adp_data2$draft_proj[grepl('DEF', adp_data2$pos)] <- proj[['DEF']][grepl('DEF', adp_data2$pos)]
+
+adp_data2$draft_pos[grepl('FWD', adp_data2$pos)] <- 'FWD'
+adp_data2$draft_proj[grepl('FWD', adp_data2$pos)] <- proj[['FWD']][grepl('FWD', adp_data2$pos)]
+
+adp_data2$draft_tier <- proj[['MID']]
+
+adp_data3 <- adp_data2 %>%
+  mutate(draft_tier = case_when(draft_tier >= 115 ~ 1,
+                                draft_tier >= 110 ~ 2,
+                                draft_tier >= 105 ~ 3,
+                                draft_tier >= 100 ~ 4,
+                                draft_tier >=  95 ~ 5,
+                                draft_tier >=  85 ~ 6,
+                                TRUE              ~ 7)) %>%
+  group_by(draft_pos) %>%
+  mutate(pos_rank = paste0(draft_pos,' ',row_number()))
+
+```
+
+```{r age}
+
+ff_players <- fread('http://www.fanfooty.com.au/resource/player.php')
+colnames(ff_players) <- c(
+  'ff_id', 
+  'feed_id', 
+  'first_name', 
+  'last_name', 
+  'team', 
+  'status', 
+  'number', 
+  'dob', 
+  'height', 
+  'weight', 
+  'state', 
+  'recruit', 
+  'career_games', 
+  'goals'
+)
+
+
+adp_age <- adp_data %>%
+  mutate(feed_id = as.numeric(feed_id)) %>%
+  left_join(ff_players[,c('feed_id','dob','career_games')], by='feed_id') %>%
+  mutate(career_games = ifelse(is.na(career_games),0,career_games)) %>%
+  mutate(age = year(Sys.Date())-year(dob))
+
+
+history_data <- read_csv('./scripts/021 Draft Prep/2024/data/player_data_2024.csv')
+
+hist_data1 <- history_data %>%
+  filter(games == 1) %>%
+  group_by(feed_id, player_name, season) %>%
+  summarise(
+    games = sum(games),
+    avg = round(mean(points),1),
+    med = median(points),
+    .groups = 'drop'
+  ) %>%
+  left_join(ff_players[,c('feed_id','dob')], by=c('feed_id'), relationship = "many-to-many") %>%
+  mutate(age = season-year(dob)) %>%
+  select(-dob) %>%
+  ungroup() %>%
+  arrange(feed_id, season) %>%
+  group_by(feed_id) %>%
+  mutate(best = rollapply(med, width=5, FUN=max, partial=TRUE, align='right' )) %>%
+  mutate(best= lag(best)) %>%
+  mutate(diff = (med/best-1))
+  
+hist_data2 <- hist_data1 %>%
+  filter(diff > -1 & diff < 1) %>%
+  filter(games >= 5 ) %>%
+  filter(age <= 33)
+
+p <- ggplot(data = hist_data2, aes(x=diff, group=age)) + 
+  geom_density()
+
+p + facet_wrap( ~ age)
+
+x<-hist_data2 %>%
+  filter( age >= 29)
+
+```

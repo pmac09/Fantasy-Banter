@@ -2,11 +2,11 @@ library(tidyverse)
 options(stringsAsFactors = FALSE)
 
 
-path <- 'C:/Users/P731535/OneDrive - nab/Documents/Archive/1. Personal Files/NBA Fantasy/Fantasy Banter/2020/Pong Teams'
+path <- './scripts/010 Pong Teams/Pong Teams'
 setwd(path)
 
 
-partners <- read.csv('pongPartner.csv')
+partners <- read.csv('./pongPartner.csv')
 partners2 <- partners[c("YEAR", "PARTNER", "PLAYER")]
 names(partners2) <- c("YEAR", "PLAYER", "PARTNER")
 
@@ -17,7 +17,7 @@ PLAYERS <- c('RICHO',
              'MELONS',
              'LESTER',
              'KAPPAZ',
-             'JMERC',
+             'MATT',
              'GARTER',
              'CHIEF')
 
@@ -25,6 +25,29 @@ PLAYERS <- c('RICHO',
 lastTeam <- history %>%
   group_by(PLAYER, PARTNER) %>%
   summarise(LATEST = max(YEAR))
+
+
+
+h <- history %>%
+  filter(PLAYER %in% PLAYERS & PARTNER %in% PLAYERS) %>%
+  group_by(PLAYER,PARTNER) %>%
+  summarise(YEAR = max(YEAR)) %>%
+  pivot_wider(names_from=PARTNER, values_from=YEAR)
+
+h <- h[,c('PLAYER',h$PLAYER)]
+h
+
+h <- history %>%
+  filter(PLAYER %in% PLAYERS & PARTNER %in% PLAYERS) %>%
+  group_by(PLAYER,PARTNER) %>%
+  summarise(n = n()) %>%
+  pivot_wider(names_from=PARTNER, values_from=n)
+
+h <- h[,c('PLAYER',h$PLAYER)]
+h
+
+
+
 
 
 # Create empty array for unique team combinations 
@@ -48,7 +71,8 @@ while (length(teamList) < 105){# Seems like the number is 105 unique combos - no
 # Remove any instance of teams from last year
 # get last years teams
 lastYear <- history %>%
-  filter(YEAR >= as.integer(max(lastTeam$LATEST))-2)
+  filter(YEAR >= as.integer(max(lastTeam$LATEST))-2) %>%
+  arrange(PLAYER)
 
 
 
@@ -86,7 +110,8 @@ ftable(results)
 
 # Must have a least 4 combos to make it interesting so filter for the 4th lowest count to then filter by
 #fourthLowest <- sort(count)[2]
-minPrevMatchup <- min(count)
+#minPrevMatchup <- min(count)
+minPrevMatchup <- sort(count[usableTeams])[2]
 
 # return combos with no teams from last year and with at least 4 teams with 0/1 double up
 eligibleTeams <- teamList[usableTeams & count <= minPrevMatchup]
@@ -116,7 +141,7 @@ tms4 <- bind_rows(tms2, tms3)
 ftable(tms4[,c('PLAYER', 'PARTNER')])
 
 # Add the dupe count
-tms2$dupes <- count[usableTeams & count <= fourthLowest][tms2$n]
+tms2$dupes <- count[usableTeams & count <= minPrevMatchup][tms2$n]
 
 # Add the latest year the teams have been together
 tms5 <- left_join(tms2, lastTeam, by=c('PLAYER', 'PARTNER')) %>%
@@ -138,6 +163,7 @@ tms6 <- left_join(tms2[,c('n','PARTNER', 'PLAYER')],
 
 # Print
 print(tms6, n=100)
+
 
 
 

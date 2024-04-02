@@ -3,7 +3,7 @@ library(zoo)
 
 source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.R')
 
-savePath <- './data/2023/simulations/'
+savePath <- './data/2024/simulations/'
 
 sc <- get_sc(cid, tkn)
 
@@ -43,7 +43,7 @@ sim_league_data <- league_data %>%
   mutate(pcnt=ifelse(is.na(pcnt),1,pcnt)) 
 
 scores <- sim_league_data %>%
-  filter(round != 12 & round != 13 & round != 14) 
+  filter(round != 12 & round != 13 & round != 14 & round != 15) 
 
 league_mean <- mean(scores$team_score, na.rm=T)
 league_sd <- sd(scores$team_score, na.rm=T)

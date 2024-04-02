@@ -357,8 +357,7 @@ get_afl_fixture_data <- function(afl_fixture){
 }
 
 get_ff_fixture_data <- function(vSeason=NA, vRound=NA){
-  log('get_ff_fixture_data')
-  
+
   ff_fixture <- as_tibble(fread('http://www.fanfooty.com.au/resource/draw.php'))
   colnames(ff_fixture) <- c('game_id', 
                              'year', 
@@ -399,8 +398,7 @@ get_ff_fixture_data <- function(vSeason=NA, vRound=NA){
   return(ff_fixture)
 }
 get_ff_game_data <- function(game_id){
-  log('get_ff_game_data')
-  
+
   url <- paste0("https://www.fanfooty.com.au/live/", game_id, ".txt")
   game_data <- strsplit(readLines(url),",", useBytes = TRUE)
   
@@ -505,10 +503,11 @@ get_sc <- function(cid, tkn){
   # Generate API URLs
   sc$url$players      <- paste0(base,year,draft,'players-cf?embed=notes%2Codds%2Cplayer_stats%2Cpositions%2Cplayer_match_stats&round=',c(1:sc$var$current_round))
   sc$url$playerStatus <- paste0(base,year,draft,'leagues/',sc$var$league_id,'/playersStatus')
-  sc$url$league       <- paste0(base,year,draft,'leagues/',sc$var$league_id,'/ladderAndFixtures?round=',c(1:23),'&scores=true')
+  sc$url$league       <- paste0(base,year,draft,'leagues/',sc$var$league_id,'/ladderAndFixtures?round=',c(1:24),'&scores=true')
   
   # Call API
   sc$api$league <- get_sc_data(sc$auth, sc$url$league[1])
+  sc$api$players <- get_sc_data(sc$auth, sc$url$players[1])
   
   # Save common variables
   sc$var$team_id <- as.numeric(sapply(sc$api$league$ladder, function(x) x$user_team_id))
@@ -521,6 +520,9 @@ get_sc <- function(cid, tkn){
   sc$url$processedWaivers <- paste0(base,year,draft,'leagues/',sc$var$league_id,'/processedWaivers')
   sc$url$draft            <- paste0(base,year,draft,'leagues/',sc$var$league_id,'/recap')
   sc$url$aflFixture       <- paste0(base,year,draft,'real_fixture')
+  sc$url$statsPack        <- paste0(paste0(base,year,draft,'completeStatspack?player_id='), unname(unlist(lapply(sc$api$players, function(x) x$id))))
+  
+  #https://supercoach.heraldsun.com.au/2023/api/afl/draft/v1/players/18/projected_stats
   
   return(sc)
 }

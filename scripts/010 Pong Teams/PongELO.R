@@ -1,6 +1,7 @@
 options(stringsAsFactors = FALSE)
 library(tidyverse)
 library(fireData)
+library(shiny)
 
 pongdash <- paste0('../Beer-Pong-Dashboard/Dashboard/')
 
@@ -18,7 +19,8 @@ tourns <- c(
   'ASL_DRAFT_2020',
   'ASL_Draft_2021',
   'ASL_DRAFT_2022_dubs',
-  'ASL_DRAFT_2023'
+  'ASL_DRAFT_2023',
+  'ASL_DRAFT_2024'
 )
 
 history <- tibble()
@@ -83,14 +85,14 @@ game <- games[i]
 
 game_data <- elo2[elo2$GAME_ID == game, c('GAME_ID', 'TEAM', 'PLAYER', 'RATING', 'SCORE', 'NEW_RATING')]
 
-game_data2 <- left_join(game_data, game_data, by=c('GAME_ID')) %>%
+game_data2 <- left_join(game_data, game_data, by=c('GAME_ID'), relationship = "many-to-many") %>%
   filter(PLAYER.x != PLAYER.y) %>%
   filter(TEAM.x != TEAM.y) %>%
   mutate(K = 20) %>%
   mutate(ACTUAL = ifelse(SCORE.x > SCORE.y, 1, ifelse(SCORE.x == SCORE.y, 0.5, 0))) %>%
   mutate(EXPECTED = 1/(1+10^((RATING.y-RATING.x)/400))) %>%
   mutate(Q = 2.2/((ifelse(ACTUAL == 1, SCORE.x, SCORE.y) - ifelse(ACTUAL == 1, SCORE.y, SCORE.x))*0.001+2.2)) %>%
-  mutate(MoVM = log(abs(SCORE.x - SCORE.y)+1)*Q) %>%
+  mutate(MoVM = base::log(abs(SCORE.x - SCORE.y)+1)) %>%
   mutate(change = K * (ACTUAL - EXPECTED) * MoVM) %>%
   mutate(change = round(change,0))
 
@@ -126,7 +128,7 @@ if(idx < nrow(elo2)){
 
 }
 
-write.csv(elo2,'./analysis/2023/Pong_ELO.csv')
+write.csv(elo2,'./scripts/010 Pong Teams/Pong_ELO.csv')
 
 
 h2h_summary <- h2h %>%
@@ -145,7 +147,14 @@ h2h_summary %>%
   arrange(desc(total))
 
 h2h_summary %>%
-  filter(PLAYER.x == 'MELONS')
+  select(-n) %>%
+  arrange(PLAYER.y) %>%
+  pivot_wider(names_from=PLAYER.y, values_from = total) %>%
+  arrange(PLAYER.x)
+  
+
+x <- h2h_summary %>%
+  filter(PLAYER.x == 'PMAC')
 
 
 
@@ -167,6 +176,17 @@ history2 %>%
   ) %>%
   arrange(desc(FANTASY))
 
+history2 %>%
+  group_by(YEAR) %>%
+  summarise(
+    catches = sum(T_THROWS)
+  ) 
+
+history2 %>%
+  group_by(YEAR) %>%
+  summarise(
+    overthrows = sum(OVERTHROWS)
+  ) 
 
 #PCNT through the years
 
@@ -210,6 +230,7 @@ gameTypePcnt <- history2 %>%
   mutate(TYPE = case_when(substr(GAME,1,1)=='R' ~ 'Round Robin',
                           substr(GAME,1,1)=='I' ~ 'Individuals',
                           TRUE ~ 'Team Finals')) %>%
+  filter(YEAR == 2024) %>%
   group_by(PLAYER, TYPE)%>%
   summarise(
     HITS = sum(HITS),
@@ -225,6 +246,7 @@ gameTypePcnt <- history2 %>%
 #hit percentage per cup
 
 perCup <- raw2 %>%
+  filter(YEAR == 2024) %>%
   select(PLAYER, TEAM_SCORE_CUMUL, TARGET, SCORE_CHANGE) %>%
   mutate(CUPS_REM = TARGET - TEAM_SCORE_CUMUL)
 
@@ -244,7 +266,7 @@ pcH <-perCup %>%
 perCupFinal <- pcT %>%
   left_join(pcH, by=c('PLAYER','CUPS_REM')) %>%
   filter(!is.na(HITS)) %>%
-  mutate(PCNT = round(HITS/THROWS*100,1)) %>%
+  mutate(PCNT = round(HITS/THROWS*100)) %>%
   select(PLAYER,PCNT,CUPS_REM) %>%
   pivot_wider(names_from=PLAYER,values_from = PCNT) %>%
   arrange(desc(CUPS_REM))
@@ -261,7 +283,7 @@ perCupFinal_smy <- pcT %>%
   select(PCNT,CUPS_REM) %>%
   arrange(desc(CUPS_REM))
 
-  
+
 
 perCupFinal <- pcT %>%
   left_join(pcH, by=c('PLAYER','CUPS_REM')) %>%
@@ -289,3 +311,65 @@ margin <- history2 %>%
     avg = round(mean(MARGIN),1)
   ) %>%
   pivot_wider(names_from=MARGIN_TYPE, values_from = avg)
+
+
+
+
+
+history2 %>%
+  group_by(PLAYER) %>%
+  summarise(
+    hits = sum(HITS),
+    games = n()
+  ) %>%
+  mutate(cpg = round(hits/games,3)) %>%
+  arrange(desc(cpg)) %>%
+  select(-hits, -games)
+
+
+history2 %>%
+  group_by(PLAYER, YEAR) %>%
+  summarise(
+    hits = sum(HITS) + sum(T_HITS)
+  ) %>%
+  arrange(YEAR) %>%
+  pivot_wider(names_from=YEAR, values_from=hits)
+
+history2 %>%
+  group_by(PLAYER) %>%
+  summarise(
+    overthrows = sum(OVERTHROWS),
+    games = n()
+  ) %>%
+  mutate(opg = round(overthrows/games,3)) %>%
+  arrange(desc(opg))
+
+
+history2 %>%
+  group_by(PLAYER, YEAR) %>%
+  summarise(
+    overthrows = sum(OVERTHROWS)
+  ) %>%
+  arrange(YEAR) %>%
+  pivot_wider(names_from=YEAR, values_from=overthrows)
+
+
+len <- history2 %>%
+  group_by(YEAR, GAME) %>%
+  summarise(
+    throws = sum(THROWS)
+  ) %>%
+  filter(substr(GAME,1,1) !='I')
+
+boxplot(throws ~ YEAR, data=len)
+
+
+x <- raw %>%
+  group_by(YEAR, GAME) %>%
+  mutate(dry = cumsum(SCORE_CHANGE)) %>%
+  group_by(YEAR, GAME, dry) %>%
+  summarise(
+    n=n()
+  )
+
+  
