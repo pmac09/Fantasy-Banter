@@ -1,7 +1,14 @@
 library(googleCloudStorageR)
-library(gargle)
 
-## Fetch token. See: https://developers.google.com/identity/protocols/oauth2/scopes
+
+gcs_path <- paste0('fantasy-banter/master/league-data')
+data_upload <- gcs_upload(file=fixture, name=gcs_path)
+
+
+gcs_setup()
+
+
+1## Fetch token. See: https://developers.google.com/identity/protocols/oauth2/scopes
 scope <-c("https://www.googleapis.com/auth/cloud-platform")
 token <- token_fetch(scopes = scope)
 
@@ -22,7 +29,7 @@ for (i in 70:length(files)){
   
   if(is.null(player_data)) next
 
-  gcs_path <- paste0('fantasy-banter/2023/players/history/playerStats-',
+  gcs_path <- paste0('fantasy-banter/master/players/history/playerStats-',
                      formatC(i, width = 3, format = "d", flag = "0"))
   
   upload_try <- gcs_upload(file=player_data,
