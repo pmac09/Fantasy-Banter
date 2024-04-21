@@ -48,7 +48,7 @@ while(!fa_open){
   
 }  
 
-beep(3)
+beep()
 
  
  # url <- 'https://supercoach.heraldsun.com.au/2024/api/afl/draft/v1/leagues/1283/userteam/713/claimWaiverPlayer/786/droppedWaiverPlayer/785'

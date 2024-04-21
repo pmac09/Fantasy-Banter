@@ -9,8 +9,7 @@ suppressMessages(library(httr))
 
 ### SECRET VARIABLES -----------------------------------------------------------
 
-secret_path <- './www/'
-source(paste0(secret_path, 'secrets.R')) # import authentication variables
+source(paste0(func_path, 'secrets.R')) # import authentication variables
 
   
 ### GENERAL FUNCTIONS ----------------------------------------------------------

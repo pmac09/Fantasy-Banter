@@ -6,6 +6,7 @@ library(shinydashboardPlus)
 library(DT)
 
 #func_path <- '/Users/paulmcgrath/Github/Fantasy-Banter/functions/'
+#func_path <- './shiny/Fantasy-Banter/www/'
 func_path <- './www/'
 source(paste0(func_path, 'supercoach_functions_V2.R')) # import authentication variables
 
