@@ -12,10 +12,11 @@ sc <- sc_setup(cid, tkn)
 # determine next waiver time
 url <- sc$url$playerStatus
 data <- sc_download(sc$auth, url)
-wvr <-  suppressMessages(format(as_datetime(min(unlist(lapply(data, function(x){x$waiver_until}))), "Australia/Melbourne"), format="%Y-%m-%d %H:%M:%S"))
 
-wvr <- Sys.time() + 5
+wvr <-  suppressMessages(format(as_datetime(min(unlist(lapply(data, function(x){x$waiver_until}))), "Australia/Melbourne"), format="%Y-%m-%d %H:%M:%S"))
+#wvr <- Sys.time()
 wait <- round(as.numeric(difftime(wvr, Sys.time(), units=c('secs'))),0)-30
+wait <- -1
 
 print_log(paste0('Waiting until waiver runtime: ', wvr))
 if(wait >0) Sys.sleep(wait)
