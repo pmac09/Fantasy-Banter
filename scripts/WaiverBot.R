@@ -16,7 +16,7 @@ data <- sc_download(sc$auth, url)
 wvr <-  suppressMessages(format(as_datetime(min(unlist(lapply(data, function(x){x$waiver_until}))), "Australia/Melbourne"), format="%Y-%m-%d %H:%M:%S"))
 #wvr <- Sys.time()
 wait <- round(as.numeric(difftime(wvr, Sys.time(), units=c('secs'))),0)-30
-wait <- -1
+#wait <- -1
 
 print_log(paste0('Waiting until waiver runtime: ', wvr))
 if(wait >0) Sys.sleep(wait)
@@ -29,10 +29,16 @@ fa_open <- FALSE
 while(!fa_open){
   
   # wait to avoid DDOS
-  Sys.sleep(30)
+  Sys.sleep(1)
   
   # download player status data
-  data <- sc_download(sc$auth, url)
+  data <- tryCatch({sc_download(sc$auth, url)},
+    error = function(cond) {
+      print_log(paste0('ERROR'))
+      NULL
+    })
+  
+  if(is.null(data)) next
   
   # determine if waiver is open
   stat <- tibble(status = unlist(lapply(data, function(x){x$trade_status}))) %>%
