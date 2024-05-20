@@ -58,7 +58,7 @@ while(!fa_open){
 beep()
 
  
- # url <- 'https://supercoach.heraldsun.com.au/2024/api/afl/draft/v1/leagues/1283/userteam/713/claimWaiverPlayer/786/droppedWaiverPlayer/785'
+ swxz# url <- 'https://supercoach.heraldsun.com.au/2024/api/afl/draft/v1/leagues/1283/userteam/713/claimWaiverPlayer/786/droppedWaiverPlayer/785'
 # 
 # x <- POST(
 #   url = url,
