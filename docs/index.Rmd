@@ -1588,6 +1588,7 @@ c <- a %>%
   left_join(b, by=c('feed_id')) %>%
   arrange(desc(avg_diff)) %>%
   select(last_name, avg, n, coach_diff, coach, avg_diff) %>%
+  distinct(coach, last_name, .keep_all = T) %>%
   spread(coach, avg_diff) %>%
   arrange(desc(coach_diff))
 
