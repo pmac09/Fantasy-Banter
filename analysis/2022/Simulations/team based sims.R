@@ -208,7 +208,7 @@ x <- results %>%
   arrange(desc(wins)) %>%
   mutate(pcnt = round(n/sum(n)*100)) %>%
   select(-n) %>%
-  pivot_wider(names_from=wins, names_prefix='wins_',values_from='pcnt')
+  pivot_wider(names_from=position, names_prefix='pos_',values_from='pcnt')
 
 x
 
@@ -230,10 +230,22 @@ results %>%
   arrange(desc(pcnt))
 
 
-results %>%
-  filter(position <= 4) %>%
-  filter(coach == 'Paul')
+a <- results %>%
+  filter((coach == "Luke" & position > 4))
+
+b <- results %>%
+  filter((coach == "Simon" & position > 4))
+
+c <- results %>%
+  filter((coach == "Jordan" & position > 4))
+
+d <- a %>%
+  bind_rows(b) %>%
+  bind_rows(c) %>%
+  group_by(simulation) %>%
+  summarise(n=n()) %>%
+  arrange(desc(n))
 
 results %>%
-  filter(simulation == 51)
+  filter(simulation == 475)
 
