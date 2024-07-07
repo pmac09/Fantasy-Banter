@@ -712,7 +712,6 @@ hc_trades[[6]]
 hc_trades[[7]]
 hc_trades[[8]]
 hc_trades[[9]]
-# hc_trades[[10]]
 # hc_trades[[11]]
 # #hc_trades[[12]]
 
