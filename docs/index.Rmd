@@ -58,7 +58,7 @@ sml_team_colours_hc <- team_colours %>%
 ```{r rating_data}
 
 rtg_league <- league_data %>%
-  filter(!is.na(team_score)) %>%
+  filter(!is.na(position)) %>%
   filter(round == max(round)) %>%
   mutate(played = wins + draws + losses) %>%
   select(coach, position, played, points, wins, draws, losses, points_for, points_against, pcnt) %>%
@@ -712,8 +712,9 @@ hc_trades[[6]]
 hc_trades[[7]]
 hc_trades[[8]]
 hc_trades[[9]]
-# hc_trades[[11]]
-# #hc_trades[[12]]
+hc_trades[[10]]
+hc_trades[[11]]
+hc_trades[[12]]
 
 
 ```
