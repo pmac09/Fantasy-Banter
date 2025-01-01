@@ -17,7 +17,7 @@ PLAYERS <- c('RICHO',
              'MELONS',
              'LESTER',
              'KAPPAZ',
-             'MATT',
+             'DEAN',
              'GARTER',
              'CHIEF')
 
@@ -45,8 +45,6 @@ h <- history %>%
 
 h <- h[,c('PLAYER',h$PLAYER)]
 h
-
-
 
 
 
