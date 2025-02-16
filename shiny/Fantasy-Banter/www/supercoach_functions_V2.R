@@ -130,6 +130,8 @@ sc_setup <- function(cid, tkn){
   
   sc$url$players <- paste0(sc$url$draft,'players-cf?embed=notes%2Codds%2Cplayer_stats%2Cpositions%2Cplayer_match_stats&round=')
   sc$url$player  <- paste0(sc$url$draft,'players/%s?embed=notes,odds,player_stats,player_match_stats,positions,trades')
+  sc$url$playerStats  <- paste0(base,year,draft,'completeStatspack?player_id=')
+  
   sc$url$league  <- paste0(sc$url$draft,'leagues/',sc$var$league_id,'/ladderAndFixtures?round=%s&scores=true')
   sc$url$team    <- paste0(sc$url$draft,'userteams/%s/statsPlayers?round=%s')
   
@@ -137,8 +139,6 @@ sc_setup <- function(cid, tkn){
   
   sc$url$aflFixture <- paste0(sc$url$draft,'real_fixture')
   
-  # sc$url$player       <- paste0(base,year,draft,'players/%s?embed=notes,odds,player_stats,player_match_stats,positions,trades')
-  # sc$url$statsPack    <- paste0(base,year,draft,'completeStatspack?player_id=')
   # sc$url$league       <- paste0(base,year,draft,'leagues/',sc$var$league_id,'/ladderAndFixtures?round=',c(1:23),'&scores=true')
   # 
   # # Call API
@@ -206,6 +206,16 @@ sc_player <- function(sc, player_id){
   print_log(paste0('sc_player: Player ID ', player_id))
   
   url <- sprintf(sc$url$player, player_id)
+  data <- sc_download(sc$auth, url)
+  
+  names(data) <- lapply(data, function(x) as.character(x$id))
+  
+  return(data)
+} 
+sc_playerStats <- function(sc, player_id){
+  print_log(paste0('sc_playerStats: Player ID ', player_id))
+  
+  url <- sprintf(sc$url$playerStats, player_id)
   data <- sc_download(sc$auth, url)
   
   names(data) <- lapply(data, function(x) as.character(x$id))

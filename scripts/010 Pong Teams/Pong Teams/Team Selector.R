@@ -17,7 +17,7 @@ PLAYERS <- c('RICHO',
              'MELONS',
              'LESTER',
              'KAPPAZ',
-             'DEAN',
+             'MATT',
              'GARTER',
              'CHIEF')
 
@@ -69,7 +69,7 @@ while (length(teamList) < 105){# Seems like the number is 105 unique combos - no
 # Remove any instance of teams from last year
 # get last years teams
 lastYear <- history %>%
-  filter(YEAR >= as.integer(max(lastTeam$LATEST))-2) %>%
+  filter(YEAR >= as.integer(max(lastTeam$LATEST))-1) %>%
   arrange(PLAYER)
 
 
@@ -115,7 +115,7 @@ minPrevMatchup <- sort(count[usableTeams])[2]
 eligibleTeams <- teamList[usableTeams & count <= minPrevMatchup]
 
 # Print eligible teams
-str(eligibleTeams)
+str(eligibleTeams[c(2,3)])
 
 # Extract teams to create matrix
 tms <- lapply(eligibleTeams, function(x){
@@ -161,6 +161,30 @@ tms6 <- left_join(tms2[,c('n','PARTNER', 'PLAYER')],
 
 # Print
 print(tms6, n=100)
+
+
+
+
+
+
+
+#team analysis
+t <- history %>% 
+  filter(PLAYER > PARTNER) %>%
+  mutate(team = paste0(PLAYER," & ",PARTNER))
+
+team_history <- t %>%
+  left_join(t, by=c('YEAR')) %>%
+  filter(team.x != team.y) %>%
+  group_by(team.x, team.y) %>%
+  summarise(
+    n=n(),
+    max=max(YEAR)
+  )
+
+
+
+
 
 
 
