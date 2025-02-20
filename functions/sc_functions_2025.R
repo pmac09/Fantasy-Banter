@@ -195,7 +195,8 @@ sc_players <- function(sc, rnd=NULL){
     group_by(playerName, teamAbbrev) %>%
     mutate(n = n()) %>%
     mutate(playerName = ifelse(n>1, paste0(substr(firstName,1,2),'.',lastName), playerName)) %>%
-    select(-n)
+    select(-n) %>%
+    ungroup()
   
   return(playerData)
 } 
