@@ -1,93 +1,170 @@
 library(beepr)
+library(httr)
+library(jsonlite) 
 
 # Load supercoach functions
-func_path <- '/Users/paulmcgrath/Github/Fantasy-Banter/functions/'
-source(paste0(func_path, 'supercoach_functions_V2.R')) # import authentication variables
+source(paste0('/Users/paulmcgrath/Github/Fantasy-Banter/functions/sc_functions_2025.R')) # import authentication variables
+
+# WAIVER BOT FUNCTIONS ---------------------------------------------------------
+
+nextWaiver <- function(sc, playerStatusURL){
+  
+  data <- bind_rows(sc_download(sc$auth, playerStatusURL))
+  
+  if(has_name(data,'waiver_until')){
+    waiverStatus <-  suppressMessages(format(as_datetime(min(data$waiver_until, na.rm=T), "Australia/Melbourne"), format="%Y-%m-%d %H:%M:%S"))
+  } else {
+    waiverStatus <- NA
+  }
+  
+  return(waiverStatus)
+}
+printPlayerTable <- function(ids){
+  msg <- players %>%
+    filter(playerID %in% ids) %>%
+    select(playerID, playerName, teamAbbrev, pos) %>%
+    arrange(match(playerID,ids))
+  msg <- paste(capture.output(print(as.data.frame(msg))), collapse = "\n")
+  message(msg)
+}
+
+
+# RUN WAIVER BOT ---------------------------------------------------------------
 
 print_log("WAIVER BOT")
 
 # Connect to supercoach
 sc <- sc_setup(cid, tkn)
 
+## Get player data 
+players <- sc_players(sc,sc$var$current_round)
+
+## Player IDs to Drop and Add
+drop_ids <- c(45)
+add_ids <- c(516)
+
+## Print Players to DROPs
+print_log('Players to DROP:')
+printPlayerTable(drop_ids)
+
+## Print Players to ADD
+print_log('Players to ADD:')
+printPlayerTable(add_ids)
+
+## Confirm FA picks
+response <- readline(prompt = "Confirm free agency trades? (Y/N): ")
+if (tolower(response) != "y") {
+  print_log('Cancelled.')
+  stop()
+}
+print_log("Confirmed")
+
 # determine next waiver time
-url <- sc$url$playerStatus
-data <- sc_download(sc$auth, url)
+playerStatusURL <- sc$url$playerStatus
+#playerStatusURL <- gsub('13462','15090',sc$url$playerStatus)
+wvr <- nextWaiver(sc, playerStatusURL)
 
-wvr <-  suppressMessages(format(as_datetime(min(unlist(lapply(data, function(x){x$waiver_until}))), "Australia/Melbourne"), format="%Y-%m-%d %H:%M:%S"))
-#wvr <- Sys.time()
-wait <- round(as.numeric(difftime(wvr, Sys.time(), units=c('secs'))),0)-30
-#wait <- -1
-
-print_log(paste0('Waiting until waiver runtime: ', wvr))
-if(wait >0) Sys.sleep(wait)
-
-print_log(paste0('Start monitoring Free Agency... '))
-fa_open <- FALSE
-
+if(is.na(wvr)) {
+  fa_open <- TRUE
+  print_log('Free Agency Open')
+} else {
+  wait <- round(as.numeric(difftime(wvr, Sys.time(), units=c('secs'))),0)
+  print_log(paste0('Sleeping until the waiver: ', wvr))
+  if(wait >0) Sys.sleep(wait)
+  print_log(paste0('Start Free Agency monitor '))
+  fa_open <- FALSE
+}
 
 # loop until fa open
 while(!fa_open){
-  
+
   # wait to avoid DDOS
-  Sys.sleep(1)
-  
+  Sys.sleep(30)
+
   # download player status data
-  data <- tryCatch({sc_download(sc$auth, url)},
+  checkWvr <- tryCatch(nextWaiver(sc, playerStatusURL),
     error = function(cond) {
       print_log(paste0('ERROR'))
       NULL
     })
-  
-  if(is.null(data)) next
-  
-  # determine if waiver is open
-  stat <- tibble(status = unlist(lapply(data, function(x){x$trade_status}))) %>%
-    group_by(status) %>%
-    summarise(n=n()) %>%
-    arrange(desc(n))
-  
-  # update loop
-  if(stat$status[[1]] == 'free_agent') fa_open <- TRUE
-  #if(runif(1) > 0.8) fa_open <- TRUE
-  
-  # # print message
-  print_log(ifelse(fa_open, 'Free Agency Open', 'Free Agency Closed'))
-  
-}  
 
-beep()
+  if(is.null(checkWvr)) next
 
- 
- swxz# url <- 'https://supercoach.heraldsun.com.au/2024/api/afl/draft/v1/leagues/1283/userteam/713/claimWaiverPlayer/786/droppedWaiverPlayer/785'
-# 
-# x <- POST(
-#   url = url,
-#   config = sc$auth
-# )
-# 
-# 
-# # 
-# # 
-# url <- 'https://supercoach.heraldsun.com.au/2024/api/afl/draft/v1/userteams/713/players/'
-# 
-# x <- get_sc_data(sc$auth, url)
-# # 
-# # library(rjson)
-# # 
-# # payload <- '{"live_draft_mode":false,"selections":[{"player_id":639,"picked":"true","position":"DEF"},{"player_id":44,"picked":"true","position":"DEF"},{"player_id":194,"picked":"true","position":"DEF"},{"player_id":533,"picked":"true","position":"DEF"},{"player_id":164,"picked":"true","position":"DEF"},{"player_id":263,"picked":"false","position":"DEF"},{"player_id":526,"picked":"true","position":"MID"},{"player_id":242,"picked":"true","position":"MID"},{"player_id":372,"picked":"true","position":"MID"},{"player_id":286,"picked":"true","position":"MID"},{"player_id":193,"picked":"true","position":"MID"},{"player_id":312,"picked":"true","position":"MID"},{"player_id":686,"picked":"true","position":"MID"},{"player_id":87,"picked":"false","position":"MID"},{"player_id":443,"picked":"true","position":"RUC"},{"player_id":180,"picked":"true","position":"RUC"},{"player_id":566,"picked":"true","position":"FWD"},{"player_id":363,"picked":"true","position":"FWD"},{"player_id":31,"picked":"true","position":"FWD"},{"player_id":681,"picked":"true","position":"FWD"},{"player_id":151,"picked":"true","position":"FWD"},{"player_id":75,"picked":"false","position":"FWD"},{"player_id":788,"picked":"false","position":"DEF"}],"current":[{"player_id":639,"position":"DEF","picked":"true"},{"player_id":44,"position":"DEF","picked":"true"},{"player_id":194,"position":"DEF","picked":"true"},{"player_id":533,"position":"DEF","picked":"true"},{"player_id":164,"position":"DEF","picked":"true"},{"player_id":263,"position":"DEF","picked":"false"},{"player_id":526,"position":"MID","picked":"true"},{"player_id":242,"position":"MID","picked":"true"},{"player_id":372,"position":"MID","picked":"true"},{"player_id":286,"position":"MID","picked":"true"},{"player_id":193,"position":"MID","picked":"true"},{"player_id":312,"position":"MID","picked":"true"},{"player_id":686,"position":"MID","picked":"true"},{"player_id":87,"position":"MID","picked":"false"},{"player_id":443,"position":"RUC","picked":"true"},{"player_id":180,"position":"RUC","picked":"true"},{"player_id":566,"position":"FWD","picked":"true"},{"player_id":363,"position":"FWD","picked":"true"},{"player_id":31,"position":"FWD","picked":"true"},{"player_id":681,"position":"FWD","picked":"true"},{"player_id":151,"position":"FWD","picked":"true"},{"player_id":75,"position":"FWD","picked":"false"},{"player_id":785,"position":"DEF","picked":"false"}]}'
-# # 
-# # payload <- '[{"player_id":639,"position":"DEF","picked":"true"},{"player_id":44,"position":"DEF","picked":"true"},{"player_id":194,"position":"DEF","picked":"true"},{"player_id":533,"position":"DEF","picked":"true"},{"player_id":164,"position":"DEF","picked":"true"},{"player_id":263,"position":"DEF","picked":"false"},{"player_id":526,"position":"MID","picked":"true"},{"player_id":242,"position":"MID","picked":"true"},{"player_id":372,"position":"MID","picked":"true"},{"player_id":286,"position":"MID","picked":"true"},{"player_id":193,"position":"MID","picked":"true"},{"player_id":312,"position":"MID","picked":"true"},{"player_id":686,"position":"MID","picked":"true"},{"player_id":87,"position":"MID","picked":"false"},{"player_id":443,"position":"RUC","picked":"true"},{"player_id":180,"position":"RUC","picked":"true"},{"player_id":566,"position":"FWD","picked":"true"},{"player_id":363,"position":"FWD","picked":"true"},{"player_id":31,"position":"FWD","picked":"true"},{"player_id":681,"position":"FWD","picked":"true"},{"player_id":151,"position":"FWD","picked":"true"},{"player_id":75,"position":"FWD","picked":"false"},{"player_id":785,"position":"DEF","picked":"false"}]'
-# # 
-# url <- 'https://supercoach.heraldsun.com.au/2024/api/afl/draft/v1/userteams/713/players?formation_id=0'
-# # 
-# # x <- PUT(
-# #   url = url,
-# #   config = sc$auth,
-# #   body = payload,
-# #   encode = 'json'
-# # )
-# # 
-# # parsed <- fromJSON(payload)
-# # 
-# # new_payload <- toJSON(payload)
+  if(wvr != checkWvr){
+    fa_open <- TRUE
+    print_log('Free Agency Open')
+  } else {
+    print_log(paste0('Free Agency Closed', checkWvr))
+  }
 
+}
+
+
+# loop until no more add or drops
+while(length(drop_ids) > 0 & length(add_ids) > 0){
+
+  # Get current team
+  teamURL <- "https://www.supercoach.com.au/2025/api/afl/draft/v1/userteams/116698/players"
+  current_team <- sc_download(sc$auth, teamURL)
+  current_team <- lapply(current_team, function(x) x[c('player_id','picked','position')])
+
+  # validate DROPS
+  drop_ids <- drop_ids[drop_ids %in% sapply(current_team, function(t) t$player_id)]
+  print_log(paste0('Drops Remaining: ',length(drop_ids)))
+  
+  # Exit loop if no one left to drop
+  if(length(drop_ids)==0) next
+
+  # Create DROP request
+  drop_player <- drop_ids[1]
+  drop_team <- Filter(function(player) player$player_id != drop_player, current_team)
+
+  # Get Free Agents via Player Status
+  playerStatus <- sc_download(sc$auth, playerStatusURL)
+  free_agents <- sapply(playerStatus, function(t) ifelse(t$trade_status=='free_agent', t$player_id, NA))
+  free_agents <- free_agents[!is.na(free_agents)]
+
+  # validate ADDS
+  add_ids <- add_ids[add_ids %in% free_agents]
+  print_log(paste0('Adds Remaining: ',length(add_ids)))
+
+  # Exit loop if no one left to drop
+  if(length(add_ids)==0) next
+
+  # Create ADD request
+  add_player <- add_ids[1]
+  add_team <- append(drop_team, list(list(player_id = add_player,
+                                     position = unname(players$pos1[players$playerID==add_player]),
+                                     picked = 'false')))
+
+  # Check team has right number of players
+  if(length(current_team) != length(add_team)) next
+
+  # Create API body
+  body <- list(
+    live_draft_mode = FALSE,
+    current = current_team,
+    selections = add_team
+  )
+  
+  fa_trade <- paste0("Dropping ", 
+                     players$playerName[players$playerID==drop_player],
+                     ' for ',
+                     players$playerName[players$playerID==add_player])
+  print_log(fa_trade)
+  
+  # Send the PUT request
+  response <- PUT(teamURL, sc$auth, body = body, encode = "json")
+  
+  if(response$status_code=='200'){
+    print_log('SUCCESS')
+  } else {
+    print_log('FAILED')
+    parsed_response <- fromJSON(content(response, "text"))
+    print(parsed_response)
+    stop()
+  }
+  
+}
+
+print_log('WAIVER BOT - COMPLETE')
