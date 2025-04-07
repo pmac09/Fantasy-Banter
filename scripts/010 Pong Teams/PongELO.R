@@ -20,7 +20,8 @@ tourns <- c(
   'ASL_Draft_2021',
   'ASL_DRAFT_2022_dubs',
   'ASL_DRAFT_2023',
-  'ASL_DRAFT_2024'
+  'ASL_DRAFT_2024',
+  'ASL_DRAFT_2025'
 )
 
 history <- tibble()
@@ -163,14 +164,14 @@ x <- playerData(history2)
 
 
 history2 %>%
-  group_by(PLAYER) %>%
+  group_by(PLAYER,YEAR) %>%
   summarise(
     dry_spell = max(DRY_SPELL)
   ) %>%
   arrange(desc(dry_spell))
 
 history2 %>%
-  group_by(PLAYER) %>%
+  group_by(PLAYER, YEAR) %>%
   summarise(
     FANTASY = max(FANTASY)
   ) %>%
@@ -230,7 +231,7 @@ gameTypePcnt <- history2 %>%
   mutate(TYPE = case_when(substr(GAME,1,1)=='R' ~ 'Round Robin',
                           substr(GAME,1,1)=='I' ~ 'Individuals',
                           TRUE ~ 'Team Finals')) %>%
-  filter(YEAR == 2024) %>%
+  filter(YEAR == 2025) %>%
   group_by(PLAYER, TYPE)%>%
   summarise(
     HITS = sum(HITS),
@@ -246,7 +247,7 @@ gameTypePcnt <- history2 %>%
 #hit percentage per cup
 
 perCup <- raw2 %>%
-  filter(YEAR == 2024) %>%
+  filter(YEAR == 2025) %>%
   select(PLAYER, TEAM_SCORE_CUMUL, TARGET, SCORE_CHANGE) %>%
   mutate(CUPS_REM = TARGET - TEAM_SCORE_CUMUL)
 
@@ -335,6 +336,23 @@ history2 %>%
   arrange(YEAR) %>%
   pivot_wider(names_from=YEAR, values_from=hits)
 
+
+history2 %>%
+  group_by(PLAYER, YEAR) %>%
+  summarise(
+    TRICKS= sum(T_HITS)
+  ) %>%
+  arrange(YEAR) %>%
+  pivot_wider(names_from=YEAR, values_from=TRICKS)
+
+history2 %>%
+  group_by( YEAR) %>%
+  summarise(
+    TRICKS= sum(T_HITS)
+  ) %>%
+  arrange(YEAR) 
+
+
 history2 %>%
   group_by(PLAYER) %>%
   summarise(
@@ -372,4 +390,40 @@ x <- raw %>%
     n=n()
   )
 
+x <- history2 %>%
+  group_by(YEAR,GAME,TEAM) %>%
+  summarise(
+    h = sum(HITS),
+    t = sum(THROWS)
+  ) %>%
+  filter(YEAR == 2025) %>%
+  filter(substr(GAME,1,1)=='R')
+
+y <-  x %>%
+   left_join(x, by=c('GAME'), relationship = "many-to-many") %>%
+  filter(TEAM.x != TEAM.y) %>% 
+  group_by(GAME,TEAM.x) %>%
+  summarise(
+    h = sum(h.y),
+    t = sum(t.y)
+  ) %>%
+  mutate(pcnt = round(h/t*100,1))
+
+
+x <- history2 %>%
+  select(YEAR,GAME,TEAM,PLAYER,HITS,THROWS) %>%
+  left_join(history2[,c('YEAR','GAME','TEAM')], by=c('YEAR','GAME'), relationship = "many-to-many") %>%
+  filter(TEAM.x != TEAM.y) %>%
+  mutate(pcnt = round(HITS/THROWS*100,1)) %>%
+           arrange(desc(pcnt)) %>%
+  distinct_all()
+
+x <- history2 %>%
+  select(YEAR,GAME,TEAM,PLAYER,HITS,THROWS) %>%
+  mutate(pcnt = round(HITS/THROWS*100,1)) %>%
+  arrange(pcnt)
+
+x %>%
+  group_by(PLAYER) %>%
+  top_n(1,-pcnt)
   

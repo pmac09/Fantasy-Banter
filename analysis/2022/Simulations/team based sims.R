@@ -3,7 +3,7 @@ library(zoo)
 
 source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.R')
 
-savePath <- './data/2024/simulations/'
+savePath <- './data/2025/simulations/'
 
 sc <- get_sc(cid, tkn)
 

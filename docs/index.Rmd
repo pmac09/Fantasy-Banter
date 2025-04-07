@@ -1,5 +1,5 @@
 ---
-title: "2024 Season Summary"
+title: "2025 Season Summary"
 editor_options: 
   chunk_output_type: console
 ---
@@ -28,11 +28,11 @@ source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.
 sc <- get_sc(cid,tkn)
 # player_data <- get_player_data(sc)
 # league_data <- get_league_data(sc)
-# saveRDS(player_data, './data/2024/player_data.RDS')
-# saveRDS(league_data, './data/2024/league_data.RDS')
+# saveRDS(player_data, './data/2025/player_data.RDS')
+# saveRDS(league_data, './data/2025/league_data.RDS')
 
-player_data <- readRDS('../data/2024/player_data.RDS')
-league_data <- readRDS('../data/2024/league_data.RDS')
+player_data <- readRDS('../data/2025/player_data.RDS')
+league_data <- readRDS('../data/2025/league_data.RDS')
 
 vRound <- sc$var$current_round
 
@@ -54,7 +54,7 @@ sml_team_colours_hc <- team_colours %>%
 
 ```
 
-## 2024 Standings
+## 2025 Standings
 ```{r rating_data}
 
 rtg_league <- league_data %>%
@@ -69,7 +69,7 @@ rtg_league <- league_data %>%
 
 
 
-sim_data <- read.csv(paste0('../data/2024/simulations/R',vRound,'_sim_smy.csv')) %>%
+sim_data <- read.csv(paste0('../data/2025/simulations/R',vRound,'_sim_smy.csv')) %>%
   select(coach, pcnt_finals, pcnt_gfinal, pcnt_champ, pcnt_spoon)
 
 rtg_pos <- player_data %>%
@@ -704,17 +704,17 @@ for(tid in 1:length(trades)){
 }
 
 hc_trades[[1]]
-hc_trades[[2]]
-hc_trades[[3]]
-hc_trades[[4]]
-hc_trades[[5]]
-hc_trades[[6]]
-hc_trades[[7]]
-hc_trades[[8]]
-hc_trades[[9]]
-hc_trades[[10]]
-hc_trades[[11]]
-hc_trades[[12]]
+# hc_trades[[2]]
+# hc_trades[[3]]
+# hc_trades[[4]]
+# hc_trades[[5]]
+# hc_trades[[6]]
+# hc_trades[[7]]
+# hc_trades[[8]]
+# hc_trades[[9]]
+# hc_trades[[10]]
+# hc_trades[[11]]
+# hc_trades[[12]]
 
 
 ```
