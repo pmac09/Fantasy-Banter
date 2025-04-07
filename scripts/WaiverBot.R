@@ -165,6 +165,12 @@ while(length(drop_ids) > 0 & length(add_ids) > 0){
     stop()
   }
   
+<<<<<<< HEAD
 }
 
 print_log('WAIVER BOT - COMPLETE')
+=======
+}  
+
+beep()
+>>>>>>> 62c9cd0ecb320b2f895641672406a881b74ced70
