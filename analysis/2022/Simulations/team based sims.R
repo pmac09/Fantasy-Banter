@@ -5,6 +5,7 @@ source('/Users/paulmcgrath/Github/Fantasy-Banter/functions/supercoach_functions.
 
 savePath <- './data/2025/simulations/'
 
+
 sc <- get_sc(cid, tkn)
 
 league_data <- get_league_data(sc)
