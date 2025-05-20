@@ -1,3 +1,4 @@
+.Renviron
 .Rhistory
 .RData
 .Rproj.user/
@@ -5,3 +6,6 @@
 
 /data/*
 !/data/.gitkeep
+
+.DS_Store
+
