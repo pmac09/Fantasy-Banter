@@ -17,6 +17,6 @@ tabTradeUI <- function() {
 }
 
 # Tab 2 Server
-tabTradeServer <- function(input, output, session) {
+tabTradeServer <- function(input, output, session, sc, fb) {
   # No dynamic content yet
 }

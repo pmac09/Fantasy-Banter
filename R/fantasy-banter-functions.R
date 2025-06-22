@@ -156,6 +156,7 @@ sc_setup <- function(auth){
   
   return(sc)
 }
+#sc_backup
 
 sc_players <- function(sc, rnd=NULL){
   if(is.null(rnd)) rnd <- sc$var$current_round
@@ -222,6 +223,7 @@ sc_players <- function(sc, rnd=NULL){
 
   return(playerData1)
 } 
+
 sc_league <-  function(sc, rnd=NULL){
   if(is.null(rnd)) rnd <- sc$var$current_round
   print_log(paste0('sc_players: Round ', rnd))
@@ -270,6 +272,49 @@ sc_league <-  function(sc, rnd=NULL){
     fixture_data <- fixture_data %>%
       left_join(ladder_data, by=c('user_team_id'))
   }
+  
+  return(fixture_data)
+  
+}
+sc_league_transform <- function(data, szn){
+  
+  home_data <- tibble(
+    season           = rep(szn, length(data$fixture)),
+    round            = as.numeric(sapply(data$fixture, function(x) x$round)),
+    fixture          = as.numeric(sapply(data$fixture, function(x) x$fixture)),
+    user_team_id     = as.numeric(sapply(data$fixture, function(x) x$user_team1$id)),
+    team             = sapply(data$fixture, function(x) x$user_team1$teamname),
+    coach            = sapply(data$fixture, function(x) x$user_team1$user$first_name),
+    team_score       = as.numeric(sapply(data$fixture, function(x) ifelse(is.null(x$user_team1$stats[[1]]$points),NA,x$user_team1$stats[[1]]$points))),
+    opponent_team_id = as.numeric(sapply(data$fixture, function(x) x$user_team2$id)),
+    opponent_team    = sapply(data$fixture, function(x) x$user_team2$teamname),
+    opponent_coach   = sapply(data$fixture, function(x) x$user_team2$user$first_name),
+    opponent_score   = as.numeric(sapply(data$fixture, function(x) ifelse(is.null(x$user_team2$stats[[1]]$points),NA,x$user_team2$stats[[1]]$points)))
+  )
+  
+  away_data <- home_data 
+  names(away_data) <- names(home_data)[c(1:3,8:11,4:7)]
+  
+  fixture_data <- bind_rows(home_data,away_data) %>%
+    mutate(differential = team_score - opponent_score) %>%
+    mutate(win = ifelse(differential > 0, 1,0)) %>%
+    mutate(draw = ifelse(differential == 0, 1,0)) %>%
+    mutate(loss = ifelse(differential < 0, 1,0))
+  
+  ladder_data <- tibble(
+    user_team_id   = as.numeric(sapply(data$ladder, function(x) x$user_team_id)),
+    position       = as.numeric(sapply(data$ladder, function(x) x$position)),
+    points         = as.numeric(sapply(data$ladder, function(x) x$points)),
+    wins           = as.numeric(sapply(data$ladder, function(x) x$wins)),
+    draws          = as.numeric(sapply(data$ladder, function(x) x$draws)),
+    losses         = as.numeric(sapply(data$ladder, function(x) x$losses)),
+    points_for     = as.numeric(sapply(data$ladder, function(x) x$points_for)),
+    points_against = as.numeric(sapply(data$ladder, function(x) x$points_against))
+  ) %>%
+    mutate(pcnt = round(points_for/points_against*100,1))
+  
+  fixture_data <- fixture_data %>%
+    left_join(ladder_data, by=c('user_team_id'))
   
   return(fixture_data)
   
@@ -452,7 +497,7 @@ spotify_table <- function(data,
 fb_standings <- function(fbLeague, szn=NULL, rnd=NULL){
   
   if(is.null(szn) | is.null(rnd)){
-    dflt <- scLeague %>%
+    dflt <- fbLeague %>%
       filter(!is.na(team_score)) %>%
       select(season, round) %>%
       distinct() %>%
@@ -463,8 +508,7 @@ fb_standings <- function(fbLeague, szn=NULL, rnd=NULL){
   }
   
   
-  
-  x <- scLeague %>%
+  x <- fbLeague %>%
     filter(season == szn) %>%
     filter(round == rnd) %>%
     mutate(points_for = round(points_for/round,0)) %>%

@@ -10,7 +10,7 @@ tabDashUI <- function() {
 }
 
 # Server function (no moduleServer)
-tabDashServer <- function(input, output, session, fb) {
+tabDashServer <- function(input, output, session, sc, fb) {
 
   output$fbStandings <- renderReactable({fb_standings(fb$league)})
 

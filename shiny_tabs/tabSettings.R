@@ -13,7 +13,7 @@ tabSettingsUI <- function() {
   )
 }
 
-tabSettingsServer <- function(input, output, session) {
+tabSettingsServer <- function(input, output, session, sc, fb) {
   
   observeEvent(input$btnRefreshSC, {sc_autoUpdate(sc)})
   

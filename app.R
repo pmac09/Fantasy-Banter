@@ -55,14 +55,14 @@ shinyApp(
     
     ## Base data
 
-    fb <- list(
-      league <- fb_league(),
-      players <- fb_players()
+    fb <- reactiveValues(
+      league = fb_league(),
+      players = fb_players()
     )
     
     # Tab Settings
-    tabDashServer(input, output, session, fb)
-    tabTradeServer(input, output, session)
-    tabSettingsServer(input, output, session)
+    tabDashServer(input, output, session, sc, fb)
+    tabTradeServer(input, output, session, sc, fb)
+    tabSettingsServer(input, output, session, sc, fb)
   }
 )
