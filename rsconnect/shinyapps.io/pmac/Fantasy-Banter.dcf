@@ -1,0 +1,13 @@
+name: Fantasy-Banter
+title: Fantasy-Banter
+username: pmac
+account: pmac
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 11514792
+bundleId: 10489168
+url: https://pmac.shinyapps.io/Fantasy-Banter/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: R/f7Gallery.R

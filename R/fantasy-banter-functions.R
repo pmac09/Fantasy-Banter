@@ -54,6 +54,11 @@ firebase_upload <- function(databaseURL, databasePath=NULL, data, cols=NULL){
 }
 
 ### SUPERCOACH FUNCTIONS -------------------------------------------------------
+sc_key <- function(databaseURL){
+  msg <- paste0('sc_key')
+  print_log(msg)
+  sc_key <- firebase_download(databaseURL, '/Fantasy-Banter/settings/api/supercoach')
+}
 sc_authenticate <- function(client_id, access_token){
   msg <- paste0('sc_authenticate')
   print_log(msg)
@@ -271,12 +276,13 @@ sc_league <-  function(sc, rnd=NULL){
 }
 
 sc_update <- function(sc, rnd=NULL){
+  print_log('sc_update')
   
   szn <- sc$var$season
   rnd <- ifelse(is.null(rnd),sc$var$current_round,rnd)
   
+  league_data <- fb_league()
   league_new <- sc_league(sc, rnd)
-  league_data <- firebase_download(databaseURL, '/Fantasy-Banter/data/league', cols=TRUE)
     
   league_data_new <- league_data %>%
     filter(!(season == szn & round == rnd)) %>%
@@ -285,9 +291,9 @@ sc_update <- function(sc, rnd=NULL){
   
   firebase_upload(databaseURL, '/Fantasy-Banter/data/league', league_data_new, cols=TRUE)
   
+  player_data <- fb_players()
   player_new <- sc_players(sc, rnd)
-  player_data <- firebase_download(databaseURL, '/Fantasy-Banter/data/players', cols=TRUE)
-  
+ 
   player_data_new <- player_data %>%
     filter(!(season == szn & round == rnd)) %>%
     bind_rows(player_new) %>%
@@ -296,28 +302,291 @@ sc_update <- function(sc, rnd=NULL){
   firebase_upload(databaseURL, '/Fantasy-Banter/data/players', player_data_new, cols=TRUE)
   
 }
+sc_autoUpdate <- function(sc){
+  print_log('sc_autoUpdate')
+  
+  szn <- sc$var$season
+  rnd <- sc$var$current_round
+  
+  league_data <- fb_league()
+  
+  dataRnd <- league_data %>%
+    filter(season == szn) %>%
+    filter(round <= rnd) %>%
+    filter(is.na(team_score)) %>%
+    select(round) %>%
+    distinct() %>%
+    pull(round)
+  
+  if(length(dataRnd) > 0){
+    tmp <- lapply(dataRnd, function(r) sc_update(sc = sc, rnd = r))
+    rm(tmp)
+  } else {
+    print_log('sc_autoUpdate: Data up-to-date')
+  }
+
+}
 
 ## Fantasy Banter Functions ----------------------------------------------------
 
+fb_league <- function(dbURL=databaseURL){
+  print_log('fb_league')
+  league_data <- firebase_download(dbURL, '/Fantasy-Banter/data/league', cols=TRUE)
+  return(league_data)
+}
+fb_players <- function(dbURL=databaseURL){
+  print_log('fb_players')
+  player_data <- firebase_download(dbURL, '/Fantasy-Banter/data/players', cols=TRUE)
+  return(player_data)
+}
+  
+
+
+
+## Dashboard Functions --------------------------------------------------------
+
+
+spotify_theme <- function() {
+  search_icon <- function(fill = "none") {
+    # Icon from https://boxicons.com
+    svg <- sprintf('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path fill="%s" d="M10 18c1.85 0 3.54-.64 4.9-1.69l4.4 4.4 1.4-1.42-4.39-4.4A8 8 0 102 10a8 8 0 008 8.01zm0-14a6 6 0 11-.01 12.01A6 6 0 0110 4z"/></svg>', fill)
+    sprintf("url('data:image/svg+xml;charset=utf-8,%s')", URLencode(svg))
+  }
+  
+  text_color <- "hsl(0, 0%, 95%)"
+  text_color_light <- "hsl(0, 0%, 70%)"
+  text_color_lighter <- "hsl(0, 0%, 55%)"
+  bg_color <- "hsl(0, 0%, 10%)"
+  
+  reactableTheme(
+    color = text_color,
+    backgroundColor = bg_color,
+    borderColor = "hsl(0, 0%, 16%)",
+    borderWidth = "1px",
+    highlightColor = "rgba(255, 255, 255, 0.1)",
+    cellPadding = "10px 8px",
+    style = list(
+      fontFamily = "Work Sans, Helvetica Neue, Helvetica, Arial, sans-serif",
+      fontSize = "0.875rem",
+      "a" = list(
+        color = text_color,
+        textDecoration = "none",
+        "&:hover, &:focus" = list(
+          textDecoration = "underline",
+          textDecorationThickness = "1px"
+        )
+      ),
+      ".number" = list(
+        fontFamily = "Source Code Pro, Consolas, Monaco, monospace"
+      ),
+      ".tag" = list(
+        padding = "0.125rem 0.25rem",
+        color = "hsl(0, 0%, 40%)",
+        fontSize = "0.75rem",
+        border = "1px solid hsl(0, 0%, 24%)",
+        borderRadius = "2px",
+        textTransform = "uppercase"
+      )
+    ),
+    headerStyle = list(
+      display = "flex",
+      flexDirection = "column",         # Stack items vertically
+      justifyContent = "flex-end",      # Align items to bottom
+      color = text_color_light,
+      fontWeight = 400,
+      fontSize = "0.75rem",
+      letterSpacing = "1px",
+      textTransform = "uppercase",
+      "&:hover, &:focus" = list(color = text_color)
+    ),
+    rowHighlightStyle = list(
+      ".tag" = list(color = text_color, borderColor = text_color_lighter)
+    ),
+    # Full-width search bar with search icon
+    searchInputStyle = list(
+      paddingLeft = "1.9rem",
+      paddingTop = "0.5rem",
+      paddingBottom = "0.5rem",
+      width = "100%",
+      border = "none",
+      backgroundColor = bg_color,
+      backgroundImage = search_icon(text_color_light),
+      backgroundSize = "1rem",
+      backgroundPosition = "left 0.5rem center",
+      backgroundRepeat = "no-repeat",
+      "&:focus" = list(backgroundColor = "rgba(255, 255, 255, 0.1)", border = "none"),
+      "&:hover, &:focus" = list(backgroundImage = search_icon(text_color)),
+      "::placeholder" = list(color = text_color_lighter),
+      "&:hover::placeholder, &:focus::placeholder" = list(color = text_color)
+    ),
+    paginationStyle = list(color = text_color_light),
+    pageButtonHoverStyle = list(backgroundColor = "hsl(0, 0%, 20%)"),
+    pageButtonActiveStyle = list(backgroundColor = "hsl(0, 0%, 24%)")
+  )
+}
+spotify_table <- function(data, 
+                          columns = NULL, 
+                          default_colDef = colDef(align = "center", minWidth = 90),
+                          default_sorted = NULL,
+                          height = "auto", full_width = TRUE, highlight = TRUE, ...) {
+  reactable::reactable(
+    data,
+    columns = columns,
+    defaultColDef = default_colDef,
+    defaultSorted = default_sorted,
+    highlight = highlight,
+    bordered = FALSE,
+    striped = FALSE,
+    compact = TRUE,
+    showPageSizeOptions = FALSE,
+    paginationType = "simple",
+    theme = spotify_theme(),
+    fullWidth = full_width,
+    height = height,
+    ...
+  )
+}
+
+
+
+fb_standings <- function(fbLeague, szn=NULL, rnd=NULL){
+  
+  if(is.null(szn) | is.null(rnd)){
+    dflt <- scLeague %>%
+      filter(!is.na(team_score)) %>%
+      select(season, round) %>%
+      distinct() %>%
+      arrange(desc(season), desc(round)) 
+    
+    szn <- dflt$season[1]
+    rnd <- dflt$round[1]
+  }
+  
+  
+  
+  x <- scLeague %>%
+    filter(season == szn) %>%
+    filter(round == rnd) %>%
+    mutate(points_for = round(points_for/round,0)) %>%
+    mutate(points_against = round(points_against/round,0)) %>%
+    select(position, team, coach, 
+           points, wins, draws, losses, 
+           points_for, points_against, pcnt) %>%
+    arrange(position)
+  
+  
+  c <- list(
+    position = colDef(show = FALSE),
+    team = colDef(
+      
+      cell = function(value, index) {
+        tag <- span(class = "tag", x[index, "coach"])
+        
+        div(
+          style = list(
+            display = "flex",
+            justifyContent = "space-between",
+            alignItems = "center",
+            gap = "0.5rem"
+          ),
+          div(
+            style = list(
+              overflow = "hidden",
+              whiteSpace = "nowrap",
+              textOverflow = "ellipsis",
+              flex = "1"
+            ),
+            value
+          ),
+          div(
+            style = list(flexShrink = "0"),
+            tag
+          )
+        )
+      },
+      minWidth = 120,
+      align = "left",
+      style = list(
+        position = "sticky",
+        left = 0,
+        background = "hsl(0, 0%, 10%)",  # match your table bg_color
+        zIndex = 1
+      ),
+      headerStyle = list(
+        position = "sticky",
+        left = 0,
+        zIndex = 2,
+        background = "hsl(0, 0%, 10%)"
+      )
+    ),
+    coach = colDef(show = FALSE),
+    points = colDef(show = FALSE),
+    wins = colDef(
+      name='RESULTS',
+      cell=function(value, index) {
+        
+        w <- if (value < 10) paste0(" ", value) else as.character(value)
+        d <- x[index, 'draws']
+        l <- if (x[index, 'losses'] < 10) paste0(x[index, 'losses'], " ") else as.character(x[index, 'losses'])
+        
+        div(
+          class = "number",
+          style = list(whiteSpace = "pre"),
+          paste0(w, "·", d, "·", l)
+        )
+      }
+    ),
+    draws = colDef(show = FALSE),
+    losses = colDef(show = FALSE),
+    points_for = colDef(
+      name = 'Average Score',,
+      cell = function(value) {
+        div(
+          class = "number",
+          formatC(value, format = "d", big.mark = ",")
+        )
+      }
+    ),
+    points_against = colDef(
+      name = 'Average Against',
+      cell = function(value) {
+        div(
+          class = "number",
+          formatC(value, format = "d", big.mark = ",")
+        )
+      }
+    ), 
+    pcnt = colDef(
+      name="%",
+      cell=function(value){
+        vf <- format(round(value, 1), nsmall = 1)
+        vf <- if (value < 100) paste0(" ", vf) else as.character(vf)
+        
+        div(
+          class = "number",
+          style = list(whiteSpace = "pre"),
+          paste0(vf)
+        )
+      }
+    )
+  )
+  
+  spotify_table(data = x, columns=c)
+  
+}
 
 
 
 ### RUN  -----------------------------------------------------------------------
 
 if(1 == 0){
+
+  scKey <- sc_key(databaseURL)  
+  scAuth <- sc_authenticate(scKey$client_id, scKey$access_token)
+  sc <- sc_setup(scAuth)
+  sc_autoUpdate(sc)
   
-sc_key <- firebase_download(databaseURL, '/Fantasy-Banter/settings/api/supercoach')
-sc_auth <- sc_authenticate(sc_key$client_id, sc_key$access_token)
-sc <- sc_setup(sc_auth)
-sc_update(sc, 11)
-
-
-
-
-
-
-
-
+  scLeague
 
 if(1 == 0){
 
