@@ -5,7 +5,7 @@ account: pmac
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 11514792
-bundleId: 10489168
+bundleId: 10499425
 url: https://pmac.shinyapps.io/Fantasy-Banter/
 version: 1
 asMultiple: FALSE
