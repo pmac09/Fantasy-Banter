@@ -630,8 +630,20 @@ if(1 == 0){
   sc <- sc_setup(scAuth)
   sc_autoUpdate(sc)
   
-  scLeague
-
+  
+  scPlayers <- sc_players(sc)
+  x <- sprintf(sc$url$team, 116698,16)
+  
+  y <-  sc_download(sc$auth,x)
+  
+  id <- sapply(y$players, function(p) p$player_id)
+  
+  id
+  
+  chief <- scPlayers[scPlayers$playerID %in% id,]
+  
+  write.csv(chief,'/Users/pmac/downloads/x.csv',row.names = F,na='')
+  
 if(1 == 0){
 
 
