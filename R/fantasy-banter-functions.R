@@ -144,6 +144,10 @@ sc_setup <- function(auth){
   sc$url$league  <- paste0(sc$url$draft,'leagues/',sc$var$league_id,'/ladderAndFixtures?round=%s&scores=true')
   sc$url$team    <- paste0(sc$url$draft,'userteams/%s/statsPlayers?round=%s')
   
+  # Call API
+  #sc$api$league <- sc_download(sc$auth, sprintf(sc$url$league, sc$var$current_round))
+  
+  # Generate API URLs
   sc$url$playerStatus <- paste0(sc$url$draft,'leagues/',sc$var$league_id,'/playersStatus')
   sc$url$playerStats  <- paste0(sc$url$draft,'completeStatspack?player_id=')
   
@@ -623,11 +627,13 @@ fb_standings <- function(fbLeague, szn=NULL, rnd=NULL){
 
 ### RUN  -----------------------------------------------------------------------
 
+scKey <- sc_key(databaseURL)  
+scAuth <- sc_authenticate(scKey$client_id, scKey$access_token)
+sc <- sc_setup(scAuth)
+
 if(1 == 0){
 
-  scKey <- sc_key(databaseURL)  
-  scAuth <- sc_authenticate(scKey$client_id, scKey$access_token)
-  sc <- sc_setup(scAuth)
+
   sc_autoUpdate(sc)
   
   
