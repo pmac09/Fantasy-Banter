@@ -37,8 +37,8 @@ print_log("WAIVER BOT")
 players <- sc_players(sc,sc$var$current_round)
 
 ## Player IDs to Drop and Add
-drop_ids <- c(222)
-add_ids <- c(208,71,366)
+drop_ids <- c(371, 207)
+add_ids <- c(22, 353, 762, 289, 676, 744)
 
 ## Print Players to DROPs
 print_log('Players to DROP:')
@@ -164,3 +164,5 @@ while(length(drop_ids) > 0 & length(add_ids) > 0){
 }
 
 print_log('WAIVER BOT - COMPLETE')
+
+
